@@ -7,15 +7,25 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import co.com.patios.entity.TipoIdentificacion;
+import co.com.patios.persistence.iface.AbstractFacadeEJB;
 import co.com.patios.persistence.iface.TipoIdentificacionIfaceDAO;
 
-
 @Stateless
-public class TipoIdentificacionImplDAO implements TipoIdentificacionIfaceDAO{
+public class TipoIdentificacionImplDAO extends AbstractFacadeEJB<TipoIdentificacion>
+		implements TipoIdentificacionIfaceDAO {
 
-	@PersistenceContext (name = "PatiosDS")
+	@PersistenceContext(name = "PatiosDS")
 	EntityManager manager;
-	
+
+	public TipoIdentificacionImplDAO() {
+		super(TipoIdentificacion.class);
+	}
+
+	@Override
+	protected EntityManager getEntityManager() {
+		return manager;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<TipoIdentificacion> consultarTiposIdentificacion() {
