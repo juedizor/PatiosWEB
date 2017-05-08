@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title><ui:insert name="titulo">.:: PatiosWEB ::.</ui:insert></title>
+	<h:outputStylesheet library="css" name="estilosMain.css" />
+</h:head>
+
+<f:view>
+	<f:event listener="#{validarSessionMB.verificarSessionNoDisponible}"
+		type="preRenderView"></f:event>
+	<h:body>
+
+		<p:panel id="basic" header="PATIOS WEB"
+			style="margin-bottom:5px; align-text:center;">
+		</p:panel>
+
+		<p:growl showDetail="true" id="messagesInit"></p:growl>
+
+		<p:tabView orientation="left">
+			<p:tab title="#{labelGeneral.label_iniciar_sesion}">
+				<h:panelGrid columns="2" cellpadding="10">
+					<h:outputText value="" />
+					<ui:include src="/jsf/patios/login.xhtml"/>
+				</h:panelGrid>
+			</p:tab>
+		</p:tabView>
+
+	</h:body>
+</f:view>
+
+</html>

@@ -1,0 +1,514 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<!-- Se usa el template para que todo el comportamiento de las distintas paginas se adapten a un estilo unico -->
+<ui:composition template="/jsf/patios/templates/template.xhtml">
+
+
+	<!-- name contenido esta definido en el template, todo lo que se agrupe dentro de esta etiqueta sera mostrado en esa parte de la pagina -->
+	<ui:define name="contenido">
+
+		<!-- etiqueta form, la cual contiene todos el arbol de componentes que se usará para realizar el proceso de entrada a patios, estos son los enviados a un managed bean especifico para su debido tratamiento -->
+		<h:form id="formRegistroEntrada">
+
+			<p:growl id="mensajes" showDetail="true" showSummary="true"
+				autoUpdate="true" globalOnly="true"></p:growl>
+			<p:panel id="panelRegistro" styleClass="pnlForm"
+				header="Formulario Entrada a Patios">
+
+				<!-- <f:event listener="#{usuarioMB.setIdComponent}" type="postValidate" /> -->
+
+				<!-- componente para agrupacion de cada unos de los componentes, se agrega un titulo en su borde para indicar relacion con lo que se digita -->
+				<p:fieldset legend="Datos Vehiculo" styleClass="fieForm">
+
+					<!-- agrupa los componentes que se coloquen dentro del mismo a 4 columnas -->
+					<h:panelGrid id="ingresoPatios" columns="4"
+						styleClass="gridFormularios"
+						columnClasses="columnas1,columnas2,columnas1,columnas2">
+
+						<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+							<div class="obligatorio" />
+							<p:outputLabel value="Patio" />
+						</h:panelGrid>
+
+
+						<h:panelGroup>
+							<p:selectOneMenu id="patio"
+								value="#{entradaVehiculoPatioMB.idPatio}" required="true"
+								requiredMessage="Requerido">
+								<f:selectItem itemLabel="Seleccione..." itemValue="" />
+								<f:selectItems value="#{entradaVehiculoPatioMB.patios}"></f:selectItems>
+							</p:selectOneMenu>
+							<p:message for="patio" display="default" />
+						</h:panelGroup>
+
+						<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+							<div class="obligatorio" />
+							<p:outputLabel value="Placa" />
+						</h:panelGrid>
+
+						<h:panelGroup>
+							<p:inputText id="placa" value="#{entradaVehiculoPatioMB.placa}"
+								required="true" requiredMessage="Requerido">
+								<p:ajax event="blur"
+									listener="#{entradaVehiculoPatioMB.validarExistenciaVehiculo}"
+									update="placa numeroSerie numeroChasis 
+							numeroMotor estado organismo 
+							colorVehiculo marcaVehiculo claseVehiculo 
+							modeloVehiculo">
+								</p:ajax>
+							</p:inputText>
+							<p:message for="placa" display="default" />
+						</h:panelGroup>
+
+						<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+							<div class="obligatorio" />
+							<p:outputLabel value="Clase Vehículo" />
+						</h:panelGrid>
+
+						<h:panelGroup>
+							<p:selectOneMenu id="claseVehiculo" filter="true"
+								filterMatchMode="startsWith"
+								value="#{entradaVehiculoPatioMB.claseVehiculo}" required="true"
+								requiredMessage="Requerido">
+								<f:selectItem itemLabel="Seleccione..." itemValue="" />
+								<f:selectItems value="#{entradaVehiculoPatioMB.clasesVehiculos}" />
+							</p:selectOneMenu>
+							<p:message for="claseVehiculo" display="default" />
+						</h:panelGroup>
+
+						<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+							<div class="obligatorio" />
+							<p:outputLabel value="Marca Vehículo" />
+						</h:panelGrid>
+
+						<h:panelGroup>
+							<p:selectOneMenu id="marcaVehiculo"
+								value="#{entradaVehiculoPatioMB.marcaAuto}" filter="true"
+								filterMatchMode="startsWith" required="true"
+								requiredMessage="Requerido">
+								<p:ajax event="change" update="modeloVehiculo"
+									listener="#{entradaVehiculoPatioMB.llenarModelos()}" />
+								<f:selectItem itemLabel="Seleccione..." itemValue="" />
+								<f:selectItems value="#{entradaVehiculoPatioMB.marcasVehiculos}" />
+							</p:selectOneMenu>
+							<p:message for="marcaVehiculo" display="default" />
+						</h:panelGroup>
+
+						<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+							<div class="obligatorio" />
+							<p:outputLabel value="Modelo Vehículo" />
+						</h:panelGrid>
+
+						<h:panelGroup>
+							<p:selectOneMenu id="modeloVehiculo"
+								value="#{entradaVehiculoPatioMB.modeloAuto}" required="true"
+								requiredMessage="Requerido">
+								<f:selectItem itemLabel="Seleccione..." itemValue="" />
+								<f:selectItems value="#{entradaVehiculoPatioMB.modeloVehiculos}" />
+							</p:selectOneMenu>
+							<p:message for="modeloVehiculo" display="default" />
+						</h:panelGroup>
+
+						<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+							<div class="obligatorio" />
+							<p:outputLabel value="Color" />
+						</h:panelGrid>
+
+						<h:panelGroup>
+							<h:panelGrid columns="3">
+								<p:selectOneMenu id="colorVehiculo"
+									value="#{entradaVehiculoPatioMB.colorVehiculo}" required="true"
+									requiredMessage="Requerido">
+									<f:selectItems value="#{entradaVehiculoPatioMB.colorVehiculos}" />
+								</p:selectOneMenu>
+								<p:commandButton value="..."
+									update=":tablaColores:tableColores mensajes"
+									action="#{entradaVehiculoPatioMB.obtenerColorVehiculos}"
+									oncomplete="PF('dialogoColores').show();" immediate="true" />
+							</h:panelGrid>
+							<p:message for="colorVehiculo" display="default" />
+						</h:panelGroup>
+
+						<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+							<p:outputLabel value="Organismo de Transito" />
+						</h:panelGrid>
+
+						<h:panelGroup>
+							<p:selectOneMenu id="organismo"
+								value="#{entradaVehiculoPatioMB.idOrganismoTransito}">
+								<f:selectItem itemLabel="Seleccione..." itemValue="" />
+								<f:selectItems
+									value="#{entradaVehiculoPatioMB.organismosTransito}"></f:selectItems>
+							</p:selectOneMenu>
+							<p:message for="organismo" display="default" />
+						</h:panelGroup>
+
+						<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+							<div class="obligatorio" />
+							<p:outputLabel value="Estado Vehiculo" />
+						</h:panelGrid>
+
+						<h:panelGroup>
+							<p:selectOneMenu id="estado"
+								value="#{entradaVehiculoPatioMB.estadoAuto}" required="true"
+								requiredMessage="Requerido">
+								<f:selectItem itemLabel="Seleccione..." itemValue="" />
+								<f:selectItems
+									value="#{entradaVehiculoPatioMB.estadosVehiculos}"></f:selectItems>
+							</p:selectOneMenu>
+							<p:message for="estado" display="default" />
+						</h:panelGroup>
+
+						<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+							<p:outputLabel value="Nro. Motor vehiculo" />
+						</h:panelGrid>
+
+						<h:panelGroup>
+							<p:inputText id="numeroMotor"
+								value="#{entradaVehiculoPatioMB.numeroMotorVehiculo}">
+								<p:ajax event="blur"
+									listener="#{entradaVehiculoPatioMB.convertMayuscula()}"
+									update="numeroMotor">
+								</p:ajax>
+							</p:inputText>
+							<p:message for="numeroMotor" display="default" />
+						</h:panelGroup>
+
+						<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+							<p:outputLabel value="Nro. Chasis vehiculo" />
+						</h:panelGrid>
+
+						<h:panelGroup>
+							<p:inputText id="numeroChasis"
+								value="#{entradaVehiculoPatioMB.numeroChasisVehiculo}">
+								<p:ajax event="blur"
+									listener="#{entradaVehiculoPatioMB.convertMayuscula()}"
+									update="numeroChasis">
+								</p:ajax>
+							</p:inputText>
+							<p:message for="numeroChasis" display="default" />
+						</h:panelGroup>
+
+						<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+							<p:outputLabel value="Nro. Serie vehiculo" />
+						</h:panelGrid>
+
+						<h:panelGroup>
+							<p:inputText id="numeroSerie"
+								value="#{entradaVehiculoPatioMB.numeroSerieVehiculo}">
+								<p:ajax event="blur"
+									listener="#{entradaVehiculoPatioMB.convertMayuscula()}"
+									update="numeroSerie">
+								</p:ajax>
+							</p:inputText>
+							<p:message for="numeroSerie" display="default" />
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:fieldset>
+
+
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Tiene Información de persona ?"></p:outputLabel>
+					<p:selectOneRadio id="checkPersona"
+						value="#{entradaVehiculoPatioMB.tieneInfoPersona}">
+						<f:selectItem itemLabel="SI" itemValue="1" />
+						<f:selectItem itemLabel="NO" itemValue="0" />
+						<p:ajax event="click"
+							listener="#{entradaVehiculoPatioMB.activarPanelPersona()}"
+							update="panelRegistroUsuario, panelPersona"></p:ajax>
+					</p:selectOneRadio>
+				</h:panelGrid>
+
+
+
+				<p:outputPanel id="panelRegistroUsuario">
+					<p:fieldset rendered="#{entradaVehiculoPatioMB.checkInfoPersona}"
+						id="panelPersona" legend="Datos Persona" styleClass="fieForm">
+
+						<h:panelGrid id="registroUsuario" columns="4"
+							styleClass="gridFormularios"
+							columnClasses="columnas1,columnas2,columnas1,columnas2">
+
+							<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+								<div class="obligatorio" />
+								<p:outputLabel value="Tipo Identificacion" />
+							</h:panelGrid>
+							<h:panelGroup>
+								<p:selectOneMenu id="tipoIdentificacion" required="true"
+									requiredMessage="Requerido"
+									value="#{entradaVehiculoPatioMB.idTipoIdentificacion}">
+									<p:ajax event="change"
+										listener="#{entradaVehiculoPatioMB.cambiarComponenteNombreComercial}"
+										update="registroUsuario"></p:ajax>
+									<f:selectItem itemLabel="Seleccione..." itemValue="" />
+									<f:selectItems
+										value="#{entradaVehiculoPatioMB.tiposIdentificacion}"></f:selectItems>
+								</p:selectOneMenu>
+								<p:message for="tipoIdentificacion" display="default" />
+							</h:panelGroup>
+
+							<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+								<div class="obligatorio" />
+								<p:outputLabel value="Identificación" />
+							</h:panelGrid>
+							<h:panelGroup>
+								<p:inputText id="identificacion"
+									value="#{entradaVehiculoPatioMB.numeroIdentificacionPersona}"
+									required="true" requiredMessage="Requerido">
+									<p:ajax event="blur"
+										listener="#{entradaVehiculoPatioMB.validarExistenciaPersona}"
+										update="identificacion panelTelefono tipoIdentificacion primerNombre segundoNombre primerApellido segundoApellido nombreComercial pais departamento ciudad"></p:ajax>
+									<f:validator validatorId="numericoValidator"></f:validator>
+								</p:inputText>
+								<p:message for="identificacion" display="default" />
+							</h:panelGroup>
+
+							<h:panelGrid
+								rendered="#{entradaVehiculoPatioMB.renderizaNameNormal}"
+								columns="2" styleClass="pnlLabObligatorio">
+								<div class="obligatorio" />
+								<p:outputLabel value="Primer Nombre" />
+							</h:panelGrid>
+							<h:panelGroup
+								rendered="#{entradaVehiculoPatioMB.renderizaNameNormal}">
+								<p:inputText id="primerNombre"
+									value="#{entradaVehiculoPatioMB.primerNombrePersona}"
+									required="true" requiredMessage="Requerido">
+									<p:ajax event="blur"
+										listener="#{entradaVehiculoPatioMB.convertMayuscula()}"
+										update="primerNombre"></p:ajax>
+									<f:validator validatorId="caracteresValidator"></f:validator>
+								</p:inputText>
+								<p:message for="primerNombre" display="default" />
+							</h:panelGroup>
+
+							<h:panelGrid
+								rendered="#{entradaVehiculoPatioMB.renderizaNameNormal}"
+								columns="2" styleClass="pnlLabObligatorio">
+								<p:outputLabel value="Segundo Nombre" />
+							</h:panelGrid>
+							<h:panelGroup
+								rendered="#{entradaVehiculoPatioMB.renderizaNameNormal}">
+								<p:inputText id="segundoNombre"
+									value="#{entradaVehiculoPatioMB.segundoNombrePersona}">
+									<p:ajax event="blur"
+										listener="#{entradaVehiculoPatioMB.convertMayuscula()}"
+										update="segundoNombre"></p:ajax>
+									<f:validator validatorId="caracteresValidator"></f:validator>
+								</p:inputText>
+								<p:message for="segundoNombre" display="default" />
+							</h:panelGroup>
+
+							<h:panelGrid
+								rendered="#{entradaVehiculoPatioMB.renderizaNameNormal}"
+								columns="2" styleClass="pnlLabObligatorio">
+								<div class="obligatorio" />
+								<p:outputLabel value="Primer Apellido" />
+							</h:panelGrid>
+							<h:panelGroup
+								rendered="#{entradaVehiculoPatioMB.renderizaNameNormal}">
+								<p:inputText id="primerApellido"
+									value="#{entradaVehiculoPatioMB.primerApellidoPersona}"
+									required="true" requiredMessage="Requerido">
+									<p:ajax event="blur"
+										listener="#{entradaVehiculoPatioMB.convertMayuscula()}"
+										update="primerApellido"></p:ajax>
+									<f:validator validatorId="caracteresValidator"></f:validator>
+								</p:inputText>
+								<p:message for="primerApellido" display="default" />
+							</h:panelGroup>
+
+							<h:panelGrid
+								rendered="#{entradaVehiculoPatioMB.renderizaNameNormal}"
+								columns="2" styleClass="pnlLabObligatorio">
+								<p:outputLabel value="Segundo Apellido" />
+							</h:panelGrid>
+							<h:panelGroup
+								rendered="#{entradaVehiculoPatioMB.renderizaNameNormal}">
+								<p:inputText id="segundoApellido"
+									value="#{entradaVehiculoPatioMB.segundoApellidoPersona}">
+									<p:ajax event="blur"
+										listener="#{entradaVehiculoPatioMB.convertMayuscula()}"
+										update="segundoApellido"></p:ajax>
+									<f:validator validatorId="caracteresValidator"></f:validator>
+								</p:inputText>
+								<p:message for="segundoApellido" display="default" />
+							</h:panelGroup>
+
+							<h:panelGrid
+								rendered="#{entradaVehiculoPatioMB.renderizaNameComercial}"
+								columns="2" styleClass="pnlLabObligatorio">
+								<div class="obligatorio" />
+								<p:outputLabel value="Nombre Comercial" />
+							</h:panelGrid>
+							<h:panelGroup
+								rendered="#{entradaVehiculoPatioMB.renderizaNameComercial}">
+								<p:inputText id="nombreComercial"
+									value="#{entradaVehiculoPatioMB.nombreComercialPersona}"
+									required="true" requiredMessage="Requerido">
+									<p:ajax event="blur"
+										listener="#{entradaVehiculoPatioMB.convertMayuscula()}"
+										update="nombreComercial"></p:ajax>
+									<f:validator validatorId="caracteresValidator"></f:validator>
+								</p:inputText>
+								<p:message for="nombreComercial" display="default" />
+							</h:panelGroup>
+
+							<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+								<div class="obligatorio" />
+								<p:outputLabel value="Pais" />
+							</h:panelGrid>
+							<h:panelGroup>
+								<p:selectOneMenu id="pais"
+									value="#{entradaVehiculoPatioMB.idPais}" required="true"
+									requiredMessage="Requerido">
+									<p:ajax event="change"
+										listener="#{entradaVehiculoPatioMB.llenarDepartamentos}"
+										update="departamento"></p:ajax>
+									<f:selectItem itemLabel="Seleccione..." itemValue="" />
+									<f:selectItems value="#{entradaVehiculoPatioMB.paises}"></f:selectItems>
+								</p:selectOneMenu>
+								<p:message for="pais" display="default" />
+							</h:panelGroup>
+
+							<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+								<div class="obligatorio" />
+								<p:outputLabel value="departamento" />
+							</h:panelGrid>
+							<h:panelGroup>
+								<p:selectOneMenu id="departamento"
+									value="#{entradaVehiculoPatioMB.idDepartamento}"
+									required="true" requiredMessage="Requerido">
+									<p:ajax event="change"
+										listener="#{entradaVehiculoPatioMB.llenarCiudades}"
+										update="ciudad"></p:ajax>
+									<f:selectItem itemLabel="Seleccione..." itemValue="" />
+									<f:selectItems value="#{entradaVehiculoPatioMB.departamentos}"></f:selectItems>
+								</p:selectOneMenu>
+								<p:message for="departamento" display="default" />
+							</h:panelGroup>
+
+							<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+								<div class="obligatorio" />
+								<p:outputLabel value="Ciudad" />
+							</h:panelGrid>
+							<h:panelGroup>
+								<p:selectOneMenu id="ciudad"
+									value="#{entradaVehiculoPatioMB.idCiudad}" required="true"
+									requiredMessage="Requerido">
+									<p:ajax event="change"></p:ajax>
+									<f:selectItem itemLabel="Seleccione..." itemValue="" />
+									<f:selectItems value="#{entradaVehiculoPatioMB.ciudades}"></f:selectItems>
+								</p:selectOneMenu>
+								<p:message for="ciudad" display="default" />
+							</h:panelGroup>
+
+
+							<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+								<p:outputLabel value="Telefono" />
+							</h:panelGrid>
+							<h:panelGroup>
+								<h:panelGrid columns="3">
+									<p:inputText id="telefono"
+										value="#{entradaVehiculoPatioMB.telefonoPersona}">
+									</p:inputText>
+									<p:commandButton id="botonAgregarTelefono"
+										icon="btnImageGuardar" process="@this, telefono"
+										update="telefono, tableTelefono, panelTelefono"
+										actionListener="#{entradaVehiculoPatioMB.almacenarTelefonosPersona}">
+										<p:tooltip for="botonAgregarTelefono" value="Agregar Telefono"
+											showEffect="fade" hideEffect="fade" />
+									</p:commandButton>
+								</h:panelGrid>
+								<p:message for="telefono" display="default" />
+							</h:panelGroup>
+						</h:panelGrid>
+
+
+
+						<p:outputPanel id="panelTelefono">
+							<h:panelGrid id="fieldTelefono"
+								rendered="#{entradaVehiculoPatioMB.mostrarTelefonos}">
+								<h:panelGrid>
+									<h:panelGroup>
+										<p:dataTable paginator="true" rows="3" id="tableTelefono"
+											style="width:30%" var="telefonos" widgetVar="tableTelefonos"
+											value="#{entradaVehiculoPatioMB.listTelefonoPersona}">
+
+											<p:column headerText="Numero Telefono">
+												<h:outputText id="numeroTelefono" value="#{telefonos}"></h:outputText>
+											</p:column>
+
+											<p:column width="30%" headerText="">
+												<p:commandButton id="btnEliminarTelefono" process="@this"
+													update="tableTelefono, :formRegistroEntrada:panelTelefono"
+													actionListener="#{entradaVehiculoPatioMB.eliminarTelefonoTemporal(telefonos)}"
+													icon="btnImageEliminar">
+												</p:commandButton>
+											</p:column>
+										</p:dataTable>
+									</h:panelGroup>
+								</h:panelGrid>
+							</h:panelGrid>
+						</p:outputPanel>
+
+
+					</p:fieldset>
+				</p:outputPanel>
+
+
+				<!-- BOTONES DE ACTUALIZACION -->
+				<h:panelGrid columns="2" styleClass="gridFormularios"
+					cellspacing="7">
+					<h:panelGroup>
+						<p:commandButton id="botonGuardar"
+							actionListener="#{entradaVehiculoPatioMB.registrarEntradaVehiculo()}"
+							value="#{labelGeneral.lab_button_save}" icon="btnImageGuardar"
+							update="formRegistroEntrada">
+							<p:tooltip for="botonGuardar" value="Guardar" showEffect="fade"
+								hideEffect="fade" />
+						</p:commandButton>
+					</h:panelGroup>
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+
+
+		<p:dialog id="dialogColorVehiculo" width="50%" appendTo="@(body)"
+			header="Colores" widgetVar="dialogoColores" modal="true"
+			showEffect="fade" resizable="false">
+			<h:form id="tablaColores">
+				<p:dataTable id="tableColores" var="colores" selectionMode="single"
+					widgetVar="coloresTable"
+					value="#{entradaVehiculoPatioMB.listColorVehiculos}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+					paginator="true"
+					currentPageReportTemplate="{totalRecords}  Colores" rows="5"
+					rowKey="#{colores.idColorVehiculo}"
+					selection="#{entradaVehiculoPatioMB.coloresVehiculo}">
+
+					<p:ajax event="rowSelect" oncomplete="PF('dialogoColores').hide();"
+						listener="#{entradaVehiculoPatioMB.selectionColor}"
+						update=":formRegistroEntrada:colorVehiculo" />
+					<p:column headerText="color"
+						filterBy="#{colores.descripcionColorVehiculo}"
+						filterMatchMode="contains">
+						<h:outputText id="descripcionColor"
+							value="#{colores.descripcionColorVehiculo}"></h:outputText>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:dialog>
+
+
+	</ui:define>
+
+</ui:composition>
+
+
+</html>

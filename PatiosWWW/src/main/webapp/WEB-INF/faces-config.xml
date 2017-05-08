@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+    version="2.2">
+    
+    <factory>
+  		<exception-handler-factory>
+    		co.com.patios.exception.CustomExceptionHandlerFactory
+	 	 </exception-handler-factory>
+	</factory>
+    
+    <validator>
+	    <validator-id>numericoValidator</validator-id>
+  		<validator-class>co.com.patios.mb.util.validacioncomponentes.NumericoValidator</validator-class>
+ 	</validator>
+ 	
+ 	<validator>
+ 		<validator-id>caracteresValidator</validator-id>
+  		<validator-class>co.com.patios.mb.util.validacioncomponentes.CaracteresEspecialesValidator</validator-class>
+  	</validator>
+  	
+  	<validator>
+ 		<validator-id>passwordValidator</validator-id>
+  		<validator-class>co.com.patios.mb.util.validacioncomponentes.PasswordValidator</validator-class>
+  	</validator>
+  	
+  	
+  	 <validator>
+ 		<validator-id>mayorCeroValidator</validator-id>
+  		<validator-class>co.com.patios.mb.util.validacioncomponentes.MayorCeroValidator</validator-class>
+  	</validator>
+  	
+  	
+  	<application>
+		<resource-bundle>
+			<base-name>co.com.patios.bundle.general.Mensajes</base-name>
+			<var>labelGeneral</var>
+		</resource-bundle>
+	</application>
+</faces-config>
+
+

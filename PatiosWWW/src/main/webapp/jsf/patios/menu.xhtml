@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:form>
+	<p:panelMenu>
+		<p:submenu label="Administracion Patios">
+			<p:menuitem id="entradaPatios" value="Entrada a patios"
+				action="/jsf/patios/entradaPatios.xhtml"
+				icon="ui-icon-guardar" />
+			<p:menuitem id="registrarVehiculo" value="Registrar Vehículos" rendered="false"
+				icon="ui-icon-disk"
+				action="/jsf/patios/registrarVehiculos.xhtml" />
+			<p:menuitem id="listarEntradas" value="Vehículos en Patio"
+				icon="ui-icon-inform"
+				action="/jsf/patios/listadoEntradaVehiculos.xhtml" />
+			<p:menuitem id="registrarPatio" value="Registrar un Patio"
+				action="/jsf/patios/registrarPatio.xhtml"
+				icon="ui-icon-registrar"/>
+			<p:menuitem  value="Generar Volante Liquidación"
+				action="/jsf/patios/generarVolanteLiquidacion.xhtml"
+				icon="ui-icon-generar" />
+			<p:menuitem  value="Asignación de Patios"
+				action="/jsf/patios/listadoPatios.xhtml"
+				icon="ui-icon-listar" />
+		</p:submenu>
+		<p:separator />
+	</p:panelMenu>
+</h:form>
+
+</html>

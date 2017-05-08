@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+	
+<ui:composition template="/jsf/patios/templates/template.xhtml">
+
+	<ui:define name="contenido">
+	
+		<h:form id="formPatios">
+			<p:growl id="mensajes" showDetail="true" showSummary="true" autoUpdate="true" globalOnly="true"/>
+			
+			<p:panel  id="panelRegistro" styleClass="pnlForm" header="Formulario registro de patios">
+			
+				<p:fieldset legend="Datos Patio" styleClass="fieForm">
+			
+					<h:panelGrid id="ingresoPatios" columns="4" 
+					styleClass="gridFormularios" columnClasses="columnas1,columnas2,columnas1,columnas2">
+		
+						<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+							<div class="obligatorio" />
+							<p:outputLabel value="Codigo Patio" />
+						</h:panelGrid>
+						<h:panelGroup>
+							<p:inputText id="codigoPatio" value="#{patioMB.codigoPatio}"
+							required="true" requiredMessage="Requerido"
+							label="codigoPatio">
+							</p:inputText>
+							<p:message for="codigoPatio" />
+						</h:panelGroup>
+		
+						<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+							<div class="obligatorio" />
+							<p:outputLabel value="Nombre" />
+						</h:panelGrid>
+						<h:panelGroup>
+							<p:inputText id="nombrePatio" value="#{patioMB.nombrePatio}"
+								label="nombrePatio" required="true" requiredMessage="Requerido">
+								<p:ajax event="blur" listener="#{patioMB.convertMayuscula()}" update="nombrePatio"></p:ajax>
+								<f:validator validatorId="caracteresValidator"></f:validator>
+							</p:inputText>
+							<p:message for="nombrePatio" />
+						</h:panelGroup>
+		
+						<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+							<div class="obligatorio" />
+							<p:outputLabel value="Dirección" />
+						</h:panelGrid>
+						<h:panelGroup>
+							<p:inputText id="direccionPatio"
+								value="#{patioMB.direccionPatio}" label="direccionPatio" required="true" 
+								requiredMessage="Requerido">
+								<p:ajax event="blur" listener="#{patioMB.convertMayuscula()}" update="direccionPatio"></p:ajax>
+							</p:inputText>
+							<p:message for="direccionPatio" />
+						</h:panelGroup>
+		
+						<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+							<div class="obligatorio" />
+							<p:outputLabel value="Telefono" />
+						</h:panelGrid>
+						<h:panelGroup>
+							<p:inputText id="telefonoPatio"
+								value="#{patioMB.telefonoPatio}" label="telefonoPatio" required="true" requiredMessage="Requerido">
+								<f:validator validatorId="numericoValidator"></f:validator>
+								<f:validator validatorId="mayorCeroValidator"></f:validator>
+							</p:inputText>
+							<p:message for="telefonoPatio" />
+						</h:panelGroup>
+		
+						<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+							<div class="obligatorio" />
+							<p:outputLabel value="Capacidad" />
+						</h:panelGrid>
+						<h:panelGroup>
+							<p:inputText id="capacidadPatio"
+								value="#{patioMB.capacidadPatio}" label="capacidadPatio" required="true" requiredMessage="Requerido">
+								<f:validator validatorId="numericoValidator"></f:validator>
+								<f:validator validatorId="mayorCeroValidator"></f:validator>
+						</p:inputText>
+						<p:message for="capacidadPatio"/>
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:fieldset>
+				
+				
+				<h:panelGrid columns="2" styleClass="gridFormularios" cellspacing="7">
+					<h:panelGroup>
+						<p:commandButton actionListener="#{patioMB.insertPatio()}" value="#{labelGeneral.lab_button_save}" icon="btnImageGuardar"
+							 update="formPatios">
+						</p:commandButton>
+					</h:panelGroup>
+				</h:panelGrid>
+				
+			</p:panel>
+			
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+
+</html>

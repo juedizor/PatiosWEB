@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+
+<!-- formulario de inicios de sesion -->
+<h:form id="inicio">
+	<p:panel id="panel" header="Digite sus Credenciales">
+
+		<p:focus context="panel" />
+		<f:event listener="#{ingresoMB.setIdComponent}" type="postValidate" />
+
+		<h:panelGrid id="gridInicio" columns="3" cellpadding="5">
+
+			<p:outputLabel for="login" value="Usuario" />
+			<p:inputText id="login" onfocus="true"
+				value="#{ingresoMB.loginUsuario}" required="true"
+				requiredMessage="Es obligatorio digitar su usuario" label="usuario">
+			</p:inputText>
+			<p:message for="login" display="message" />
+
+
+			<p:outputLabel for="password" value="Contraseña:" />
+			<p:password id="password" value="#{ingresoMB.password}"
+				label="password" required="true"
+				requiredMessage="Es obligatorio digitar su contraseña">
+			</p:password>
+			<p:message for="password" id="pass" display="message" />
+
+		</h:panelGrid>
+		<h:panelGrid>
+			<p:inputText id="mensajes" rendered="false"></p:inputText>
+			<p:messages for="mensajes" closable="true"></p:messages>
+		</h:panelGrid>
+
+		<p:commandButton value="Ingresar" update="inicio"
+			actionListener="#{ingresoMB.verificarInicio()}" icon="ui-icon-check" />
+	</p:panel>
+</h:form>
+
+<!-- formulario de inicios de sesion -->
+
+</html>

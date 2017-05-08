@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+<h:form id="registro">
+	<p:panel  id="panelRegistro" styleClass="pnlForm" header="Formulario de Registro">
+	
+		<f:event listener="#{usuarioMB.setIdComponent}" type="postValidate"/>
+		
+		<p:fieldset legend="#{labelGeneral.lab_panel_modulo_registro}" styleClass="fieForm">
+		
+			<h:panelGrid id="registroUsuario" columns="4" styleClass="gridFormularios" columnClasses="columnas1,columnas2,columnas1,columnas2">
+
+				<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+					<div class="obligatorio" />
+					<p:outputLabel value="Tipo Identificacion" />
+				</h:panelGrid>
+				<h:panelGroup>
+					<p:selectOneMenu id="tipoIdentificacion" value="#{usuarioMB.idTipoIdentificacion}" required="true" requiredMessage="Requerido">
+						<f:selectItem itemLabel="Seleccione..." itemValue="" />
+						<f:selectItems value="#{usuarioMB.tiposIdentificacion}"/>
+					</p:selectOneMenu>
+					<p:message for="tipoIdentificacion" closable = "true" display="default" />
+				</h:panelGroup>
+
+				<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+					<div class="obligatorio" />
+					<p:outputLabel value="Identificación" />
+				</h:panelGrid>
+				<h:panelGroup>
+					<p:inputText id="identificacion" value="#{usuariosMB.nuevoUsuario.nombre}" required="true" requiredMessage="Requerido" />
+					<p:message for="identificacion" display="default" />
+				</h:panelGroup>
+
+				<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+					<div class="obligatorio" />
+					<p:outputLabel value="Primer Nombre" />
+				</h:panelGrid>
+				<h:panelGroup>
+					<p:inputText id="primerNombre" value="#{usuariosMB.nuevoUsuario.direccion}" />
+					<p:message for="primerNombre" display="default" />
+				</h:panelGroup>
+
+				<h:panelGrid columns="2" styleClass="pnlLabObligatorio">			
+					<p:outputLabel value="Segundo Nombre" />
+				</h:panelGrid>
+				<h:panelGroup>
+					<p:inputText id="segundoNombre" value="#{usuariosMB.nuevoUsuario.telefono}" />
+					<p:message for="segundoNombre" display="default" />
+				</h:panelGroup>
+
+				<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+					<div class="obligatorio" />
+					<p:outputLabel value="Primer Apellido" />
+				</h:panelGrid>
+				<h:panelGroup>
+					<p:inputText id="primerApellido" value="#{usuariosMB.nuevoUsuario.claveAcceso}" required="true" requiredMessage="Requerido" />
+					<p:message for="primerApellido" display="default" />
+				</h:panelGroup>
+
+				<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+					<p:outputLabel value="Segundo Apellido" />
+				</h:panelGrid>
+				<h:panelGroup>
+					<p:inputText id="segundoApellido" value="#{usuariosMB.nuevoUsuario.claveAcceso}" required="true" requiredMessage="Requerido" />
+					<p:message for="segundoApellido" display="default" />
+				</h:panelGroup>
+
+				<h:panelGrid rendered="false" columns="2" styleClass="pnlLabObligatorio">
+					<div class="obligatorio" />
+					<p:outputLabel value="Nombre Comercial" />
+				</h:panelGrid>
+				<h:panelGroup rendered="false">
+					<p:inputText id="nombreComercial" value="#{usuariosMB.nuevoUsuario.claveAcceso}" required="true" requiredMessage="Requerido" />
+					<p:message for="nombreComercial" display="default" />
+				</h:panelGroup>
+
+				<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+					<div class="obligatorio" />
+					<p:outputLabel value="Pais" />
+				</h:panelGrid>
+				<h:panelGroup>
+					<p:selectOneMenu id="pais" value="#{usuariosMB.nuevoUsuario.area.codigoArea}" required="true" requiredMessage="Requerido">
+						<f:selectItem itemLabel="Seleccione..." itemValue="" />
+					</p:selectOneMenu>
+					<p:message for="pais" display="default" />
+				</h:panelGroup>
+
+				<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+					<div class="obligatorio" />
+					<p:outputLabel value="departamento" />
+				</h:panelGrid>
+				<h:panelGroup>
+					<p:selectOneMenu id="departamento" value="#{usuariosMB.nuevoUsuario.area.codigoArea}" required="true" requiredMessage="Requerido">
+						<f:selectItem itemLabel="Seleccione..." itemValue="" />
+					</p:selectOneMenu>
+					<p:message for="departamento" display="default" />
+				</h:panelGroup>
+
+				<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+					<div class="obligatorio" />
+					<p:outputLabel value="Ciudad" />
+				</h:panelGrid>
+				<h:panelGroup>
+					<p:selectOneMenu id="ciudad" value="#{usuariosMB.nuevoUsuario.area.codigoArea}" required="true" requiredMessage="Requerido">
+						<f:selectItem itemLabel="Seleccione..." itemValue="" />
+					</p:selectOneMenu>
+					<p:message for="ciudad" display="default" />
+				</h:panelGroup>
+				
+				
+				<h:panelGrid rendered="false" columns="2" styleClass="pnlLabObligatorio">
+					<div class="obligatorio" />
+					<p:outputLabel value="Usuario" />
+				</h:panelGrid>
+				<h:panelGroup rendered="false">
+					<p:inputText id="usuario" value="#{usuariosMB.nuevoUsuario.claveAcceso}" required="true" requiredMessage="Requerido" />
+					<p:message for="usuario" display="default" />
+				</h:panelGroup>
+				
+				<h:panelGrid  columns="2" styleClass="pnlLabObligatorio">
+					<div class="obligatorio" />
+					<p:outputLabel value="Clave Acceso" />
+				</h:panelGrid>
+				<h:panelGroup>
+					<p:inputText id="clave1" value="#{usuariosMB.nuevoUsuario.claveAcceso}" required="true" requiredMessage="Requerido" />
+					<p:message for="clave1" display="default" />
+				</h:panelGroup>
+				
+				
+				<h:panelGrid  columns="2" styleClass="pnlLabObligatorio">
+					<div class="obligatorio" />
+					<p:outputLabel value="Repita su clave" />
+				</h:panelGrid>
+				<h:panelGroup >
+					<p:inputText id="clave2" value="#{usuariosMB.nuevoUsuario.claveAcceso}" required="true" requiredMessage="Requerido" />
+					<p:message for="clave2" display="default" />
+				</h:panelGroup>
+				
+			</h:panelGrid>
+			
+		
+			<!-- BOTONES DE REGISTRO-->
+			<h:panelGrid columns="2" styleClass="gridFormularios" cellspacing="7">
+				<h:panelGroup>
+					<p:commandButton id="cmdBtnReg" value="#{labelGeneral.lab_button_save}" icon="btnImageGuardar"
+						actionListener="#{usuarioMB.insertarNuevoUsuario()}" process="@form" update="registroUsuario">
+						<p:tooltip for="cmdBtnReg" value="Registrar" showEffect="fade" hideEffect="fade" />
+					</p:commandButton>
+				</h:panelGroup>
+			</h:panelGrid>
+		</p:fieldset>
+
+	</p:panel>
+</h:form>
+
+</html>

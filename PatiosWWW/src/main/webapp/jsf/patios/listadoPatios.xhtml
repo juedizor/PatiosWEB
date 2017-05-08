@@ -1,0 +1,172 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+
+<ui:composition template="/jsf/patios/templates/template.xhtml">
+
+	<ui:define name="contenido">	
+	
+	<h:form id="formTablaPatios">
+			<p:dataTable id="table" var="listPatios" value="#{listarPatiosMB.listPatio}" emptyMessages="No se han encontrado resultados"
+				 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                 paginator="true" currentPageReportTemplate="{totalRecords}  Patios" rows="5" style="margin-bottom:20px">
+                 
+          		<f:facet name="header">LISTADO DE PATIOS EN EL SISTEMA</f:facet>
+          
+          
+          		<p:column headerText="" style="width:1px;" exportable="false">
+					<h:outputText  style="display:none;"  id="idPatio" value="#{listPatios.idPatio}" />
+				</p:column>
+				
+				<p:column filterBy="#{listPatios.codigoPatio}" headerText="Codigo Patio" filterMatchMode="contains" >
+					<h:outputText id="codigoPatio" value="#{listPatios.codigoPatio}" />
+				</p:column>
+				
+				<p:column headerText="Nombre Patio" >
+					<h:outputText  id="nombrePatio" value="#{listPatios.nombrePatio}" />
+				</p:column>
+				
+				<p:column headerText="Direccion Patio"  >
+					<h:outputText  id="direccionPatio" value="#{listPatios.direccionPatio}" />
+				</p:column>
+				
+				<p:column headerText="Capacidad Vehículos" >
+					<h:outputText  id="capacidadPatio" value="#{listPatios.capacidadPatio}" />
+				</p:column>
+				
+                <p:column style="width:32px;text-align: center" exportable="false">
+					<p:commandButton icon="ui-icon-plus" 
+					title="Asignar Patio" 
+					update=":dialogAsignacionPatio"
+					actionListener="#{asignacionDePatiosMB.capturarDatosPatiosAsignacion(listPatios.idPatio)}"
+					oncomplete="PF('dialogoAsignacion').show()">
+					</p:commandButton>
+				</p:column>
+                 
+        	</p:dataTable>
+        </h:form>
+        
+        
+        <!-- append to, body -->
+        <p:dialog id="dialogAsignacionPatio" appendTo="@(body)" header="Asignacion de Patios a Funcionarios" 
+        		widgetVar="dialogoAsignacion" modal="true" showEffect="fade" resizable="false">
+			
+			<h:form id="formAsignacion">
+				<h:outputText value="#{asignacionDePatiosMB.idPatio}" rendered="false" id="idPatio"/>
+				
+				<p:panelGrid  id="gridPatios" columns="6" layout="grid">
+					<p:outputLabel for="codigoPatio" value="Codigo Patio:" />
+					<h:outputText value="#{asignacionDePatiosMB.codigoPatio}" id="codigoPatio"/>
+					
+					<p:outputLabel for="codigoPatio" value="Nombre Patio:" />
+					<h:outputText value="#{asignacionDePatiosMB.nombrePatio}" id="nombrePatio"/>
+					
+				   
+				</p:panelGrid>
+				
+				<!-- <p:dataTable id="table" var="listUsuario" value="#{asignacionDePatiosMB.listUsuario}" 
+						emptyMessages="No se han encontrado resultados"
+					 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+	                 paginator="true" currentPageReportTemplate="{totalRecords}  Usuarios" rows="5" style="margin-bottom:20px" 
+	                 rowKey="#{listUsuario.idUsuario}">  -->
+	                 
+	           <p:dataTable id="table" var="listUsuario" value="#{asignacionDePatiosMB.listUsuario}" 
+	                  rowKey="#{listUsuario.idUsuario}" selection="#{asignacionDePatiosMB.listSeleccionUsuarios}" style="margin-bottom:0">
+	                 
+	          		<f:facet name="header">Seleccione los usuarios autorizados</f:facet>
+	          		
+	          		<p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+	          		
+	          		<p:column headerText="" style="width:1px;" exportable="false">
+						<h:outputText  style="display:none;"  id="idUsuario" value="#{listUsuario.idUsuario}" />
+					</p:column>
+					
+					<p:column headerText="Identificación"  >
+						<h:outputText  id="identificacionUsuario" value="#{listUsuario.persona.numeroIdentificacion}" />
+					</p:column>
+					
+					<p:column headerText="Nombre" >
+						<h:outputText  id="nombreUsuario" value="#{listUsuario.persona.primerNombrePersona}" />
+					</p:column>
+					
+					<p:column headerText="Apellidos" >
+						<h:outputText  id="apellidoUsuario" value="#{listUsuario.persona.primerApellidoPersona}" />
+					</p:column>
+	          		
+	          		
+	          	</p:dataTable>
+	          	<p:growl id="mensajeNoSeleccion" showDetail="true"></p:growl>
+	          	
+	          	<p:commandButton value="Asignar funcionarios al patio" style="margin-top:20px;"
+					 icon="ui-icon-check" action="#{asignacionDePatiosMB.asignarPatiosFuncionarios}" 
+					 update=":informeAsignacion formAsignacion" oncomplete=""  />
+			
+			</h:form>
+		</p:dialog>
+		
+		
+		 <!-- append to, body -->
+        <p:dialog id="informeAsignacion" appendTo="@(body)" header="Reporte Asignacion de Funcionarios" 
+        		widgetVar="dialogoInformeAsignacion" modal="true" showEffect="fade" resizable="false">
+			
+			<h:form id="formInformeAsignacion">
+				<h:outputText value="#{asignacionDePatiosMB.idPatio}" rendered="false" id="idPatio"/>
+				
+				<p:panelGrid  id="gridPatios" columns="6" layout="grid">
+					<p:outputLabel for="codigoPatio" value="Codigo Patio:" />
+					<h:outputText value="#{asignacionDePatiosMB.codigoPatio}" id="codigoPatio"/>
+					
+					<p:outputLabel for="codigoPatio" value="Nombre Patio:" />
+					<h:outputText value="#{asignacionDePatiosMB.nombrePatio}" id="nombrePatio"/>
+					
+				   
+				</p:panelGrid>
+				
+				<!-- <p:dataTable id="table" var="listUsuario" value="#{asignacionDePatiosMB.listUsuario}" 
+						emptyMessages="No se han encontrado resultados"
+					 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+	                 paginator="true" currentPageReportTemplate="{totalRecords}  Usuarios" rows="5" style="margin-bottom:20px" 
+	                 rowKey="#{listUsuario.idUsuario}">  -->
+	                 
+	           <p:dataTable id="table" var="listInformeAsignacion" 
+	           		value="#{asignacionDePatiosMB.listReporteAsigUserPatios}" style="margin-bottom:0">
+	                 
+	          		<f:facet name="header">FUNCIONARIOS</f:facet>
+	          		
+	          		<p:column headerText="" style="width:1px;" exportable="false">
+						<h:outputText  style="display:none;"  id="idUsuario" value="#{listInformeAsignacion.usuario.idUsuario}" />
+					</p:column>
+					
+					<p:column headerText="Identificación"  >
+						<h:outputText  id="identificacionUsuario" value="#{listInformeAsignacion.usuario.persona.numeroIdentificacion}" />
+					</p:column>
+					
+					<p:column headerText="Nombre" >
+						<h:outputText  id="nombreUsuario" value="#{listInformeAsignacion.usuario.persona.primerNombrePersona}" />
+					</p:column>
+					
+					<p:column headerText="Apellidos" >
+						<h:outputText  id="apellidoUsuario" value="#{listInformeAsignacion.usuario.persona.primerApellidoPersona}" />
+					</p:column>
+					
+					<p:column headerText="Mensaje Estado" >
+						<h:outputText  id="mensaje" value="#{listInformeAsignacion.mensajeReporte}" />
+					</p:column>
+	          		
+	          		
+	          	</p:dataTable>
+			</h:form>
+			   
+		</p:dialog>
+			
+			
+	</ui:define>
+
+</ui:composition>
+
+	
+	
+</html>

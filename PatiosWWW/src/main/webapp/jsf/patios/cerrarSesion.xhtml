@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
+
+
+
+<h:form id="cerrarSession">
+	<p:panelMenu>
+		<p:submenu label="Usuario">
+			<p:menuitem id="UserLogin" value="#{ingresoMB.loginUsuario}"
+				 icon="ui-icon-myUser" />
+			<p:menuitem id="cerrarSesion" value="CerrarSession" 
+				icon="ui-icon-cerrarSession" action="#{validarSessionMB.cerrarSession}"/>
+		</p:submenu>
+		<p:separator />
+	</p:panelMenu>
+</h:form>
+</html>

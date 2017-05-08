@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:form id="edicion">
+	<p:panel id="panelEdicion" header="Formulario Edición vehiculos">
+		<p:focus context="panelEdicion" />
+		
+		
+		<p:inputText value="#{editarEntradaVehiculoMB.entradaVehiculoPatio.idEntradaVehiculoPatio}" style="display:none;"/>
+		<h:panelGrid id="grid" columns="3" cellpadding="5">
+		
+
+			<!-- 
+			<p:outputLabel for="placa" value="Placa:" />
+			<p:inputText id="placa" required="true" requiredMessage="digite la placa" placeholder="ingrese placa" value="#{editarEntradaVehiculoMB.entradaVehiculoPatio.vehiculo.placaVehiculo}">
+				<p:ajax event="blur" update="placa"
+					listener="#{entradaVehiculoPatioMB.convertMayuscula()}"/>
+			</p:inputText>
+			<p:message for="placa"/> 
+			-->
+			
+			<p:outputLabel for="marca_vehiculo" value="Nueva Marca Vehiculo:" />
+			<p:selectOneMenu id="marca_vehiculo" value="#{entradaVehiculoPatioMB.marcaAuto}">
+						<p:ajax event="change" update="modelo_vehiculo"
+							listener="#{entradaVehiculoPatioMB.llenarModelos()}" />
+				<f:selectItems id="itemTiposVehiculos"
+					value="#{entradaVehiculoPatioMB.marcasVehiculos}"/>
+			</p:selectOneMenu>
+			<p:message for="marca_vehiculo" display="default" />
+			
+
+			<p:outputLabel for="modelo_vehiculo" value="Modelo Vehiculo:" />
+			<p:selectOneMenu id="modelo_vehiculo" value="#{entradaVehiculoPatioMB.modeloVehiculo}" required="true">
+				<f:selectItems id="modelos"
+					value="#{entradaVehiculoPatioMB.modeloVehiculo}" />
+			</p:selectOneMenu>
+			<p:message for="modelo_vehiculo" display="default" />
+			
+			
+			<p:outputLabel for="numero_motor" value="Numero de Motor:" />
+			<p:inputText id="numero_motor" required="true" placeholder="ingrese numero de motor" value="#{entradaVehiculoPatioMB.entradaVehiculoPatio.vehiculo.numeroMotorVehiculo}">
+				<p:ajax event="blur" update="numero_motor"
+					listener="#{entradaVehiculoPatioMB.convertMayuscula()}"/>
+			</p:inputText>
+			<p:message for="numero_motor" display="default" />
+			
+			<p:outputLabel for="numero_serie" value="Numero de Serie:" />
+			<p:inputText id="numero_serie" required="true" placeholder="ingrese numero de motor" value="#{entradaVehiculoPatioMB.entradaVehiculoPatio.vehiculo.numeroSerieVehiculo}">
+				<p:ajax event="blur" update="numero_serie"
+					listener="#{entradaVehiculoPatioMB.convertMayuscula()}"/>
+			</p:inputText>
+			<p:message for="numero_serie" display="default" />
+			
+			
+			<p:outputLabel for="numero_chasis" value="Numero de Motor:" />
+			<p:inputText id="numero_chasis" required="true" placeholder="ingrese numero de motor" value="#{entradaVehiculoPatioMB.entradaVehiculoPatio.vehiculo.numeroChasisVehiculo}">
+				<p:ajax event="blur" update="numero_chasis"
+					listener="#{entradaVehiculoPatioMB.convertMayuscula()}"/>
+			</p:inputText>
+			<p:message for="numero_chasis" display="default" />
+			
+			<p:outputLabel for="id_patio" value="Seleccione el patio:" />
+					<p:selectOneMenu id="id_patio" value="#{entradaVehiculoPatioMB.idPatio}" required="true" requiredMessage="Es obligatorio seleccionar un patio">
+						<f:selectItems id="itemPatios" value="#{entradaVehiculoPatioMB.patios}">
+						</f:selectItems>
+					</p:selectOneMenu>
+			<p:message for="id_patio" display="default"/>
+			
+			<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+		</h:panelGrid>
+		<p:commandButton
+			update="edicion"
+			value="Editar Registro" 
+			icon="ui-icon-check"> 
+			<p:confirm header="Confirmation" message="Desea editar los datos del vehiculo?" icon="ui-icon-alert" />
+		</p:commandButton>
+	</p:panel>
+	
+	<p:growl id="message" showDetail="true" />
+ 
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+	
+</h:form>
+
+</html>
+

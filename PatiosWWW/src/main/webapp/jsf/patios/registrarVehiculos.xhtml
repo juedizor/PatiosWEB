@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/jsf/patios/templates/template.xhtml">
+
+	<ui:define name="contenido">
+		<h:form id="registro">
+			<p:panel id="panelRegistro" header="Formulario registro vehiculos">
+				<p:focus context="panelRegistro" />
+
+				<h:panelGrid id="grid" columns="3" cellpadding="5">
+
+					<p:outputLabel for="placa" value="Placa:" />
+					<p:inputText id="placa"
+						value="#{vehiculoMB.vehiculo.placaVehiculo}" required="true"
+						placeholder="ingrese placa">
+						<p:ajax event="blur" update="placa"
+							listener="#{vehiculoMB.mayuscula()}" />
+					</p:inputText>
+					<p:message for="placa" display="default" />
+
+					<p:outputLabel for="marca_vehiculo" value="Marca Vehiculo:" />
+					<p:selectOneMenu id="marca_vehiculo"
+						value="#{catalogoVehiculosMB.marca_vehiculo}">
+						<p:ajax event="change" update="modelo_vehiculo"
+							listener="#{catalogoVehiculosMB.llenarModelos()}" />
+						<f:selectItems id="itemTiposVehiculos"
+							value="#{catalogoVehiculosMB.marcasVehiculos}">
+						</f:selectItems>
+					</p:selectOneMenu>
+					<p:message for="marca_vehiculo" display="default" />
+
+					<p:outputLabel for="modelo_vehiculo" value="Modelo Vehiculo:" />
+					<p:selectOneMenu id="modelo_vehiculo" required="true"   
+						value="#{catalogoVehiculosMB.modelo_vehiculo}">
+						<f:selectItems id="modelos" 
+							value="#{catalogoVehiculosMB.modeloVehiculos}" />
+					</p:selectOneMenu>
+					<p:message for="modelo_vehiculo" display="default" />
+				</h:panelGrid>
+
+				<p:commandButton
+					action="#{vehiculoMB.registrarVehiculo(catalogoVehiculosMB.marca_vehiculo,catalogoVehiculosMB.modelo_vehiculo)}"
+					process="@form" value="Registrar" update=":messages,registro"
+					icon="ui-icon-check">
+				</p:commandButton>
+			</p:panel>
+		</h:form>
+
+	</ui:define>
+
+
+</ui:composition>
+
+
+</html>

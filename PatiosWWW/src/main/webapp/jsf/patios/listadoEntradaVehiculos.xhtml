@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+<ui:composition template="/jsf/patios/templates/template.xhtml">
+
+	<ui:define name="contenido">
+		
+		<p:growl showDetail="true" id="mensajeEdicion"></p:growl>
+		<h:form id="form">
+			<p:dataTable id="table" var="EntradaVehiculo" value="#{entradasVehiculosMB.entradaVehiculos}" emptyMessages="No se han encontrado resultados"
+				 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                 paginator="true" currentPageReportTemplate="{totalRecords}  Entradas" rows="5" style="margin-bottom:20px">
+                 
+				<f:facet name="header">LISTA DE VEHÍCULOS CON ENTRADA A PATIOS</f:facet>
+				
+				<p:column headerText="" style="width:1px;" exportable="false">
+					<h:outputText  style="display:none;"  id="idEntrada" value="#{EntradaVehiculo.idEntradaVehiculoPatio}" />
+				</p:column>
+				
+				<p:column filterBy="#{EntradaVehiculo.vehiculo.placaVehiculo}" style="width:110px;"  headerText="Placa Vehiculo" filterMatchMode="contains">
+					<h:outputText id="placa" value="#{EntradaVehiculo.vehiculo.placaVehiculo}"/>
+				</p:column>	
+				
+				<p:column headerText="Marca Vehiculo" style="width:130px;">
+					<h:outputText  value="#{EntradaVehiculo.vehiculo.modeloVehiculo.marcaVehiculo.descripcionMarcaVehiculo}"/>
+				</p:column>
+
+				<p:column headerText="Modelo Vehiculo" style="width:130px;">
+					<h:outputText value="#{EntradaVehiculo.vehiculo.modeloVehiculo.modeloVehiculo}" />
+				</p:column>
+
+				
+				<p:column headerText="Nombre Patio" width="200px;">
+					<h:outputText value="#{EntradaVehiculo.patio.nombrePatio}" />
+				</p:column>
+				
+				<p:column headerText="Fecha de Entrada" width="100px;">
+					<h:outputText value="#{EntradaVehiculo.fechaEntradaVehiculo}" />
+				</p:column>
+
+				<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+				<!-- <p:column style="width:32px;text-align: center" exportable="false">
+					<p:commandButton icon="ui-icon-pencil" 
+					title="Edicion" 
+					update=":dlg"
+					actionListener="#{editarEntradaVehiculoMB.capturarDatosEditar(EntradaVehiculo.idEntradaVehiculoPatio)}"
+					oncomplete="PF('dialogoEdicion').show()">
+					</p:commandButton>
+					</p:column> -->
+				
+			</p:dataTable>
+			
+			 <h:commandLink rendered="#{entradasVehiculosMB.mostraOpcionReporte}" >
+				        <p:graphicImage alt="imageExcel" name="img/excel.png" width="50"/>
+				        <p:dataExporter type="xls" target="table"  fileName="reporteTodasEntradasExcel" postProcessor="#{reportesMB.procesarXLS}" />
+			 </h:commandLink>
+			 
+			  <h:commandLink rendered="#{entradasVehiculosMB.mostraOpcionReporte}">
+				        <p:graphicImage alt="imagePdf" name="img/pdf.png" width="50"/>
+				        <p:dataExporter type="pdf" target="table"  fileName="reporteTodasEntradasPdf" preProcessor="#{reportesMB.preProcessPDF}" />
+			 </h:commandLink>
+			
+		</h:form>
+
+		<!-- append to, body -->
+		
+		<p:dialog id="dlg" appendTo="@(body)" header="Edicion datos Vehículos" widgetVar="dialogoEdicion" modal="true"
+		showEffect="fade" resizable="false">
+			
+			 <p:outputPanel id="edicionCars">	
+			 		
+			 	<h:form id="edicion">
+			 		<p:panel id="panelEdicion" header="Formulario Edición vehiculos">
+			
+						<p:inputText value="#{editarEntradaVehiculoMB.entradaVehiculoPatio.idEntradaVehiculoPatio}" style="display:none;"/>
+						<h:panelGrid id="grid" columns="3" cellpadding="5">
+							
+							<!-- <p:outputLabel for="placa" value="Placa:" />
+							<p:inputText id="placa" required="true" requiredMessage="digite la placa" placeholder="ingrese placa" 
+							value="#{editarEntradaVehiculoMB.placa}">
+								<p:ajax event="blur" update="placa" listener="#{editarEntradaVehiculoMB.convertMayuscula()}"/>
+							</p:inputText>
+							<p:message for="placa"/> -->
+							
+							
+							<p:outputLabel for="marca_vehiculo" value="Marca Vehiculo:" />
+							<p:selectOneMenu id="marca_vehiculo"  value="#{editarEntradaVehiculoMB.marcaAuto}">
+							<p:ajax event="change" update="modelo_vehiculo" listener="#{editarEntradaVehiculoMB.llenarModelos()}" />
+							<f:selectItems id="itemTiposVehiculos" value="#{editarEntradaVehiculoMB.marcasVehiculos}"/>
+							</p:selectOneMenu>
+							<p:message for="marca_vehiculo" display="default" />
+							
+							<p:outputLabel for="modelo_vehiculo" value="Modelo Vehiculo:" />
+							<p:selectOneMenu id="modelo_vehiculo"  value="#{editarEntradaVehiculoMB.modeloAuto}">
+							<f:selectItems id="modelos" value="#{editarEntradaVehiculoMB.modeloVehiculos}" />
+							</p:selectOneMenu>
+							<p:message for="modelo_vehiculo" display="default" />
+							
+							<p:outputLabel for="numero_motor" value="Numero de Motor:" />
+							<p:inputText id="numero_motor" placeholder="ingrese numero de motor" 
+							value="#{editarEntradaVehiculoMB.numeroMotor}">
+							<p:ajax event="blur" update="numero_motor" listener="#{editarEntradaVehiculoMB.convertMayuscula()}"/>
+							</p:inputText>
+							<p:message for="numero_motor" display="default" />
+			
+							<p:outputLabel for="numero_serie" value="Numero de Serie:" />
+							<p:inputText id="numero_serie" placeholder="ingrese numero de motor" 
+							value="#{editarEntradaVehiculoMB.numeroSerie}">
+								<p:ajax event="blur" update="numero_serie"
+									listener="#{editarEntradaVehiculoMB.convertMayuscula()}"/>
+							</p:inputText>
+							<p:message for="numero_serie" display="default" />
+			
+			
+							<p:outputLabel for="numero_chasis" value="Numero de Chasis:" />
+							<p:inputText id="numero_chasis"  placeholder="ingrese numero de motor" 
+							value="#{editarEntradaVehiculoMB.numeroChasis}">
+								<p:ajax event="blur" update="numero_chasis"
+									listener="#{editarEntradaVehiculoMB.convertMayuscula()}"/>
+							</p:inputText>
+							<p:message for="numero_chasis" display="default" />
+							
+							<p:outputLabel for="patios" value="patios:" />
+							<p:selectOneMenu id="patios"  value="#{editarEntradaVehiculoMB.patios}">
+							<f:selectItems id="patiosEntrada" value="#{editarEntradaVehiculoMB.patiosEntrada}" />
+							</p:selectOneMenu>
+							<p:message for="patios" display="default" />
+							
+							<p:growl showDetail="true" id="mensajesEdicion"></p:growl>
+							 
+				
+							<p:commandButton
+								update="edicion"
+								value="Editar Registro" 
+								icon="ui-icon-check"
+								action="#{editarEntradaVehiculoMB.editarEntradaVehiculo()}">
+								<p:confirm header="Confirmation" message="Desea editar la entrada del vehiculo?" icon="ui-icon-alert" />
+							</p:commandButton>
+							
+							<p:confirmDialog global="true">
+        						<p:commandButton update="edicion"   value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+       							<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    						</p:confirmDialog>
+				
+						</h:panelGrid>
+					</p:panel>
+				</h:form>
+			</p:outputPanel>
+		</p:dialog>
+		
+	</ui:define>
+
+</ui:composition>
+
+
+
+
+</html>

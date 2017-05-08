@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+	
+<ui:composition template="/jsf/patios/templates/template.xhtml">
+
+	<ui:define name="contenido">
+	
+	
+		<h:form id="formVolanteLiquidacion">
+		
+			<p:growl id="mensajes" showDetail="true" showSummary="true" autoUpdate="true" globalOnly="true"></p:growl>
+			
+			<p:panel  id="panelVolanteLiquidacion" styleClass="pnlForm" header="Formulario Generación de Volantes">
+			
+				<p:fieldset legend="Datos Liquidacion Vehículo" styleClass="fieForm">
+				
+					<h:panelGrid id="ingresoPatios" columns="4" styleClass="gridFormularios" columnClasses="columnas1,columnas2,columnas1,columnas2">
+					
+							<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+								<div class="obligatorio"></div>
+								<p:outputLabel for="placa" value="Placa:" />
+							</h:panelGrid>
+							<h:panelGroup>
+								<p:inputText id="placa" value="#{generacionVolantesLiquidacionMB.placa}"
+									required="true" requiredMessage="Digite la placa" 
+									label="placa" placeholder="ingrese placa">
+									<p:ajax event="blur" update="formVolanteLiquidacion" listener="#{generacionVolantesLiquidacionMB.obtenerDatosLiquidacion()}"/>
+								</p:inputText>
+							</h:panelGroup>
+							
+							
+							<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+								<p:outputLabel for="marca_vehiculo" value="Marca:" />
+							</h:panelGrid>
+							<h:panelGroup>
+								<p:inputText id="marca_vehiculo" readonly="true" label="marca_vehiculo"
+								value="#{generacionVolantesLiquidacionMB.vehiculo.modeloVehiculo.marcaVehiculo.descripcionMarcaVehiculo}">
+								</p:inputText>
+							</h:panelGroup>
+							
+							<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+								<p:outputLabel for="modelo_vehiculo" value="Modelo:" />
+							</h:panelGrid>
+							<h:panelGroup>
+								<p:inputText id="modelo_vehiculo" readonly="true" label="modelo_vehiculo"
+									value="#{generacionVolantesLiquidacionMB.vehiculo.modeloVehiculo.modeloVehiculo}" >
+								</p:inputText>
+							</h:panelGroup>
+							
+							<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+								<p:outputLabel for="nombre_patio" value="Nombre Patio:" />
+							</h:panelGrid>
+							<h:panelGroup>
+								<p:inputText id="nombre_patio" readonly="true" label="nombre_patio"
+									value="#{generacionVolantesLiquidacionMB.entradaVehiculoPatio.patio.nombrePatio}" >
+								</p:inputText>
+							</h:panelGroup>
+							
+							<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+								<p:outputLabel for="codigo_patio" value="Codigo Patio:" />
+							</h:panelGrid>
+							<h:panelGroup>
+								<p:inputText id="codigo_patio" readonly="true"
+									value="#{generacionVolantesLiquidacionMB.entradaVehiculoPatio.patio.codigoPatio}">
+								</p:inputText>
+							</h:panelGroup>
+							
+							<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+								<p:outputLabel for="fecha_entrada" value="Fecha Entrada:" />
+							</h:panelGrid>
+							<h:panelGroup>
+								<p:inputText id="fecha_entrada" readonly="true"
+									value="#{generacionVolantesLiquidacionMB.entradaVehiculoPatio.fechaEntradaVehiculo}">
+								</p:inputText>
+							</h:panelGroup>
+							
+							<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
+								<p:outputLabel for="total_pagar" value="Deuda Total:" />
+							</h:panelGrid>
+							<h:panelGroup>
+								<p:inputText id="total_pagar" readonly="true"
+									value="#{generacionVolantesLiquidacionMB.deudaTotal}">
+								</p:inputText>
+							</h:panelGroup>
+							
+					</h:panelGrid>
+					
+				</p:fieldset>
+
+				<p:dataTable id="table" var="datosLiquidacion" rendered="#{generacionVolantesLiquidacionMB.mostrarTable}"
+					value="#{generacionVolantesLiquidacionMB.listVolantePagoLiquidacion}" paginator="true"
+					rows="10" style="margin-bottom:20px">
+					<f:facet name="header">Resumen de pago de liquidación de patios</f:facet>
+
+
+					<p:column headerText="Año" style="width:50px;">
+						<h:outputText
+							value="#{datosLiquidacion.yearEntrada}" />
+					</p:column>
+					
+					<p:column headerText="Dias" style="width:30px;">
+						<h:outputText
+							value="#{datosLiquidacion.numeroDias}" />
+					</p:column>
+					
+					<p:column headerText="Valor Por Año" style="width:70px;">
+						<h:outputText
+							value="#{datosLiquidacion.valorYear}" />
+					</p:column>
+
+					<p:column headerText="Valor a Pagar" style="width:70px;">
+						<h:outputText
+							value="#{datosLiquidacion.yearValor}" />
+					</p:column>
+				</p:dataTable>
+				
+				
+				 <!--<pe:documentViewer rendered="#{generacionVolantesLiquidacionMB.mostrarVolante}" 
+				 height="500" url="#{generacionVolantesLiquidacionMB.volante}"/>  -->
+				 
+				<p:outputPanel id="pdfViewer" rendered="#{generacionVolantesLiquidacionMB.mostrarVolante}">
+			 	<h3>VOLANTE DE PAGO DE LIQUIDACION DE PATIOS</h3>
+				<object type="application/pdf" data="#{generacionVolantesLiquidacionMB.volante}" height="300px" width="100%"/>
+	       	 	</p:outputPanel>  
+
+				<p:commandButton onclick="PF('pbPoll').start();PF('pbAjax').start();" rendered="#{generacionVolantesLiquidacionMB.mostrarBotonVolante}" 
+					value="Generar Volante de Liquidación" style="margin-top:20px;"
+				 icon="ui-icon-check" update="formVolanteLiquidacion" 
+				 action="#{generacionVolantesLiquidacionMB.generarVolanteLiquidacionPatios()}"
+				 oncomplete=""  />
+				 
+				 
+				 
+				 <p:progressBar id="progress" ajax="false" value="#{generacionVolantesLiquidacionMB.progress}" widgetVar="pbAjax"
+  					labelTemplate="{value}%" style="width:400px; font-size:12px"/>
+  					
+				<p:poll interval="1" id="poll"  autoStart="false" update="progress" widgetVar="pbPoll"/>
+				
+			</p:panel>
+		</h:form>
+
+
+
+	</ui:define>
+
+</ui:composition>
+
+
+</html>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="PatiosDS"> 
+	<jta-data-source>java:jboss/datasources/PatiosDS</jta-data-source>
+	<class>co.com.patios.entity.CategoriaOrganismoTransito</class>
+	<class>co.com.patios.entity.Ciudad</class>
+	<class>co.com.patios.entity.ClaseVehiculo</class>
+	<class>co.com.patios.entity.ColorVehiculo</class>
+	<class>co.com.patios.entity.ConsecutivoVolante</class>
+	<class>co.com.patios.entity.Departamento</class>
+	<class>co.com.patios.entity.DetalleVolantePatio</class>
+	<class>co.com.patios.entity.DireccionPersona</class>
+	<class>co.com.patios.entity.EntradaVehiculoPatio</class>
+	<class>co.com.patios.entity.EstadoVehiculo</class>
+	<class>co.com.patios.entity.JurisdiccionOrganismoTransito</class>
+	<class>co.com.patios.entity.MarcaVehiculo</class>
+	<class>co.com.patios.entity.ModeloVehiculo</class>
+	<class>co.com.patios.entity.OrganismoTransito</class>
+	<class>co.com.patios.entity.Pais</class>
+	<class>co.com.patios.entity.Patio</class>
+	<class>co.com.patios.entity.Persona</class>
+	<class>co.com.patios.entity.TelefonoPersona</class>
+	<class>co.com.patios.entity.TipoIdentificacion</class>
+	<class>co.com.patios.entity.Usuario</class>
+	<class>co.com.patios.entity.UsuarioPatio</class>
+	<class>co.com.patios.entity.ValorPatio</class>
+	<class>co.com.patios.entity.Vehiculo</class>
+	<class>co.com.patios.entity.VolantePatio</class>
+		<properties>
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.default_schema" value="public" />
+			<property name="hibernate.transaction.jta.platform"
+				value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform" />
+		</properties>
+	</persistence-unit>
+</persistence>
