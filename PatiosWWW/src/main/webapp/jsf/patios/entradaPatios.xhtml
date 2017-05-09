@@ -15,8 +15,8 @@
 		<!-- etiqueta form, la cual contiene todos el arbol de componentes que se usará para realizar el proceso de entrada a patios, estos son los enviados a un managed bean especifico para su debido tratamiento -->
 		<h:form id="formRegistroEntrada">
 
-			<p:growl id="mensajes" showDetail="true" showSummary="true"
-				autoUpdate="true" globalOnly="true"></p:growl>
+			<!--  <p:growl id="mensajes" showDetail="true" showSummary="true"
+				autoUpdate="true" globalOnly="true"></p:growl>-->
 				
 			<p:panel id="panelRegistro" styleClass="pnlForm"
 				header="Formulario Entrada a Patios">
@@ -128,7 +128,7 @@
 									<f:selectItems value="#{entradaVehiculoPatioMB.colorVehiculos}" />
 								</p:selectOneMenu>
 								<p:commandButton value="..."
-									update=":tablaColores:tableColores mensajes"
+									update=":tablaColores:tableColores :msg"
 									action="#{entradaVehiculoPatioMB.obtenerColorVehiculos}"
 									oncomplete="PF('dialogoColores').show();" immediate="true" />
 							</h:panelGrid>
@@ -470,7 +470,7 @@
 						<p:commandButton id="botonGuardar"
 							actionListener="#{entradaVehiculoPatioMB.registrarEntradaVehiculo()}"
 							value="#{labelGeneral.lab_button_save}" icon="btnImageGuardar"
-							update="formRegistroEntrada" onclick="PF('statusDialog').show();" oncomplete="PF('statusDialog').hide();">
+							update="formRegistroEntrada :msg" onclick="PF('statusDialog').show();" oncomplete="PF('statusDialog').hide();">
 							<p:tooltip for="botonGuardar" value="Guardar" showEffect="fade"
 								hideEffect="fade" />
 						</p:commandButton>
