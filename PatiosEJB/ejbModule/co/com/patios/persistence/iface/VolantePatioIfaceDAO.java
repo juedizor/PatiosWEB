@@ -7,10 +7,8 @@ import javax.ejb.Local;
 import co.com.patios.entity.VolantePatio;
 
 @Local
-public interface VolantePatioIfaceDAO {
-	
-	public void insertarVolantePatios(VolantePatio volantePatio);
-	
+public interface VolantePatioIfaceDAO extends PersistenceIface<VolantePatio> {
+
 	public VolantePatio consultarVolantePorEntrada(int idEntrada, Date fecha);
 
 }

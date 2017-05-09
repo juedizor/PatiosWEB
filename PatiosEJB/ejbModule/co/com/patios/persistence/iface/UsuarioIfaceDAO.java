@@ -3,30 +3,29 @@ package co.com.patios.persistence.iface;
 import java.util.List;
 
 import javax.ejb.Local;
+import javax.persistence.PersistenceException;
 
 import co.com.patios.entity.Usuario;
 
 @Local
-public interface UsuarioIfaceDAO {
-	
+public interface UsuarioIfaceDAO extends PersistenceIface<Usuario> {
+
 	/**
-	 * realiza el registro del usuario
-	 * @param usuario, objeto de la clase Usuario, este debe tener los datos necesarios para el insert a la tabla
-	 */
-	public void registrarUsuario(Usuario usuario);
-	
-	/**
-	 * realiza la busqueda de un usuario a traves de numero de indentificacion del mismo.
+	 * realiza la busqueda de un usuario a traves de numero de indentificacion
+	 * del mismo.
+	 * 
 	 * @param identificacion
 	 * @return
 	 */
-	public Usuario buscarUsuario(String loginUsuario);
-	
-	
+	public Usuario buscarUsuario(String loginUsuario) throws PersistenceException;
+
+	public Usuario buscarUsuario(String loginUsuario, String password) throws PersistenceException;
+
 	/**
 	 * obtiene todos los usuario del sistema, de la tabla usuario
+	 * 
 	 * @return
 	 */
-	public List<Usuario> consultarUsuario(int idUsuario);
+	public List<Usuario> consultarUsuario(int idUsuario) throws PersistenceException;
 
 }

@@ -12,7 +12,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.servlet.http.HttpServletRequest;
 
-
 import co.com.patios.appmain.InitParams;
 import co.com.patios.entity.Usuario;
 import co.com.patios.mb.util.Utils;
@@ -39,9 +38,7 @@ public class IngresoMB {
 	// variable que crea la session de usuario, este lo crea con los datos de el
 	// bean usuario
 	private HttpServletRequest httpServletRequest;
-	
-	
-	
+
 	public IngresoMB() {
 		usuario = new Usuario();
 	}
@@ -70,8 +67,13 @@ public class IngresoMB {
 
 		// valida que el usuario exista en el sistema, a traves del nombre de
 		// usuario y password
-		boolean existe = ingresoIface.ValidarAutenticacion(this.usuario.getLoginUsuario(),
-				this.usuario.getClaveUsuario());
+		boolean existe = false;
+		try {
+			existe = ingresoIface.ValidarAutenticacion(this.usuario.getLoginUsuario(), this.usuario.getClaveUsuario());
+		} catch (Exception e) {
+			Utils.enviarMensajeVista(context, message, FacesMessage.SEVERITY_ERROR, idMessage,
+					InitParams.MENSAJES_BUNDLE.CABECERA_ERROR, InitParams.MENSAJES_BUNDLE.ERROR_SISTEMA);
+		}
 
 		// valida que el usuario exista en el sistema
 		if (existe) {
@@ -79,8 +81,7 @@ public class IngresoMB {
 				context.getExternalContext().redirect("principal.xhtml");
 			} catch (IOException e) {
 				Utils.enviarMensajeVista(context, message, FacesMessage.SEVERITY_ERROR, idMessage,
-						InitParams.MENSAJES_BUNDLE.CABECERA_ERROR,
-						InitParams.MENSAJES_BUNDLE.ERROR_SISTEMA);
+						InitParams.MENSAJES_BUNDLE.CABECERA_ERROR, InitParams.MENSAJES_BUNDLE.ERROR_SISTEMA);
 			}
 			httpServletRequest = (HttpServletRequest) context.getExternalContext().getRequest();
 			httpServletRequest.getSession().setAttribute("usuario", usuario);
@@ -88,8 +89,7 @@ public class IngresoMB {
 			this.setLoginUsuario("");
 			this.setPassword("");
 			Utils.enviarMensajeVista(context, message, FacesMessage.SEVERITY_ERROR, idMessage,
-					InitParams.MENSAJES_BUNDLE.CABECERA_ERROR,
-					InitParams.MENSAJES_BUNDLE.CREDENCIALES_ERRONEAS);
+					InitParams.MENSAJES_BUNDLE.CABECERA_ERROR, InitParams.MENSAJES_BUNDLE.CREDENCIALES_ERRONEAS);
 		}
 	}
 

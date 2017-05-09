@@ -5,22 +5,22 @@ import java.sql.Date;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import co.com.patios.entity.VolantePatio;
+import co.com.patios.persistence.iface.AbstractFacadeEJB;
 import co.com.patios.persistence.iface.VolantePatioIfaceDAO;
 
 @Stateless
-public class VolantePatioImplDAO implements VolantePatioIfaceDAO{
-	
-	@PersistenceContext (name = "PatiosDS")
+public class VolantePatioImplDAO extends AbstractFacadeEJB<VolantePatio> implements VolantePatioIfaceDAO {
+
+	@PersistenceContext(name = "PatiosDS")
 	EntityManager manager;
 
-	@Override
-	public void insertarVolantePatios(VolantePatio volantePatio) {
-		manager.persist(volantePatio);
+	public VolantePatioImplDAO() {
+		super(VolantePatio.class);
 	}
-
 
 	@Override
 	public VolantePatio consultarVolantePorEntrada(int idEntrada, Date fecha) {
@@ -30,7 +30,13 @@ public class VolantePatioImplDAO implements VolantePatioIfaceDAO{
 		Query query = manager.createQuery(sql.toString());
 		query.setParameter("idEntrada", idEntrada);
 		query.setParameter("fechaVolante", fecha);
-		return (VolantePatio)query.getSingleResult();
+		return (VolantePatio) query.getSingleResult();
+	}
+
+	@Override
+	protected EntityManager getEntityManager() throws PersistenceException {
+		// TODO Auto-generated method stub
+		return manager;
 	}
 
 }

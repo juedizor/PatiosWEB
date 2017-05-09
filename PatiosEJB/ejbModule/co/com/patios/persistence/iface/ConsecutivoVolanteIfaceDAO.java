@@ -3,14 +3,13 @@ package co.com.patios.persistence.iface;
 import java.util.Date;
 
 import javax.ejb.Local;
+import javax.persistence.PersistenceException;
 
 import co.com.patios.entity.ConsecutivoVolante;
 
 @Local
-public interface ConsecutivoVolanteIfaceDAO {
+public interface ConsecutivoVolanteIfaceDAO extends PersistenceIface<ConsecutivoVolante>{
 	
-	public void registrarConsecutivoVolante(ConsecutivoVolante consecutivoVolante);
-	public void actualizarConsecutivoVolante(ConsecutivoVolante consecutivoVolante);
-	public ConsecutivoVolante consultarConsecutivoVolante(Date fecha);
+	public ConsecutivoVolante consultarConsecutivoVolante(Date fecha) throws PersistenceException;
 
 }

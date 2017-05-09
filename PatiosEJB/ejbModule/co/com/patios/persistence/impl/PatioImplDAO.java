@@ -8,13 +8,18 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import co.com.patios.entity.Patio;
+import co.com.patios.persistence.iface.AbstractFacadeEJB;
 import co.com.patios.persistence.iface.PatioIfaceDAO;
 
 @Stateless
-public class PatioImplDAO implements PatioIfaceDAO {
+public class PatioImplDAO extends AbstractFacadeEJB<Patio> implements PatioIfaceDAO {
 
 	@PersistenceContext(name = "PatiosDS")
 	EntityManager manager;
+
+	public PatioImplDAO() {
+		super(Patio.class);
+	}
 
 	@Override
 	public List<Patio> consultarPatios(int idEntrada) {
@@ -32,31 +37,28 @@ public class PatioImplDAO implements PatioIfaceDAO {
 		return query.getResultList();
 	}
 
-	@Override
-	public Patio consultarPatio(int idPatio) {
-		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT u FROM Patio AS u WHERE u.idPatio = :idPatio)");
-		Query query = manager.createQuery(sql.toString());
-		query.setParameter("idPatio", idPatio);
-		return (Patio) query.getSingleResult();
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Patio> consultarPatio() {
 		StringBuilder sql = new StringBuilder();
-    	sql.append("SELECT u FROM Patio AS u");
-    	Query query = manager.createQuery(sql.toString());
-    	return query.getResultList();
+		sql.append("SELECT u FROM Patio AS u");
+		Query query = manager.createQuery(sql.toString());
+		return query.getResultList();
 	}
 
 	@Override
 	public Patio consultarPatioPorCodigo(String codigoPatio) {
 		StringBuilder sql = new StringBuilder();
-    	sql.append("SELECT u FROM Patio AS u WHERE u.codigoPatio = :codigoPatio");
-    	Query query = manager.createQuery(sql.toString());
-    	query.setParameter("codigoPatio", codigoPatio);
-    	return (Patio)query.getSingleResult();
+		sql.append("SELECT u FROM Patio AS u WHERE u.codigoPatio = :codigoPatio");
+		Query query = manager.createQuery(sql.toString());
+		query.setParameter("codigoPatio", codigoPatio);
+		return (Patio) query.getSingleResult();
+	}
+
+	@Override
+	protected EntityManager getEntityManager() {
+		// TODO Auto-generated method stub
+		return manager;
 	}
 
 }

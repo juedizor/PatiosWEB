@@ -8,20 +8,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import co.com.patios.entity.ModeloVehiculo;
+import co.com.patios.persistence.iface.AbstractFacadeEJB;
 import co.com.patios.persistence.iface.ModeloVehiculoIfaceDAO;
 
-
 @Stateless
-public class ModeloVehiculoImplDAO implements ModeloVehiculoIfaceDAO{
+public class ModeloVehiculoImplDAO extends AbstractFacadeEJB<ModeloVehiculo> implements ModeloVehiculoIfaceDAO {
 
-	
 	@PersistenceContext(name = "PatiosDS")
 	EntityManager manager;
-	
-	@Override
-	public void editarModeloVehiculo(ModeloVehiculo modeloVehiculo) {
-		manager.persist(modeloVehiculo);
-		
+
+	public ModeloVehiculoImplDAO() {
+		super(ModeloVehiculo.class);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -44,6 +41,12 @@ public class ModeloVehiculoImplDAO implements ModeloVehiculoIfaceDAO{
 		query.setParameter("idMarca", idMarca);
 		query.setParameter("idModelo", idModelo);
 		return query.getResultList();
+	}
+
+	@Override
+	protected EntityManager getEntityManager() {
+		// TODO Auto-generated method stub
+		return manager;
 	}
 
 }

@@ -1,34 +1,26 @@
 package co.com.patios.negocio.impl;
 
-import java.util.List;
-
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import co.com.patios.entity.Usuario;
 import co.com.patios.negocio.iface.IngresoIface;
+import co.com.patios.persistence.iface.UsuarioIfaceDAO;
 
 @Stateless
 public class IngresoImpl implements IngresoIface {
 
-	@PersistenceContext(unitName = "PatiosDS")
-	private EntityManager manager;
+	@EJB
+	UsuarioIfaceDAO usuaarioIfaceDAO;
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public boolean ValidarAutenticacion(String loginUsuario, String claveAcceso) {
-		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT u FROM Usuario AS u WHERE u.loginUsuario = :loginUsuario AND u.claveUsuario = :claveAcceso");
-		Query query = manager.createQuery(sql.toString());
-		query.setParameter("loginUsuario", loginUsuario);
-		query.setParameter("claveAcceso", claveAcceso);
-		List<Usuario> resultados = query.getResultList();
-		if (resultados.size() > 0) {
-			return true;
+	public boolean ValidarAutenticacion(String loginUsuario, String claveAcceso) throws Exception {
+		Usuario user = usuaarioIfaceDAO.buscarUsuario(loginUsuario, claveAcceso);
+		if (user == null) {
+			return false;
 		}
-		return false;
+
+		return true;
 	}
 
 }

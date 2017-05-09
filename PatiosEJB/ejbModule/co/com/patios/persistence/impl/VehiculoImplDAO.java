@@ -8,22 +8,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import co.com.patios.entity.Vehiculo;
+import co.com.patios.persistence.iface.AbstractFacadeEJB;
 import co.com.patios.persistence.iface.VehiculoIfaceDAO;
 
 @Stateless
-public class VehiculoImplDAO implements VehiculoIfaceDAO{
+public class VehiculoImplDAO extends AbstractFacadeEJB<Vehiculo> implements VehiculoIfaceDAO {
 
-	@PersistenceContext (name= "PatiosDS")
+	@PersistenceContext(name = "PatiosDS")
 	EntityManager manager;
 
-	@Override
-	public void insertVehiculo(Vehiculo vehiculo) {
-		manager.persist(vehiculo);
-	}
-	
-	@Override
-	public void editarRegistroVehiculo(Vehiculo vehiculo) {
-		manager.merge(vehiculo);
+	public VehiculoImplDAO() {
+		super(Vehiculo.class);
 	}
 
 	@Override
@@ -32,12 +27,7 @@ public class VehiculoImplDAO implements VehiculoIfaceDAO{
 		sql.append("SELECT u FROM Vehiculo AS u WHERE u.placaVehiculo = :placa");
 		Query query = manager.createQuery(sql.toString());
 		query.setParameter("placa", placa);
-		return (Vehiculo)query.getSingleResult();
-	}
-
-	@Override
-	public Vehiculo consultarVehiculo(int idVehiculo) {
-		return manager.find(Vehiculo.class, idVehiculo);
+		return (Vehiculo) query.getSingleResult();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -46,9 +36,10 @@ public class VehiculoImplDAO implements VehiculoIfaceDAO{
 		return manager.createNamedQuery("Vehiculo.findAll").getResultList();
 	}
 
-	
-	
-	
-	
-	
+	@Override
+	protected EntityManager getEntityManager() {
+		// TODO Auto-generated method stub
+		return manager;
+	}
+
 }

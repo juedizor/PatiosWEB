@@ -8,24 +8,18 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import co.com.patios.entity.EntradaVehiculoPatio;
+import co.com.patios.persistence.iface.AbstractFacadeEJB;
 import co.com.patios.persistence.iface.EntradaVehiculoPatioIfaceDAO;
 
 @Stateless
-public class EntradaVehiculoPatioImplDAO implements EntradaVehiculoPatioIfaceDAO{
-	
-	@PersistenceContext (unitName = "PatiosDS")
+public class EntradaVehiculoPatioImplDAO extends AbstractFacadeEJB<EntradaVehiculoPatio>
+		implements EntradaVehiculoPatioIfaceDAO {
+
+	@PersistenceContext(unitName = "PatiosDS")
 	EntityManager manager;
 
-	@Override
-	public void registrarEntrada(EntradaVehiculoPatio entradaVehiculoPatio) {
-		manager.persist(entradaVehiculoPatio);
-		
-	}
-
-	@Override
-	public void editarEntrada(EntradaVehiculoPatio entradaVehiculoPatio) {
-		manager.merge(entradaVehiculoPatio);
-		
+	public EntradaVehiculoPatioImplDAO() {
+		super(EntradaVehiculoPatio.class);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -35,18 +29,13 @@ public class EntradaVehiculoPatioImplDAO implements EntradaVehiculoPatioIfaceDAO
 	}
 
 	@Override
-	public EntradaVehiculoPatio consultarEntrada(EntradaVehiculoPatio entradaVehiculoPatio) {
-		return manager.find(EntradaVehiculoPatio.class, entradaVehiculoPatio.getIdEntradaVehiculoPatio());
-	}
-
-	@Override
 	public EntradaVehiculoPatio consultarEntrada(int idVehiculo, String estadoEntradaVehiculo) {
 		String jpql = "SELECT u FROM EntradaVehiculoPatio AS u WHERE u.vehiculo.idVehiculo = :idVehiculo "
 				+ "AND u.estadoEntradaVehiculo = :estadoEntradaVehiculo";
 		Query query = manager.createQuery(jpql);
 		query.setParameter("idVehiculo", idVehiculo);
 		query.setParameter("estadoEntradaVehiculo", estadoEntradaVehiculo);
-		return (EntradaVehiculoPatio)query.getSingleResult();
+		return (EntradaVehiculoPatio) query.getSingleResult();
 	}
 
 	@Override
@@ -57,7 +46,7 @@ public class EntradaVehiculoPatioImplDAO implements EntradaVehiculoPatioIfaceDAO
 		query.setParameter("idVehiculo", idVehiculo);
 		query.setParameter("estadoEntradaVehiculo", estadoEntradaVehiculo);
 		query.setParameter("idPatio", idPatio);
-		return (EntradaVehiculoPatio)query.getSingleResult();
+		return (EntradaVehiculoPatio) query.getSingleResult();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -78,7 +67,13 @@ public class EntradaVehiculoPatioImplDAO implements EntradaVehiculoPatioIfaceDAO
 		sql.append("SELECT u FROM EntradaVehiculoPatio AS u WHERE u.vehiculo.placaVehiculo = :placa");
 		Query query = manager.createQuery(sql.toString());
 		query.setParameter("placa", placa);
-		return (EntradaVehiculoPatio)query.getSingleResult();
+		return (EntradaVehiculoPatio) query.getSingleResult();
+	}
+
+	@Override
+	protected EntityManager getEntityManager() {
+		// TODO Auto-generated method stub
+		return manager;
 	}
 
 }

@@ -32,9 +32,4 @@ public class TipoIdentificacionImplDAO extends AbstractFacadeEJB<TipoIdentificac
 		return manager.createNamedQuery("TipoIdentificacion.findAll").getResultList();
 	}
 
-	@Override
-	public TipoIdentificacion consultarTipoIdentificacionPorId(int idTipoIdentificacion) {
-		return manager.find(TipoIdentificacion.class, idTipoIdentificacion);
-	}
-
 }

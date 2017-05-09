@@ -25,17 +25,6 @@
 
 		<p:growl id="msg" showDetail="true" life="1500" globalOnly="true" />
 
-
-
-		<!-- <p:dialog id="dlg" header="Edicion datos Vehículos" widgetVar="dialogoEdicion" modal="true"
-		showEffect="fade" hideEffect="fade" resizable="false">
-		 <p:outputPanel id="edicionCars">
-		 <ui:include src="" />
-		</p:outputPanel>
-	</p:dialog> -->
-
-
-
 		<p:dialog id="dlgMensaje" styleClass="dglStatus" modal="true"
 			widgetVar="statusDialog" header="Procesando..." draggable="false"
 			closable="false" resizable="false" appendToBody="true">
@@ -49,7 +38,7 @@
 			</p:layoutUnit>
 
 			<p:layoutUnit position="west" size="300" style="width:100%"
-				minSize="300" styleClass="westMenu">
+				minSize="300" styleClass="westMenu" collapsed="false" >
 				<ui:include src="../cerrarSesion.xhtml"></ui:include>
 				<p:separator />
 				<ui:include src="../menu.xhtml"></ui:include>

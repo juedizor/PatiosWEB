@@ -9,14 +9,19 @@ import javax.persistence.Query;
 
 import co.com.patios.entity.Departamento;
 import co.com.patios.entity.Pais;
+import co.com.patios.persistence.iface.AbstractFacadeEJB;
 import co.com.patios.persistence.iface.DepartamentoIfaceDAO;
 
 @Stateless
-public class DepartamentoImplDAO implements DepartamentoIfaceDAO{
+public class DepartamentoImplDAO extends AbstractFacadeEJB<Departamento> implements DepartamentoIfaceDAO {
 
-	@PersistenceContext (unitName = "PatiosDS")
+	@PersistenceContext(unitName = "PatiosDS")
 	EntityManager manager;
-	
+
+	public DepartamentoImplDAO() {
+		super(Departamento.class);
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Departamento> consultarDepartamentos() {
@@ -28,8 +33,14 @@ public class DepartamentoImplDAO implements DepartamentoIfaceDAO{
 	public List<Departamento> consultarDepartamentos(Pais pais) {
 		String jpql = "SELECT u FROM Departamento AS u WHERE u.pais.idPais = :idPais";
 		Query query = manager.createQuery(jpql);
-    	query.setParameter("idPais", pais.getIdPais());
+		query.setParameter("idPais", pais.getIdPais());
 		return query.getResultList();
+	}
+
+	@Override
+	protected EntityManager getEntityManager() {
+		// TODO Auto-generated method stub
+		return manager;
 	}
 
 }

@@ -9,14 +9,18 @@ import javax.persistence.Query;
 
 import co.com.patios.entity.Ciudad;
 import co.com.patios.entity.Departamento;
+import co.com.patios.persistence.iface.AbstractFacadeEJB;
 import co.com.patios.persistence.iface.CiudadIfaceDAO;
 
 @Stateless
-public class CiudadImplDAO implements CiudadIfaceDAO{
-	
-	
-	@PersistenceContext (unitName = "PatiosDS")
+public class CiudadImplDAO extends AbstractFacadeEJB<Ciudad> implements CiudadIfaceDAO {
+
+	@PersistenceContext(unitName = "PatiosDS")
 	EntityManager manager;
+
+	public CiudadImplDAO() {
+		super(Ciudad.class);
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -31,6 +35,11 @@ public class CiudadImplDAO implements CiudadIfaceDAO{
 		Query query = manager.createNamedQuery(jpql);
 		query.setParameter("idDepartamento", departamento.getIdDepartamento());
 		return query.getResultList();
+	}
+
+	@Override
+	protected EntityManager getEntityManager() {
+		return manager;
 	}
 
 }

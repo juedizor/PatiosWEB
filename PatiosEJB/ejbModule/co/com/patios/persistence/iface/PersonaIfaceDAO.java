@@ -3,19 +3,12 @@ package co.com.patios.persistence.iface;
 import java.math.BigDecimal;
 
 import javax.ejb.Local;
+import javax.persistence.PersistenceException;
 
 import co.com.patios.entity.Persona;
 
 @Local
-public interface PersonaIfaceDAO {
-
-	/**
-	 * realiza el insert de la persona
-	 * 
-	 * @param persona,
-	 *            objeto tipo persona con los datos del registro
-	 */
-	public void registrarPersona(Persona persona);
+public interface PersonaIfaceDAO extends PersistenceIface<Persona> {
 
 	/**
 	 * realiza la consulta de la persona teniendo en cuenta su numero de
@@ -24,6 +17,6 @@ public interface PersonaIfaceDAO {
 	 * @param numeroIdentificacion
 	 * @return
 	 */
-	public Persona consultarPersona(BigDecimal numeroIdentificacion);
+	public Persona consultarPersona(BigDecimal numeroIdentificacion) throws PersistenceException;
 
 }

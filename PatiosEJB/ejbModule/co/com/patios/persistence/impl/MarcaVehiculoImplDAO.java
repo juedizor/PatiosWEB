@@ -8,20 +8,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import co.com.patios.entity.MarcaVehiculo;
+import co.com.patios.persistence.iface.AbstractFacadeEJB;
 import co.com.patios.persistence.iface.MarcaVehiculoIfaceDAO;
 
 @Stateless
-public class MarcaVehiculoImplDAO implements MarcaVehiculoIfaceDAO{
+public class MarcaVehiculoImplDAO extends AbstractFacadeEJB<MarcaVehiculo> implements MarcaVehiculoIfaceDAO {
 
-	
-	@PersistenceContext (name = "PatiosDS")
+	@PersistenceContext(name = "PatiosDS")
 	EntityManager manager;
-	
-	
-	@Override
-	public void editarMarca(MarcaVehiculo marcaVehiculo) {
-		manager.merge(marcaVehiculo);
-		
+
+	public MarcaVehiculoImplDAO() {
+		super(MarcaVehiculo.class);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -38,6 +35,12 @@ public class MarcaVehiculoImplDAO implements MarcaVehiculoIfaceDAO{
 		Query query = manager.createQuery(sql.toString());
 		query.setParameter("idMarca", idMarca);
 		return query.getResultList();
+	}
+
+	@Override
+	protected EntityManager getEntityManager() {
+		// TODO Auto-generated method stub
+		return manager;
 	}
 
 }

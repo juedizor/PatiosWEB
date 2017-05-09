@@ -5,6 +5,6 @@ import javax.ejb.Local;
 @Local
 public interface IngresoIface {
 	
-	public boolean ValidarAutenticacion(String loginUsuario, String claveAcceso);
+	public boolean ValidarAutenticacion(String loginUsuario, String claveAcceso) throws Exception;
 
 }

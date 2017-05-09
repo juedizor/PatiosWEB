@@ -3,6 +3,7 @@ package co.com.patios.persistence.iface;
 import java.util.List;
 
 import javax.ejb.Local;
+import javax.persistence.PersistenceException;
 
 import co.com.patios.entity.ClaseVehiculo;
 
@@ -10,7 +11,7 @@ import co.com.patios.entity.ClaseVehiculo;
 public interface ClaseVehiculoIfaceDAO {
 
 	
-	public List<ClaseVehiculo> consultarClaseVehiculos();
+	public List<ClaseVehiculo> consultarClaseVehiculos() throws PersistenceException;
 	
 	
 }

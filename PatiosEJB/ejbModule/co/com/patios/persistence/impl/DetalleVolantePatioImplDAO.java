@@ -9,18 +9,18 @@ import javax.persistence.Query;
 
 import co.com.patios.entity.DetalleVolantePatio;
 import co.com.patios.entity.VolantePatio;
+import co.com.patios.persistence.iface.AbstractFacadeEJB;
 import co.com.patios.persistence.iface.DetalleVolantePatioIfaceDAO;
 
 @Stateless
-public class DetalleVolantePatioImplDAO implements DetalleVolantePatioIfaceDAO{
+public class DetalleVolantePatioImplDAO extends AbstractFacadeEJB<DetalleVolantePatio>
+		implements DetalleVolantePatioIfaceDAO {
 
-	
-	@PersistenceContext (unitName = "PatiosDS")
+	@PersistenceContext(unitName = "PatiosDS")
 	EntityManager manager;
-	
-	@Override
-	public void insertarDetalleVolantePatio(DetalleVolantePatio detalleVolantePatio) {
-		manager.persist(detalleVolantePatio);
+
+	public DetalleVolantePatioImplDAO() {
+		super(DetalleVolantePatio.class);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -30,6 +30,12 @@ public class DetalleVolantePatioImplDAO implements DetalleVolantePatioIfaceDAO{
 		Query query = manager.createQuery(jpql);
 		query.setParameter("idVolantePatio", volantePatio.getIdVolantePatio());
 		return query.getResultList();
+	}
+
+	@Override
+	protected EntityManager getEntityManager() {
+		// TODO Auto-generated method stub
+		return manager;
 	}
 
 }

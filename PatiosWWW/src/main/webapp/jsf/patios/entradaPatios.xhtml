@@ -17,6 +17,7 @@
 
 			<p:growl id="mensajes" showDetail="true" showSummary="true"
 				autoUpdate="true" globalOnly="true"></p:growl>
+				
 			<p:panel id="panelRegistro" styleClass="pnlForm"
 				header="Formulario Entrada a Patios">
 
@@ -469,7 +470,7 @@
 						<p:commandButton id="botonGuardar"
 							actionListener="#{entradaVehiculoPatioMB.registrarEntradaVehiculo()}"
 							value="#{labelGeneral.lab_button_save}" icon="btnImageGuardar"
-							update="formRegistroEntrada">
+							update="formRegistroEntrada" onclick="PF('statusDialog').show();" oncomplete="PF('statusDialog').hide();">
 							<p:tooltip for="botonGuardar" value="Guardar" showEffect="fade"
 								hideEffect="fade" />
 						</p:commandButton>
