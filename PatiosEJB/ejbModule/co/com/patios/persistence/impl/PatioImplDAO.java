@@ -46,13 +46,18 @@ public class PatioImplDAO extends AbstractFacadeEJB<Patio> implements PatioIface
 		return query.getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Patio consultarPatioPorCodigo(String codigoPatio) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT u FROM Patio AS u WHERE u.codigoPatio = :codigoPatio");
 		Query query = manager.createQuery(sql.toString());
 		query.setParameter("codigoPatio", codigoPatio);
-		return (Patio) query.getSingleResult();
+		List<Patio> listPatio = query.getResultList();
+		if(listPatio != null && !listPatio.isEmpty()){
+			return listPatio.get(0);
+		}
+		return null;
 	}
 
 	@Override

@@ -6,8 +6,9 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:form>
-	<p:panelMenu>
-		<p:submenu label="Administracion Patios">
+
+	<p:menubar model="#{menuMB.model}" />
+	<!--  <p:submenu label="Administracion Patios">
 			<p:menuitem id="entradaPatios" value="Entrada a patios"
 				action="/jsf/patios/entradaPatios.xhtml"
 				icon="ui-icon-guardar" />
@@ -27,8 +28,20 @@
 				action="/jsf/patios/listadoPatios.xhtml"
 				icon="ui-icon-listar" />
 		</p:submenu>
-		<p:separator />
-	</p:panelMenu>
+		
+		<p:submenu label="ADMIn">
+		
+		</p:submenu>
+		
+		<p:submenu label="Usuario">
+			<p:menuitem id="UserLogin" value="#{ingresoMB.loginUsuario}"
+				 icon="ui-icon-myUser" />
+			<p:menuitem id="cerrarSesion" value="CerrarSession" 
+				icon="ui-icon-cerrarSession" action="#{validarSessionMB.cerrarSession}"/>
+		</p:submenu>-->
+
+	<p:separator />
+	
 </h:form>
 
 </html>

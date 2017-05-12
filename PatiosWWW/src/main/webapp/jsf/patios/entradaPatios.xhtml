@@ -15,21 +15,18 @@
 		<!-- etiqueta form, la cual contiene todos el arbol de componentes que se usará para realizar el proceso de entrada a patios, estos son los enviados a un managed bean especifico para su debido tratamiento -->
 		<h:form id="formRegistroEntrada">
 
-			<!--  <p:growl id="mensajes" showDetail="true" showSummary="true"
-				autoUpdate="true" globalOnly="true"></p:growl>-->
-				
 			<p:panel id="panelRegistro" styleClass="pnlForm"
-				header="Formulario Entrada a Patios">
+				header="#{labelGeneral.name_form_entrada_patios}">
 
-				<!-- <f:event listener="#{usuarioMB.setIdComponent}" type="postValidate" /> -->
-
-				<!-- componente para agrupacion de cada unos de los componentes, se agrega un titulo en su borde para indicar relacion con lo que se digita -->
-				<p:fieldset legend="Datos Vehiculo" styleClass="fieForm">
+				<!-- componente para agrupacion de cada unos de los componentes, se 
+				agrega un titulo en su borde para indicar relacion con lo que se digita -->
+				<p:fieldset legend="#{labelGeneral.datos_vehiculo}"
+					styleClass="fieForm">
 
 					<!-- agrupa los componentes que se coloquen dentro del mismo a 4 columnas -->
 					<h:panelGrid id="ingresoPatios" columns="4"
 						styleClass="gridFormularios"
-						columnClasses="columnas1,columnas2,columnas1,columnas2">
+						columnClasses="columnas1, columnas2, columnas1, columnas2">
 
 						<h:panelGrid columns="2" styleClass="pnlLabObligatorio">
 							<div class="obligatorio" />
@@ -41,7 +38,8 @@
 							<p:selectOneMenu id="patio"
 								value="#{entradaVehiculoPatioMB.idPatio}" required="true"
 								requiredMessage="Requerido">
-								<f:selectItem itemLabel="Seleccione..." itemValue="" />
+								<f:selectItem itemLabel="#{labelGeneral.label_seleccione}"
+									itemValue="" />
 								<f:selectItems value="#{entradaVehiculoPatioMB.patios}"></f:selectItems>
 							</p:selectOneMenu>
 							<p:message for="patio" display="default" />
@@ -57,10 +55,7 @@
 								required="true" requiredMessage="Requerido">
 								<p:ajax event="blur"
 									listener="#{entradaVehiculoPatioMB.validarExistenciaVehiculo}"
-									update="placa numeroSerie numeroChasis 
-							numeroMotor estado organismo 
-							colorVehiculo marcaVehiculo claseVehiculo 
-							modeloVehiculo">
+									update="placa numeroSerie numeroChasis numeroMotor estado organismo colorVehiculo marcaVehiculo claseVehiculo modeloVehiculo">
 								</p:ajax>
 							</p:inputText>
 							<p:message for="placa" display="default" />
@@ -76,7 +71,8 @@
 								filterMatchMode="startsWith"
 								value="#{entradaVehiculoPatioMB.claseVehiculo}" required="true"
 								requiredMessage="Requerido">
-								<f:selectItem itemLabel="Seleccione..." itemValue="" />
+								<f:selectItem itemLabel="#{labelGeneral.label_seleccione}"
+									itemValue="" />
 								<f:selectItems value="#{entradaVehiculoPatioMB.clasesVehiculos}" />
 							</p:selectOneMenu>
 							<p:message for="claseVehiculo" display="default" />
@@ -109,7 +105,8 @@
 							<p:selectOneMenu id="modeloVehiculo"
 								value="#{entradaVehiculoPatioMB.modeloAuto}" required="true"
 								requiredMessage="Requerido">
-								<f:selectItem itemLabel="Seleccione..." itemValue="" />
+								<f:selectItem itemLabel="#{labelGeneral.label_seleccione}"
+									itemValue="" />
 								<f:selectItems value="#{entradaVehiculoPatioMB.modeloVehiculos}" />
 							</p:selectOneMenu>
 							<p:message for="modeloVehiculo" display="default" />
@@ -142,7 +139,8 @@
 						<h:panelGroup>
 							<p:selectOneMenu id="organismo"
 								value="#{entradaVehiculoPatioMB.idOrganismoTransito}">
-								<f:selectItem itemLabel="Seleccione..." itemValue="" />
+								<f:selectItem itemLabel="#{labelGeneral.label_seleccione}"
+									itemValue="" />
 								<f:selectItems
 									value="#{entradaVehiculoPatioMB.organismosTransito}"></f:selectItems>
 							</p:selectOneMenu>
@@ -158,7 +156,8 @@
 							<p:selectOneMenu id="estado"
 								value="#{entradaVehiculoPatioMB.estadoAuto}" required="true"
 								requiredMessage="Requerido">
-								<f:selectItem itemLabel="Seleccione..." itemValue="" />
+								<f:selectItem itemLabel="#{labelGeneral.label_seleccione}"
+									itemValue="" />
 								<f:selectItems
 									value="#{entradaVehiculoPatioMB.estadosVehiculos}"></f:selectItems>
 							</p:selectOneMenu>
@@ -214,7 +213,7 @@
 
 
 				<h:panelGrid columns="2">
-					<p:outputLabel value="Tiene Información de persona ?"></p:outputLabel>
+					<p:outputLabel value="#{labelGeneral.tiene_info_persona}"></p:outputLabel>
 					<p:selectOneRadio id="checkPersona"
 						value="#{entradaVehiculoPatioMB.tieneInfoPersona}">
 						<f:selectItem itemLabel="SI" itemValue="1" />
@@ -246,7 +245,8 @@
 									<p:ajax event="change"
 										listener="#{entradaVehiculoPatioMB.cambiarComponenteNombreComercial}"
 										update="registroUsuario"></p:ajax>
-									<f:selectItem itemLabel="Seleccione..." itemValue="" />
+									<f:selectItem itemLabel="#{labelGeneral.label_seleccione}"
+										itemValue="" />
 									<f:selectItems
 										value="#{entradaVehiculoPatioMB.tiposIdentificacion}"></f:selectItems>
 								</p:selectOneMenu>
@@ -371,7 +371,7 @@
 									<p:ajax event="change"
 										listener="#{entradaVehiculoPatioMB.llenarDepartamentos}"
 										update="departamento"></p:ajax>
-									<f:selectItem itemLabel="Seleccione..." itemValue="" />
+									<f:selectItem itemLabel="#{labelGeneral.label_seleccione}" itemValue="" />
 									<f:selectItems value="#{entradaVehiculoPatioMB.paises}"></f:selectItems>
 								</p:selectOneMenu>
 								<p:message for="pais" display="default" />
@@ -388,7 +388,7 @@
 									<p:ajax event="change"
 										listener="#{entradaVehiculoPatioMB.llenarCiudades}"
 										update="ciudad"></p:ajax>
-									<f:selectItem itemLabel="Seleccione..." itemValue="" />
+									<f:selectItem itemLabel="#{labelGeneral.label_seleccione}" itemValue="" />
 									<f:selectItems value="#{entradaVehiculoPatioMB.departamentos}"></f:selectItems>
 								</p:selectOneMenu>
 								<p:message for="departamento" display="default" />
@@ -403,7 +403,7 @@
 									value="#{entradaVehiculoPatioMB.idCiudad}" required="true"
 									requiredMessage="Requerido">
 									<p:ajax event="change"></p:ajax>
-									<f:selectItem itemLabel="Seleccione..." itemValue="" />
+									<f:selectItem itemLabel="#{labelGeneral.label_seleccione}" itemValue="" />
 									<f:selectItems value="#{entradaVehiculoPatioMB.ciudades}"></f:selectItems>
 								</p:selectOneMenu>
 								<p:message for="ciudad" display="default" />
@@ -470,7 +470,9 @@
 						<p:commandButton id="botonGuardar"
 							actionListener="#{entradaVehiculoPatioMB.registrarEntradaVehiculo()}"
 							value="#{labelGeneral.lab_button_save}" icon="btnImageGuardar"
-							update="formRegistroEntrada :msg" onclick="PF('statusDialog').show();" oncomplete="PF('statusDialog').hide();">
+							update="formRegistroEntrada :msg"
+							onclick="PF('statusDialog').show();"
+							oncomplete="PF('statusDialog').hide();">
 							<p:tooltip for="botonGuardar" value="Guardar" showEffect="fade"
 								hideEffect="fade" />
 						</p:commandButton>

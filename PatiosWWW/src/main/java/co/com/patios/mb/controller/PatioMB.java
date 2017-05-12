@@ -9,153 +9,157 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
-import javax.servlet.http.HttpServletRequest;
 
 import co.com.patios.ejb.controller.PatioEJB;
 import co.com.patios.ejb.controller.UsuarioEJB;
 import co.com.patios.ejb.controller.UtilidadesEJB;
 import co.com.patios.entity.Patio;
 import co.com.patios.entity.Usuario;
+import co.com.patios.mb.ingreso.SesionUsuario;
+import co.com.patios.mb.util.MensajesBundle;
 import co.com.patios.mb.util.MessagesEstaticos;
 import co.com.patios.mb.util.Utilidades;
+import co.com.patios.mb.util.Utils;
+import co.com.patios.negocio.iface.RegistrarPatiosIface;
 
-
-@ManagedBean (name="patioMB")
+@ManagedBean(name = "patioMB")
 @RequestScoped
 public class PatioMB {
-	
-	
+
+	/*
+	 * entity bean de patios
+	 */
 	private Patio patio;
-	private String placa_veh;
-	private java.util.Date fechaActualRegistro;
+	/*
+	 * Entity bean del usuario
+	 */
 	private Usuario usuario;
-	
+
+	private java.util.Date fechaActualRegistro;
+
 	private String codigoPatio;
 	private String nombrePatio;
 	private String direccionPatio;
 	private String telefonoPatio;
 	private String capacidadPatio;
-	
+
 	private UIComponent components;
-	
-	
-	// variables de captura de session
-	private HttpServletRequest httpServletRequestLogin;
-	private final FacesContext context;
-	
-	
+
 	@EJB
 	private PatioEJB patioEJB;
 	@EJB
 	private UtilidadesEJB utilidadesEJB;
 	@EJB
 	private UsuarioEJB usuarioEJB;
-	
-	
-	
+
+	@EJB
+	RegistrarPatiosIface registrarPatiosIface;
+
 	public PatioMB() {
 		patio = new Patio();
-		context = FacesContext.getCurrentInstance();
-		httpServletRequestLogin  = (HttpServletRequest) context.getExternalContext().getRequest();
-		
 	}
 
-
-	
-	/**
-	 * realiza la conversion de los campos de la pagina registrarPatio.xhmtl en mayuscula, una vez sean 
-	 * digitados los mismos
-	 */
-	public void convertMayuscula(){
-		if(nombrePatio!=null){
+	public void nombrePatioMayuscula() {
+		if (nombrePatio != null) {
 			nombrePatio = Utilidades.convertirMayusculas(nombrePatio);
 		}
-		
-		if(direccionPatio != null){
-			direccionPatio = Utilidades.convertirMayusculas(direccionPatio);;
+	}
+
+	public void direccionPatioMayuscula() {
+		if (direccionPatio != null) {
+			direccionPatio = Utilidades.convertirMayusculas(direccionPatio);
 		}
-		
+
 	}
-	
-	public void mayuscula(){
-		String textPlaca = this.getPlaca_veh();
-		this.setPlaca_veh(textPlaca.toUpperCase());
-	}
-	
-	
+
 	/**
 	 * realiza el insert de un patio al sistema
 	 */
-	public void insertPatio(){
-		//se captura la session del usuario
-		Usuario usuarioSession = (Usuario) httpServletRequestLogin.getSession().getAttribute("usuario");
-		patio = patioEJB.consultarPatioPorCodigo(codigoPatio);
+	public void insertPatio() {
+		/*
+		 * contexto de actual
+		 */
 		FacesContext context = FacesContext.getCurrentInstance();
+
+		/*
+		 * inicializacion para manejo de mensajes hacia la vista
+		 */
 		FacesMessage message = new FacesMessage();
-		if(patio == null){
-			patio = new Patio();
-			if(usuarioSession != null){
-				setDatosPatios();
-				fechaActualRegistro = utilidadesEJB.getFechaActual();
-				patio.setFechaRegistroPatio(fechaActualRegistro);
-				usuario = new Usuario();
-				usuario.setIdUsuario(usuarioEJB.buscarUsuario(usuarioSession.getLoginUsuario()).getIdUsuario());
-				patio.setUsuario(usuario);
-				patioEJB.registrarPatios(patio);
-				message.setSeverity(FacesMessage.SEVERITY_INFO);
-				message.setDetail(MessagesEstaticos.getRegistroExitoso());
-				message.setSummary(MessagesEstaticos.getCabeceraRegistroExitoso());
-				context.addMessage(null, message);
-				limpiar();
-			}else{
-				try {
-					context.getExternalContext().redirect("../index.xhtml");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+
+		/*
+		 * se captura la session del usuario
+		 */
+		Usuario usuarioSession = SesionUsuario.getInstance().getUsuarioSesion(context, "usuario");
+		if (usuarioSession == null) {
+			try {
+				context.getExternalContext().redirect("../index.xhtml");
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		}else{
-			message.setSeverity(FacesMessage.SEVERITY_WARN);
-			message.setDetail("Ya existe el patio:"+patio.getNombrePatio()+" con el codigo: "+codigoPatio);
-			message.setSummary(MessagesEstaticos.getMensajeCabeceraAlert());
-			context.addMessage(null, message);
+			return;
 		}
+
+		/*
+		 * captura de todos los datos asociados al formulario
+		 */
+		try {
+			usuario = new Usuario();
+			usuario.setIdUsuario(usuarioSession.getIdUsuario());
+			setDatosPatios();
+			patio = registrarPatiosIface.realizarRegistroPatio(patio);
+		} catch (Exception e) {
+			Utils.enviarMensajeVista(context, message, FacesMessage.SEVERITY_ERROR, null,
+					e.getMessage(), MensajesBundle.getInstance().getMap().get("cabecera_error"));
+			return;
+		}
+
+		if (patio != null) {
+			message.setSeverity(FacesMessage.SEVERITY_INFO);
+			message.setDetail(MessagesEstaticos.getRegistroExitoso());
+			message.setSummary(MessagesEstaticos.getCabeceraRegistroExitoso());
+			context.addMessage(null, message);
+			limpiar();
+		}
+
 	}
-	
-	
+
 	/**
-	 * evento que se activa al momento de realizar el envio del formulario y captura todos los componentes de una pagina, 
-	 * despues puedes ser usado para capturar el valor o el id del componente
+	 * evento que se activa al momento de realizar el envio del formulario y
+	 * captura todos los componentes de una pagina, despues puedes ser usado
+	 * para capturar el valor o el id del componente
+	 * 
 	 * @param event
 	 */
-	public void setIdComponent(ComponentSystemEvent event){
+	public void setIdComponent(ComponentSystemEvent event) {
 		setComponents(event.getComponent());
 	}
-	
+
 	/**
 	 * limpia los registros
 	 */
-	public void limpiar(){
+	public void limpiar() {
 		setCapacidadPatio("");
 		setCodigoPatio("");
 		setDireccionPatio("");
 		setNombrePatio("");
 		setTelefonoPatio("");
 	}
-	
+
 	/**
 	 * set de datos de los patios
 	 */
-	public void setDatosPatios(){
+	public void setDatosPatios() {
+		patio = new Patio();
+		patio.setUsuario(usuario);
+		fechaActualRegistro = utilidadesEJB.getFechaActual();
+		patio.setFechaRegistroPatio(fechaActualRegistro);
 		patio.setCapacidadPatio(Integer.parseInt(capacidadPatio));
 		patio.setCodigoPatio(codigoPatio);
 		patio.setDireccionPatio(direccionPatio);
 		patio.setNombrePatio(nombrePatio);
 		patio.setTelefonoPatio(telefonoPatio);
-		
+
 	}
-	
-	
 
 	/**
 	 * @return the patio
@@ -164,14 +168,13 @@ public class PatioMB {
 		return patio;
 	}
 
-
 	/**
-	 * @param patio the patio to set
+	 * @param patio
+	 *            the patio to set
 	 */
 	public void setPatio(Patio patio) {
 		this.patio = patio;
 	}
-
 
 	/**
 	 * @return the patioEJB
@@ -180,30 +183,13 @@ public class PatioMB {
 		return patioEJB;
 	}
 
-
 	/**
-	 * @param patioEJB the patioEJB to set
+	 * @param patioEJB
+	 *            the patioEJB to set
 	 */
 	public void setPatioEJB(PatioEJB patioEJB) {
 		this.patioEJB = patioEJB;
 	}
-
-
-	/**
-	 * @return the placa_veh
-	 */
-	public String getPlaca_veh() {
-		return placa_veh;
-	}
-
-
-	/**
-	 * @param placa_veh the placa_veh to set
-	 */
-	public void setPlaca_veh(String placa_veh) {
-		this.placa_veh = placa_veh;
-	}
-
 
 	/**
 	 * @return the utilidadesEJB
@@ -212,18 +198,13 @@ public class PatioMB {
 		return utilidadesEJB;
 	}
 
-
-
 	/**
-	 * @param utilidadesEJB the utilidadesEJB to set
+	 * @param utilidadesEJB
+	 *            the utilidadesEJB to set
 	 */
 	public void setUtilidadesEJB(UtilidadesEJB utilidadesEJB) {
 		this.utilidadesEJB = utilidadesEJB;
 	}
-
-
-
-
 
 	/**
 	 * @return the usuario
@@ -232,16 +213,13 @@ public class PatioMB {
 		return usuario;
 	}
 
-
-
 	/**
-	 * @param usuario the usuario to set
+	 * @param usuario
+	 *            the usuario to set
 	 */
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-
-
 
 	/**
 	 * @return the fechaActualRegistro
@@ -250,16 +228,13 @@ public class PatioMB {
 		return fechaActualRegistro;
 	}
 
-
-
 	/**
-	 * @param fechaActualRegistro the fechaActualRegistro to set
+	 * @param fechaActualRegistro
+	 *            the fechaActualRegistro to set
 	 */
 	public void setFechaActualRegistro(java.util.Date fechaActualRegistro) {
 		this.fechaActualRegistro = fechaActualRegistro;
 	}
-
-
 
 	/**
 	 * @return the usuarioEJB
@@ -268,16 +243,13 @@ public class PatioMB {
 		return usuarioEJB;
 	}
 
-
-
 	/**
-	 * @param usuarioEJB the usuarioEJB to set
+	 * @param usuarioEJB
+	 *            the usuarioEJB to set
 	 */
 	public void setUsuarioEJB(UsuarioEJB usuarioEJB) {
 		this.usuarioEJB = usuarioEJB;
 	}
-
-
 
 	/**
 	 * @return the codigoPatio
@@ -286,16 +258,13 @@ public class PatioMB {
 		return codigoPatio;
 	}
 
-
-
 	/**
-	 * @param codigoPatio the codigoPatio to set
+	 * @param codigoPatio
+	 *            the codigoPatio to set
 	 */
 	public void setCodigoPatio(String codigoPatio) {
 		this.codigoPatio = codigoPatio;
 	}
-
-
 
 	/**
 	 * @return the nombrePatio
@@ -304,16 +273,13 @@ public class PatioMB {
 		return nombrePatio;
 	}
 
-
-
 	/**
-	 * @param nombrePatio the nombrePatio to set
+	 * @param nombrePatio
+	 *            the nombrePatio to set
 	 */
 	public void setNombrePatio(String nombrePatio) {
 		this.nombrePatio = nombrePatio;
 	}
-
-
 
 	/**
 	 * @return the direccionPatio
@@ -322,16 +288,13 @@ public class PatioMB {
 		return direccionPatio;
 	}
 
-
-
 	/**
-	 * @param direccionPatio the direccionPatio to set
+	 * @param direccionPatio
+	 *            the direccionPatio to set
 	 */
 	public void setDireccionPatio(String direccionPatio) {
 		this.direccionPatio = direccionPatio;
 	}
-
-
 
 	/**
 	 * @return the telefonoPatio
@@ -340,16 +303,13 @@ public class PatioMB {
 		return telefonoPatio;
 	}
 
-
-
 	/**
-	 * @param telefonoPatio the telefonoPatio to set
+	 * @param telefonoPatio
+	 *            the telefonoPatio to set
 	 */
 	public void setTelefonoPatio(String telefonoPatio) {
 		this.telefonoPatio = telefonoPatio;
 	}
-
-
 
 	/**
 	 * @return the capacidadPatio
@@ -358,16 +318,13 @@ public class PatioMB {
 		return capacidadPatio;
 	}
 
-
-
 	/**
-	 * @param capacidadPatio the capacidadPatio to set
+	 * @param capacidadPatio
+	 *            the capacidadPatio to set
 	 */
 	public void setCapacidadPatio(String capacidadPatio) {
 		this.capacidadPatio = capacidadPatio;
 	}
-
-
 
 	/**
 	 * @return the components
@@ -376,17 +333,12 @@ public class PatioMB {
 		return components;
 	}
 
-
-
 	/**
-	 * @param components the components to set
+	 * @param components
+	 *            the components to set
 	 */
 	public void setComponents(UIComponent components) {
 		this.components = components;
 	}
-
-
-
-	
 
 }

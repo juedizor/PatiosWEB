@@ -4,7 +4,6 @@ package co.com.patios.mb.controller;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,17 +12,12 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.servlet.http.HttpServletRequest;
-
-
-
-
-
-
 
 import co.com.patios.ejb.controller.CiudadEJB;
 import co.com.patios.ejb.controller.ClaseVehiculoEJB;
@@ -59,18 +53,22 @@ import co.com.patios.entity.TipoIdentificacion;
 import co.com.patios.entity.Usuario;
 import co.com.patios.entity.UsuarioPatio;
 import co.com.patios.entity.Vehiculo;
+import co.com.patios.mb.catalogos.CatalogosImpl;
+import co.com.patios.mb.ingreso.SesionUsuario;
+import co.com.patios.mb.util.MensajesBundle;
 import co.com.patios.mb.util.MessagesEstaticos;
 import co.com.patios.mb.util.Utilidades;
 import co.com.patios.mb.util.Utils;
-import co.com.patios.negocio.iface.CatalogosIface;
+import co.com.patios.negocio.iface.EntradaVehiculoPatiosIface;
 
-
-
-@ManagedBean (name = "entradaVehiculoPatioMB")
+@ManagedBean(name = "entradaVehiculoPatioMB")
 @ViewScoped
 public class EntradaVehiculoPatioMB {
-	
-	// bean utilizados en em MB con el fin de realizar persistencia y consulta de datos
+
+	/*
+	 * bean utilizados en em MB con el fin de realizar persistencia y consulta
+	 * de datos
+	 */
 	private Vehiculo vehiculo;
 	private ModeloVehiculo modeloVehiculo;
 	private MarcaVehiculo marcaVehiculo;
@@ -87,9 +85,10 @@ public class EntradaVehiculoPatioMB {
 	private Persona persona;
 	private Ciudad ciudad;
 	private TelefonoPersona telPersona;
-	
-	
-	//datos para formulario de datos patio
+
+	/*
+	 * datos para formulario de datos patio
+	 */
 	private String placa;
 	private String idUsuario;
 	private String marca_vehiculo;
@@ -99,90 +98,88 @@ public class EntradaVehiculoPatioMB {
 	private String numeroChasisVehiculo;
 	private String numeroSerieVehiculo;
 	private boolean mostraFormularioEdicion;
-	
-	//datos para formulario de datos persona
+
+	/*
+	 * datos para formulario de datos persona
+	 */
 	private String numeroIdentificacionPersona;
 	private String primerNombrePersona;
 	private String segundoNombrePersona;
 	private String primerApellidoPersona;
 	private String segundoApellidoPersona;
 	private String nombreComercialPersona;
-	private String telefonoPersona;	
+	private String telefonoPersona;
 	private List<String> listTelefonoPersona;
 	private boolean mostrarTelefonos = false;
-	
-	
-	
+
 	private UIComponent components;
 
-	
 	// variable para renderizar el nombre comercial que caso q la seleccion
 	private boolean renderizaNameComercial;
-	
+
 	// variable para renderizar el nombre normal que caso q la seleccion
 	private boolean renderizaNameNormal = true;
-	
-	// variable para validar el check de información de persona 
+
+	// variable para validar el check de información de persona
 	private String tieneInfoPersona;
-	
+
 	// variable para mostrar o no el panel de persona
 	private boolean checkInfoPersona = false;
-	
-	//lista de los colores
+
+	// lista de los colores
 	private List<ColorVehiculo> listColorVehiculos;
-	
-	//maneja el onemenu de las marcas de vehiculos
+
+	// maneja el onemenu de las marcas de vehiculos
 	private String marcaAuto;
-	private Map<String,String> marcasVehiculos = new LinkedHashMap<String, String>();
-	
+	private Map<String, String> marcasVehiculos = new LinkedHashMap<String, String>();
+
 	// maneja el onemenu de los modelos de los vehiculos
 	private String modeloAuto;
 	private Map<String, String> modeloVehiculos = new LinkedHashMap<String, String>();
-	
+
 	// maneja el onemenu de los patios
 	private String idPatio;
 	private Map<String, String> patios = new LinkedHashMap<String, String>();
-	
-	//maneja el onemenu de los estados de vehiculos
+
+	// maneja el onemenu de los estados de vehiculos
 	private String estadoAuto;
 	private Map<String, String> estadosVehiculos = new LinkedHashMap<String, String>();
-	
-	//maneja el onemenu de las clases de vehiculos
+
+	// maneja el onemenu de las clases de vehiculos
 	private String claseVehiculo;
 	private Map<String, String> clasesVehiculos = new LinkedHashMap<String, String>();
-	
-	//maneja el onemenu de los colores de vehiculos
+
+	// maneja el onemenu de los colores de vehiculos
 	private String colorVehiculo;
 	private Map<String, String> colorVehiculos = new LinkedHashMap<String, String>();
-	
-	//maneja el onemenu de los organismos de transito
+
+	// maneja el onemenu de los organismos de transito
 	private String idOrganismoTransito;
 	private Map<String, String> organismosTransito = new LinkedHashMap<String, String>();
-	
-	//maneja el onemenu de los tipo de identificacion de transito
+
+	// maneja el onemenu de los tipo de identificacion de transito
 	private String idTipoIdentificacion;
 	private Map<String, String> tiposIdentificacion = new LinkedHashMap<String, String>();
 
-	//maneja el onemenu de los paises
+	// maneja el onemenu de los paises
 	private String idPais;
 	private Map<String, String> paises = new LinkedHashMap<String, String>();
-	
-	//maneja el onemenu de los departamentos
+
+	// maneja el onemenu de los departamentos
 	private String idDepartamento;
 	private Map<String, String> departamentos = new LinkedHashMap<String, String>();
-	
-	//maneja el onemenu de las ciudades
+
+	// maneja el onemenu de las ciudades
 	private String idCiudad;
 	private Map<String, String> ciudades = new LinkedHashMap<String, String>();
-	
+
 	// variables de captura de session
 	private HttpServletRequest httpServletRequestLogin;
 	private final FacesContext context;
-	
+
 	private static final String LIMPIAR_SELECT_ONE_MENU = "-1";
 	private static final int TIPO_IDENTI_NIT = 2;
 
-	
 	@EJB
 	VehiculoEJB vehiculoEJB;
 	@EJB
@@ -193,9 +190,9 @@ public class EntradaVehiculoPatioMB {
 	UsuarioEJB usuarioEJB;
 	@EJB
 	EntradaVehiculoPatioEJB entradaVehiculoPatioEJB;
-	@EJB 
+	@EJB
 	UtilidadesEJB utilidadesEJB;
-	@EJB 
+	@EJB
 	PatioEJB patioEJB;
 	@EJB
 	EstadoVehiculoEJB estadoVehiculoEJB;
@@ -205,7 +202,7 @@ public class EntradaVehiculoPatioMB {
 	ClaseVehiculoEJB claseVehiculoEJB;
 	@EJB
 	ColorVehiculoEJB colorVehiculoEJB;
-	@EJB 
+	@EJB
 	OrganismoTransitoEJB organismoTransitoEJB;
 	@EJB
 	TipoIdentificacionEJB tipoIdentificacionEJB;
@@ -217,15 +214,15 @@ public class EntradaVehiculoPatioMB {
 	CiudadEJB ciudadEJB;
 	@EJB
 	PersonaEJB personaEJB;
-	@EJB 
+	@EJB
 	TelefonoPersonaEJB telefonoPersonaEJB;
-	
-	
+
+	@ManagedProperty(value = "#{catalogosImplBean}")
+	CatalogosImpl catalogosImpl;
 	
 	@EJB
-	private CatalogosIface catalogosIface;
+	EntradaVehiculoPatiosIface entradaVehiculoPatioIface;
 
-	
 	public EntradaVehiculoPatioMB() {
 		persona = new Persona();
 		pais = new Pais();
@@ -234,7 +231,7 @@ public class EntradaVehiculoPatioMB {
 		organismoTransito = new OrganismoTransito();
 		claseVehiculos = new ClaseVehiculo();
 		vehiculo = new Vehiculo();
-		modeloVehiculo  = new ModeloVehiculo();
+		modeloVehiculo = new ModeloVehiculo();
 		marcaVehiculo = new MarcaVehiculo();
 		usuario = new Usuario();
 		entradaVehiculoPatio = new EntradaVehiculoPatio();
@@ -243,62 +240,62 @@ public class EntradaVehiculoPatioMB {
 		estadoVehiculo = new EstadoVehiculo();
 		usuarioPatio = new UsuarioPatio();
 		context = FacesContext.getCurrentInstance();
-		httpServletRequestLogin  = (HttpServletRequest) context.getExternalContext().getRequest();
+		httpServletRequestLogin = (HttpServletRequest) context.getExternalContext().getRequest();
 		listTelefonoPersona = new ArrayList<>();
 	}
-	
+
 	@PostConstruct
-	public void llenarCaracteristicasVehiculos(){ 
+	public void llenarCaracteristicasVehiculos() {
 		vehiculo = new Vehiculo();
-//		setMarcasVehiculos(catalogosIface.getMarcasVehiculos());
-//		setClasesVehiculos(catalogosIface.getClasesVehiculos());
-//		setEstadosVehiculos(catalogosIface.getEstadosVehiculos());
-//		setOrganismosTransito(catalogosIface.getOrganismosTransito());
-//		setTiposIdentificacion(catalogosIface.getTiposIdentificacion());
-//		setPaises(catalogosIface.getPaises());
-		
+		setMarcasVehiculos(catalogosImpl.getMarcasVehiculos());
+		setClasesVehiculos(catalogosImpl.getClasesVehiculos());
+		setEstadosVehiculos(catalogosImpl.getEstadosVehiculos());
+		setOrganismosTransito(catalogosImpl.getOrganismosTransito());
+		setTiposIdentificacion(catalogosImpl.getTiposIdentificacion());
+		setPaises(catalogosImpl.getPaises());
+
 		String valueMarca = Utils.getPrimerValorMap(getMarcasVehiculos());
-		if(!valueMarca.equals("")){
+		if (!valueMarca.equals("")) {
 			llenarModelos(Integer.parseInt(valueMarca));
 		}
-		
+
 		obtenerPatiosUsuario();
 	}
-	
-	
+
 	/**
 	 * obtiene los colores de los vehiculos
 	 */
-	public void obtenerColorVehiculos(){
+	public void obtenerColorVehiculos() {
 		listColorVehiculos = colorVehiculoEJB.consultarColoresVehiculos();
 		FacesContext context = FacesContext.getCurrentInstance();
 		FacesMessage message = new FacesMessage();
-		if(listColorVehiculos == null || listColorVehiculos.isEmpty()){
+		if (listColorVehiculos == null || listColorVehiculos.isEmpty()) {
 			message.setDetail("No existen Colores en el sistema, verifique !!!");
 			message.setSummary(MessagesEstaticos.getMensajeCabeceraAlert());
 			message.setSeverity(FacesMessage.SEVERITY_WARN);
 			context.addMessage(null, message);
 		}
 	}
-	
-	
+
 	/**
 	 * captura la seleccion sobre los colores de vehiculos
 	 */
-	public void selectionColor(){
+	public void selectionColor() {
 		colorVehiculos = new LinkedHashMap<String, String>();
-		if(coloresVehiculo != null){
-			colorVehiculos.put(coloresVehiculo.getDescripcionColorVehiculo().trim(), coloresVehiculo.getIdColorVehiculo().toString());
+		if (coloresVehiculo != null) {
+			colorVehiculos.put(coloresVehiculo.getDescripcionColorVehiculo().trim(),
+					coloresVehiculo.getIdColorVehiculo().toString());
 		}
 	}
-	
+
 	/**
-	 * activa el panel persona de aceurdo a la seleccion del usuario, en caso que si tenga la informacion del mismo
+	 * activa el panel persona de aceurdo a la seleccion del usuario, en caso
+	 * que si tenga la informacion del mismo
 	 */
-	public void activarPanelPersona(){
-		if(tieneInfoPersona.equals("1")){
+	public void activarPanelPersona() {
+		if (tieneInfoPersona.equals("1")) {
 			checkInfoPersona = true;
-		}else{
+		} else {
 			checkInfoPersona = false;
 			idTipoIdentificacion = LIMPIAR_SELECT_ONE_MENU;
 			idPais = LIMPIAR_SELECT_ONE_MENU;
@@ -306,89 +303,92 @@ public class EntradaVehiculoPatioMB {
 			idCiudad = LIMPIAR_SELECT_ONE_MENU;
 		}
 	}
-	
-	
+
 	/**
-	 * obtiene los patios asociados a un usuario, teniendo en cuenta si la fecha actual del sistema esta dentro
-	 * del rango establecido para el usuario
+	 * obtiene los patios asociados a un usuario, teniendo en cuenta si la fecha
+	 * actual del sistema esta dentro del rango establecido para el usuario
 	 */
-	public void obtenerPatiosUsuario(){
-		//se captura la session del usuario
+	public void obtenerPatiosUsuario() {
+		// se captura la session del usuario
 		Usuario usuarioSession = (Usuario) httpServletRequestLogin.getSession().getAttribute("usuario");
 		int idUsuario = usuarioEJB.buscarUsuario(usuarioSession.getLoginUsuario()).getIdUsuario();
-		//setPatios(catalogosIface.getPatiosUsuario(idUsuario, utilidadesEJB.getFechaActual()));
-		
-	}
-	
-	/**
-	 * llena los modelos de vehiculos segun la marca seleccionada
-	 * @param marcaVehiculo
-	 */
-	public void llenarModelos(int marcaVehiculo){
-		//setModeloVehiculos(catalogosIface.getModelosVehiculos(marcaVehiculo));
+		// setPatios(catalogosIface.getPatiosUsuario(idUsuario,
+		// utilidadesEJB.getFechaActual()));
+
 	}
 
-	
+	/**
+	 * llena los modelos de vehiculos segun la marca seleccionada
+	 * 
+	 * @param marcaVehiculo
+	 */
+	public void llenarModelos(int marcaVehiculo) {
+		// setModeloVehiculos(catalogosIface.getModelosVehiculos(marcaVehiculo));
+	}
+
 	/**
 	 * realiza el llenado de los departamentos del pais seleccionados
 	 */
-	public void llenarDepartamentos(){
+	public void llenarDepartamentos() {
 		setDepartamentos(departamentoEJB.consultarDepartamentos(Integer.parseInt(idPais)));
 	}
-	
+
 	/**
-	 * llena los modelos de vehiculos segun la marca seleccionada en la pagina entradaPatios.xhmtl
+	 * llena los modelos de vehiculos segun la marca seleccionada en la pagina
+	 * entradaPatios.xhmtl
 	 */
-	public void llenarModelos(){
+	public void llenarModelos() {
 		setModeloVehiculos(modeloVehiculoEJB.consultarModelosVehiculos(Integer.parseInt(marcaAuto)));
 	}
-	
+
 	/**
 	 * realiza el llenado de las ciudades asociados al departamento seleccionado
 	 */
-	public void llenarCiudades(){
+	public void llenarCiudades() {
 		setCiudades(ciudadEJB.consultarCiudades(Integer.parseInt(idDepartamento)));
 	}
-	
+
 	/**
-	 * valida la existencia de la persona en el sistema, si esta existe muestra los datos correspondientes
+	 * valida la existencia de la persona en el sistema, si esta existe muestra
+	 * los datos correspondientes
 	 */
-	public void validarExistenciaPersona(){
-		//aqui se captura el contexto actual
+	public void validarExistenciaPersona() {
+		// aqui se captura el contexto actual
 		FacesContext context = FacesContext.getCurrentInstance();
-		
+
 		// obtiene el contexto del app en la variable httpServletRequestLogin
-		httpServletRequestLogin  = (HttpServletRequest) context.getExternalContext().getRequest();
-				
-		//se captura la session del usuario
+		httpServletRequestLogin = (HttpServletRequest) context.getExternalContext().getRequest();
+
+		// se captura la session del usuario
 		Usuario usuarioSession = (Usuario) httpServletRequestLogin.getSession().getAttribute("usuario");
-				
+
 		persona = personaEJB.consultarPersona(new BigDecimal(numeroIdentificacionPersona));
 		usuario.setIdUsuario(usuarioEJB.buscarUsuario(usuarioSession.getLoginUsuario()).getIdUsuario());
-		if(checkInfoPersona){
+		if (checkInfoPersona) {
 			persona = personaEJB.consultarPersona(new BigDecimal(numeroIdentificacionPersona));
-			if(persona != null){
+			if (persona != null) {
 				numeroIdentificacionPersona = persona.getNumeroIdentificacion().toString();
 				idTipoIdentificacion = persona.getTipoIdentificacion().getIdTipoIdentificacion().toString();
-				List<TelefonoPersona> listTelefonoPersonas = telefonoPersonaEJB.consultarTelefonoPersona(persona.getIdPersona());
-				if(listTelefonoPersonas != null && !listTelefonoPersonas.isEmpty()){
+				List<TelefonoPersona> listTelefonoPersonas = telefonoPersonaEJB
+						.consultarTelefonoPersona(persona.getIdPersona());
+				if (listTelefonoPersonas != null && !listTelefonoPersonas.isEmpty()) {
 					listTelefonoPersona = new ArrayList<>();
 					mostrarTelefonos = true;
 					for (TelefonoPersona telefonoPersona : listTelefonoPersonas) {
 						listTelefonoPersona.add(telefonoPersona.getNumeroTelefonoPersona());
 					}
-				}else{
+				} else {
 					mostrarTelefonos = false;
 				}
-				
-				if (idTipoIdentificacion.equals(""+TIPO_IDENTI_NIT)){
+
+				if (idTipoIdentificacion.equals("" + TIPO_IDENTI_NIT)) {
 					nombreComercialPersona = persona.getNombreComercialPersona();
 					idPais = persona.getCiudad().getDepartamento().getPais().getIdPais().toString();
 					idDepartamento = persona.getCiudad().getDepartamento().getIdDepartamento().toString();
 					idCiudad = persona.getCiudad().getIdCiudad().toString();
 					renderizaNameNormal = false;
 					renderizaNameComercial = true;
-				}else{
+				} else {
 					primerNombrePersona = persona.getPrimerNombrePersona();
 					segundoNombrePersona = persona.getSegundoNombrePersona();
 					primerApellidoPersona = persona.getPrimerApellidoPersona();
@@ -400,8 +400,8 @@ public class EntradaVehiculoPatioMB {
 					idCiudad = persona.getCiudad().getIdCiudad().toString();
 					renderizaNameNormal = true;
 					renderizaNameComercial = false;
-				}				
-			}else{
+				}
+			} else {
 				mostrarTelefonos = false;
 				listTelefonoPersona = null;
 				nombreComercialPersona = LIMPIAR_SELECT_ONE_MENU;
@@ -412,112 +412,109 @@ public class EntradaVehiculoPatioMB {
 				segundoNombrePersona = "";
 				primerApellidoPersona = "";
 				segundoApellidoPersona = "";
-				
-				
+
 			}
-		
-			
+
 		}
 	}
-	
+
 	/**
-	 * valida la existencia del vehiculo, en caso de existir llena los campos correspondientes del 
-	 * formulario 
+	 * valida la existencia del vehiculo, en caso de existir llena los campos
+	 * correspondientes del formulario
 	 */
-	public void validarExistenciaVehiculo(){
+	public void validarExistenciaVehiculo() {
 		convertMayuscula();
 		// valida si existe el vehiculo
 		vehiculo = vehiculoEJB.consultarVehiculo(placa);
-		if(vehiculo != null){
+		if (vehiculo != null) {
 			colorVehiculos = new LinkedHashMap<String, String>();
-			marcaAuto = ""+vehiculo.getModeloVehiculo().getMarcaVehiculo().getIdMarcaVehiculo();
-			if(!marcaAuto.equals("")){
+			marcaAuto = "" + vehiculo.getModeloVehiculo().getMarcaVehiculo().getIdMarcaVehiculo();
+			if (!marcaAuto.equals("")) {
 				llenarModelos(Integer.parseInt(marcaAuto));
 			}
-			modeloAuto = ""+vehiculo.getModeloVehiculo().getIdModeloVehiculo();
-			claseVehiculo = ""+vehiculo.getClaseVehiculo().getIdClaseVehiculo();
-			colorVehiculo = ""+vehiculo.getColorVehiculo().getIdColorVehiculo();
-			idOrganismoTransito = ""+vehiculo.getOrganismoTransito().getIdOrganismoTransito();
-			estadoAuto = ""+vehiculo.getEstadoVehiculo().getIdEstadoVehiculo();
-			numeroMotorVehiculo = ""+vehiculo.getNumeroMotorVehiculo();
+			modeloAuto = "" + vehiculo.getModeloVehiculo().getIdModeloVehiculo();
+			claseVehiculo = "" + vehiculo.getClaseVehiculo().getIdClaseVehiculo();
+			colorVehiculo = "" + vehiculo.getColorVehiculo().getIdColorVehiculo();
+			idOrganismoTransito = "" + vehiculo.getOrganismoTransito().getIdOrganismoTransito();
+			estadoAuto = "" + vehiculo.getEstadoVehiculo().getIdEstadoVehiculo();
+			numeroMotorVehiculo = "" + vehiculo.getNumeroMotorVehiculo();
 			numeroChasisVehiculo = vehiculo.getNumeroChasisVehiculo();
-			numeroSerieVehiculo = ""+vehiculo.getNumeroSerieVehiculo();
-			colorVehiculos.put(vehiculo.getColorVehiculo().getDescripcionColorVehiculo().trim(), ""+vehiculo.getColorVehiculo().getIdColorVehiculo());
-		}else{
+			numeroSerieVehiculo = "" + vehiculo.getNumeroSerieVehiculo();
+			colorVehiculos.put(vehiculo.getColorVehiculo().getDescripcionColorVehiculo().trim(),
+					"" + vehiculo.getColorVehiculo().getIdColorVehiculo());
+		} else {
 			limpiarCampos(false);
 		}
-		
+
 	}
-	
+
 	/**
-	 * realiza la conversion de los campos de la pagina entradaPatios.xhmtl en mayuscula, una vez sean 
-	 * digitados los mismos
+	 * realiza la conversion de los campos de la pagina entradaPatios.xhmtl en
+	 * mayuscula, una vez sean digitados los mismos
 	 */
-	public void convertMayuscula(){
-		if(placa!=null){
+	public void convertMayuscula() {
+		if (placa != null) {
 			placa = Utilidades.convertirMayusculas(placa);
 		}
-		
-		if(this.numeroMotorVehiculo!=null){
+
+		if (this.numeroMotorVehiculo != null) {
 			numeroMotorVehiculo = Utilidades.convertirMayusculas(numeroMotorVehiculo);
 		}
-		
-		if(numeroChasisVehiculo!=null){
+
+		if (numeroChasisVehiculo != null) {
 			numeroChasisVehiculo = Utilidades.convertirMayusculas(numeroChasisVehiculo);
 		}
-		
-		if(numeroSerieVehiculo!=null){
+
+		if (numeroSerieVehiculo != null) {
 			numeroSerieVehiculo = Utilidades.convertirMayusculas(numeroSerieVehiculo);
 		}
-		
-		if(primerNombrePersona != null){
+
+		if (primerNombrePersona != null) {
 			primerNombrePersona = Utilidades.convertirMayusculas(primerNombrePersona);
 		}
-		
-		if(segundoNombrePersona != null){
+
+		if (segundoNombrePersona != null) {
 			segundoNombrePersona = Utilidades.convertirMayusculas(segundoNombrePersona);
 		}
-		
-		if(primerApellidoPersona != null){
+
+		if (primerApellidoPersona != null) {
 			primerApellidoPersona = Utilidades.convertirMayusculas(primerApellidoPersona);
 		}
-		
-		if(segundoApellidoPersona != null){
+
+		if (segundoApellidoPersona != null) {
 			segundoApellidoPersona = Utilidades.convertirMayusculas(segundoApellidoPersona);
 		}
-		
-		if(nombreComercialPersona != null){
+
+		if (nombreComercialPersona != null) {
 			nombreComercialPersona = Utilidades.convertirMayusculas(nombreComercialPersona);
 		}
 	}
-	
-	
+
 	/**
 	 * realiza la entrada de un vehiculo a un patio especifico
 	 */
-	public void registrarEntradaVehiculo(){
-		//aqui se captura el contexto actual
+	public void registrarEntradaVehiculo() {
+		/*
+		 * aqui se captura el contexto actual
+		 */
 		FacesContext context = FacesContext.getCurrentInstance();
-			
-		// variable para la visualizacion de mensajes en la pagina jsf
+
+		/*
+		 * variable para la visualizacion de mensajes en la pagina jsf
+		 */
 		FacesMessage message = new FacesMessage();
+
+		/*
+		 * se captura la session del usuario
+		 */
+		Usuario usuarioSession = SesionUsuario.getInstance().getUsuarioSesion(context, "usuario");
+
 		
-		// obtiene el contexto del app en la variable httpServletRequestLogin
-		httpServletRequestLogin  = (HttpServletRequest) context.getExternalContext().getRequest();
-		
-		//se captura la session del usuario
-		Usuario usuarioSession = (Usuario) httpServletRequestLogin.getSession().getAttribute("usuario");
-		
-		// input es una variable de tipo UIInput, la cual se utiliza con el fin de buscar un componente especifico dentro de la 
-		// pagina jsf
-		//UIInput input = (UIInput) getComponents().findComponent("mensajes");
-		// idMessage, variable de tipo String en donde con la variable input se captura el id del componente que se buscó
-		//String idMessage = input.getClientId();
-		
-		// valida si existe el vehiculo
-		vehiculo = vehiculoEJB.consultarVehiculo(placa);
-		
-		// valida la session de usuario en caso que no exista redirecciona a la pagina de inicio
+
+		/*
+		 * valida la session de usuario en caso que no exista redirecciona a la
+		 * pagina de inicio
+		 */
 		if (usuarioSession == null) {
 			try {
 				context.getExternalContext().redirect("../index.xhtml");
@@ -525,11 +522,18 @@ public class EntradaVehiculoPatioMB {
 				e.printStackTrace();
 			}
 		} else {
-			if(vehiculo != null){
+			
+			/*
+			 * valida si la placa tiene entrada 
+			 */
+			vehiculo = vehiculoEJB.consultarVehiculo(placa);
+			if (vehiculo != null) {
 				String mensaje = "";
-				EntradaVehiculoPatio entradaVehiculoPatio =  entradaVehiculoPatioEJB.consultarEntradaVehiculoPorIdVehiculo(vehiculo.getIdVehiculo(), "I");
-				if(entradaVehiculoPatio != null){
-					mensaje = String.format(MessagesEstaticos.getMensajeVehiculoEstaEnPatio(), placa, entradaVehiculoPatio.getPatio().getNombrePatio());
+				EntradaVehiculoPatio entradaVehiculoPatio = entradaVehiculoPatioEJB
+						.consultarEntradaVehiculoPorIdVehiculo(vehiculo.getIdVehiculo(), "I");
+				if (entradaVehiculoPatio != null) {
+					mensaje = String.format(MessagesEstaticos.getMensajeVehiculoEstaEnPatio(), placa,
+							entradaVehiculoPatio.getPatio().getNombrePatio());
 					message.setSeverity(FacesMessage.SEVERITY_WARN);
 					message.setSummary(MessagesEstaticos.getMensajeCabeceraAlert());
 					message.setDetail(mensaje);
@@ -538,22 +542,40 @@ public class EntradaVehiculoPatioMB {
 				}
 			}
 			
-			if(numeroIdentificacionPersona != null && !numeroIdentificacionPersona.trim().isEmpty()){
-				persona = personaEJB.consultarPersona(new BigDecimal(numeroIdentificacionPersona));
+			String msgExisteEntrada = "";
+			try {
+				msgExisteEntrada = entradaVehiculoPatioIface.validarEntradaVehiculo(placa);
+			}catch (Exception e){
+				Utils.enviarMensajeVista(context, message, FacesMessage.SEVERITY_ERROR, null,
+						MensajesBundle.getInstance().getMap().get("cabecera_error"),
+						MensajesBundle.getInstance().getMap().get("error_sistema"));
 			}
 			
-			if(persona == null){
+			if(!msgExisteEntrada.isEmpty()){
+				Utils.enviarMensajeVista(context, message, FacesMessage.SEVERITY_WARN, null,
+						MensajesBundle.getInstance().getMap().get("cabecera_warn"),
+						msgExisteEntrada);
+			}
+			
+			
+
+			if (numeroIdentificacionPersona != null && !numeroIdentificacionPersona.trim().isEmpty()) {
+				persona = personaEJB.consultarPersona(new BigDecimal(numeroIdentificacionPersona));
+			}
+
+			if (persona == null) {
 				persona = new Persona();
 				tipoIdentificacion = new TipoIdentificacion();
-				tipoIdentificacion = tipoIdentificacionEJB.consultarTipoIdentificacionPorId(Integer.parseInt(idTipoIdentificacion));
-				if(tipoIdentificacion != null){
-					if(tipoIdentificacion.getTipoIdentificacion() == 2){
+				tipoIdentificacion = tipoIdentificacionEJB
+						.consultarTipoIdentificacionPorId(Integer.parseInt(idTipoIdentificacion));
+				if (tipoIdentificacion != null) {
+					if (tipoIdentificacion.getTipoIdentificacion() == 2) {
 						persona.setPrimerNombrePersona("");
 						persona.setSegundoNombrePersona("");
 						persona.setPrimerApellidoPersona("");
 						persona.setSegundoApellidoPersona("");
 						persona.setNombreComercialPersona(nombreComercialPersona);
-					}else{
+					} else {
 						persona.setPrimerNombrePersona(primerNombrePersona);
 						persona.setSegundoNombrePersona(segundoNombrePersona);
 						persona.setPrimerApellidoPersona(primerApellidoPersona);
@@ -561,28 +583,26 @@ public class EntradaVehiculoPatioMB {
 						persona.setNombreComercialPersona("");
 					}
 				}
-				
+
 				persona.setTipoIdentificacion(tipoIdentificacion);
 				persona.setNumeroIdentificacion(new BigDecimal(numeroIdentificacionPersona));
-				
-				
-				
+
 				ciudad = new Ciudad();
 				ciudad.setIdCiudad(Integer.parseInt(idCiudad));
 				persona.setCiudad(ciudad);
-				
+
 				persona.setFechaProceso(utilidadesEJB.getFechaActual());
 				personaEJB.registrarPersona(persona);
-				if(listTelefonoPersona != null && !listTelefonoPersona.isEmpty()){
+				if (listTelefonoPersona != null && !listTelefonoPersona.isEmpty()) {
 					for (String telefono : listTelefonoPersona) {
 						setObjetoTelefonoPersona(telefono);
 						telefonoPersonaEJB.insertarTelefonoPersona(telPersona);
 					}
 				}
-			}else{
-				
+			} else {
+
 			}
-			
+
 			setObjetoVehiculo();
 			patio.setIdPatio(Integer.parseInt(idPatio));
 			fechaRegistroEntrada = utilidadesEJB.getFechaActual();
@@ -598,36 +618,41 @@ public class EntradaVehiculoPatioMB {
 			message.setSummary(MessagesEstaticos.getMensajeCabeceraExito());
 			context.addMessage(null, message);
 
-		}	
+		}
 	}
-	
+
 	/**
-	 * llena los datos del telefono de la persona 
+	 * llena los datos del telefono de la persona
+	 * 
 	 * @param telefono
 	 */
-	private void setObjetoTelefonoPersona(String telefono){
+	private void setObjetoTelefonoPersona(String telefono) {
 		telPersona = new TelefonoPersona();
 		telPersona.setFechaProceso(utilidadesEJB.getFechaActual());
 		telPersona.setUsuario(usuario);
 		telPersona.setPersona(persona);
 		telPersona.setNumeroTelefonoPersona(telefono);
 	}
-	
+
 	/**
-	 * evento que se activa al momento de realizar el envio del formulario y captura todos los componentes de una pagina, 
-	 * despues puedes ser usado para capturar el valor o el id del componente
+	 * evento que se activa al momento de realizar el envio del formulario y
+	 * captura todos los componentes de una pagina, despues puedes ser usado
+	 * para capturar el valor o el id del componente
+	 * 
 	 * @param event
 	 */
-	public void setIdComponent(ComponentSystemEvent event){
+	public void setIdComponent(ComponentSystemEvent event) {
 		setComponents(event.getComponent());
 	}
-	
+
 	/**
 	 * limpia los campos de la pagina jsf entradaPatios.xhtml
-	 * @param sw, en caso que se envie no limpia la placa
+	 * 
+	 * @param sw,
+	 *            en caso que se envie no limpia la placa
 	 */
-	private void limpiarCampos(boolean sw){
-		if(sw){
+	private void limpiarCampos(boolean sw) {
+		if (sw) {
 			setPlaca("");
 		}
 		setNumeroChasisVehiculo("");
@@ -637,30 +662,36 @@ public class EntradaVehiculoPatioMB {
 		idTipoIdentificacion = LIMPIAR_SELECT_ONE_MENU;
 		colorVehiculo = LIMPIAR_SELECT_ONE_MENU;
 		colorVehiculos = null;
-		claseVehiculo = LIMPIAR_SELECT_ONE_MENU;;
-		estadoAuto = LIMPIAR_SELECT_ONE_MENU;;
-		modeloAuto = LIMPIAR_SELECT_ONE_MENU;;
-		marcaAuto = LIMPIAR_SELECT_ONE_MENU;;
-		idTipoIdentificacion = LIMPIAR_SELECT_ONE_MENU;;
-		idPais = LIMPIAR_SELECT_ONE_MENU;;
-		idDepartamento = LIMPIAR_SELECT_ONE_MENU;;
-		idCiudad = LIMPIAR_SELECT_ONE_MENU;;
+		claseVehiculo = LIMPIAR_SELECT_ONE_MENU;
+		;
+		estadoAuto = LIMPIAR_SELECT_ONE_MENU;
+		;
+		modeloAuto = LIMPIAR_SELECT_ONE_MENU;
+		;
+		marcaAuto = LIMPIAR_SELECT_ONE_MENU;
+		;
+		idTipoIdentificacion = LIMPIAR_SELECT_ONE_MENU;
+		;
+		idPais = LIMPIAR_SELECT_ONE_MENU;
+		;
+		idDepartamento = LIMPIAR_SELECT_ONE_MENU;
+		;
+		idCiudad = LIMPIAR_SELECT_ONE_MENU;
+		;
 		numeroIdentificacionPersona = "";
 		primerNombrePersona = "";
 		primerApellidoPersona = "";
 		segundoApellidoPersona = "";
 		segundoNombrePersona = "";
 		nombreComercialPersona = "";
-		
-		
+
 	}
 
-	
 	/**
 	 * captura los datos del vehiculo que se esta ingresando a patios
 	 */
-	private void setObjetoVehiculo(){
-		
+	private void setObjetoVehiculo() {
+
 		if (vehiculo == null) {
 			vehiculo = new Vehiculo();
 			vehiculo.setUsuario(usuario);
@@ -669,7 +700,7 @@ public class EntradaVehiculoPatioMB {
 			estadoVehiculo.setIdEstadoVehiculo(Integer.parseInt(estadoAuto));
 			claseVehiculos.setIdClaseVehiculo(Integer.parseInt(claseVehiculo));
 			coloresVehiculo.setIdColorVehiculo(Integer.parseInt(colorVehiculo));
-			if(idOrganismoTransito != null){
+			if (idOrganismoTransito != null) {
 				organismoTransito.setIdOrganismoTransito(Integer.parseInt(idOrganismoTransito));
 				vehiculo.setOrganismoTransito(organismoTransito);
 			}
@@ -681,22 +712,22 @@ public class EntradaVehiculoPatioMB {
 			vehiculo.setNumeroMotorVehiculo(numeroMotorVehiculo);
 			vehiculo.setNumeroSerieVehiculo(numeroSerieVehiculo);
 			vehiculo.setFechaProceso(utilidadesEJB.getFechaActual());
-			if(persona != null){
-				if(persona.getIdPersona() != null){
+			if (persona != null) {
+				if (persona.getIdPersona() != null) {
 					vehiculo.setPersona(persona);
 				}
 			}
-			
+
 			vehiculoEJB.insertVehiculo(vehiculo);
-		}else{
+		} else {
 			vehiculo = vehiculoEJB.consultarVehiculo(placa);
-		}	
+		}
 	}
-	
+
 	/**
 	 * captura los datos de entrada del vehiculo
 	 */
-	private void setObjetoEntradaVehiculo(){
+	private void setObjetoEntradaVehiculo() {
 		entradaVehiculoPatio = new EntradaVehiculoPatio();
 		entradaVehiculoPatio.setUsuario(usuario);
 		entradaVehiculoPatio.setPatio(patio);
@@ -704,92 +735,99 @@ public class EntradaVehiculoPatioMB {
 		entradaVehiculoPatio.setEstadoEntradaVehiculo("I");
 		entradaVehiculoPatio.setVehiculo(vehiculo);
 	}
-	
+
 	/**
-	 * realiza la renderizacion de los componentes con relacion a nombres de la persona, 
-	 * ya sea segun el tipo identificacion NIT u otros
+	 * realiza la renderizacion de los componentes con relacion a nombres de la
+	 * persona, ya sea segun el tipo identificacion NIT u otros
 	 */
-	public void cambiarComponenteNombreComercial(){
-		if(idTipoIdentificacion != null){
-			tipoIdentificacion = tipoIdentificacionEJB.consultarTipoIdentificacionPorId(Integer.parseInt(idTipoIdentificacion));
-			if(tipoIdentificacion != null){
-				if(tipoIdentificacion.getTipoIdentificacion() == 2){ // valida con dos que es el tipo de documento comercial
+	public void cambiarComponenteNombreComercial() {
+		if (idTipoIdentificacion != null) {
+			tipoIdentificacion = tipoIdentificacionEJB
+					.consultarTipoIdentificacionPorId(Integer.parseInt(idTipoIdentificacion));
+			if (tipoIdentificacion != null) {
+				if (tipoIdentificacion.getTipoIdentificacion() == 2) { // valida
+																		// con
+																		// dos
+																		// que
+																		// es el
+																		// tipo
+																		// de
+																		// documento
+																		// comercial
 					renderizaNameComercial = true;
 					renderizaNameNormal = false;
-				}else{
+				} else {
 					renderizaNameComercial = false;
 					renderizaNameNormal = true;
 				}
 			}
 		}
 	}
-	
-	
+
 	/**
-	 * almacena temporalmente todos los telefonos de las personas que 
-	 * indique el funcionario encargado
+	 * almacena temporalmente todos los telefonos de las personas que indique el
+	 * funcionario encargado
 	 */
-	public void almacenarTelefonosPersona(){
+	public void almacenarTelefonosPersona() {
 		FacesMessage message = new FacesMessage();
 		FacesContext context = FacesContext.getCurrentInstance();
-		if(telefonoPersona != null){
-			if(telefonoPersona.equals("")){
+		if (telefonoPersona != null) {
+			if (telefonoPersona.equals("")) {
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				message.setDetail("Digite un número de telefono");
 				message.setSummary(MessagesEstaticos.getMensajeCabeceraAlert());
 				context.addMessage(null, message);
 				return;
 			}
-			
-			if(!Utilidades.validarNumerico(telefonoPersona)){
+
+			if (!Utilidades.validarNumerico(telefonoPersona)) {
 				message.setSeverity(FacesMessage.SEVERITY_WARN);
 				message.setDetail("Digite solo datos Númericos");
 				message.setSummary(MessagesEstaticos.getMensajeCabeceraAlert());
 				context.addMessage(null, message);
 				return;
 			}
-			
-			if(listTelefonoPersona != null && !listTelefonoPersona.isEmpty()){
+
+			if (listTelefonoPersona != null && !listTelefonoPersona.isEmpty()) {
 				for (String telefono : listTelefonoPersona) {
-					if(telefonoPersona.equals(telefono)){
+					if (telefonoPersona.equals(telefono)) {
 						message.setSeverity(FacesMessage.SEVERITY_WARN);
 						message.setDetail("El telefono ya ha sido digitado");
 						message.setSummary(MessagesEstaticos.getMensajeCabeceraAlert());
 						context.addMessage(null, message);
 						return;
-					}else{
+					} else {
 						listTelefonoPersona.add(telefonoPersona);
 						telefonoPersona = null;
 						mostrarTelefonos = true;
 						return;
-					}	
+					}
 				}
-			}else{
-				if(listTelefonoPersona != null){
+			} else {
+				if (listTelefonoPersona != null) {
 					listTelefonoPersona.add(telefonoPersona);
 					telefonoPersona = null;
 					mostrarTelefonos = true;
 				}
 			}
-			
-			
+
 		}
 	}
-	
-	
+
 	/**
-	 * realiza la eliminacion de telefono temporales agregados por un funcionario
+	 * realiza la eliminacion de telefono temporales agregados por un
+	 * funcionario
+	 * 
 	 * @param telefono
 	 */
-	public void eliminarTelefonoTemporal(String telefono){
+	public void eliminarTelefonoTemporal(String telefono) {
 		listTelefonoPersona.remove(telefono);
-		if(listTelefonoPersona!= null && listTelefonoPersona.isEmpty()){
+		if (listTelefonoPersona != null && listTelefonoPersona.isEmpty()) {
 			mostrarTelefonos = false;
 		}
-		
-		
+
 	}
-	
+
 	/**
 	 * @return the vehiculo
 	 */
@@ -797,14 +835,13 @@ public class EntradaVehiculoPatioMB {
 		return vehiculo;
 	}
 
-
 	/**
-	 * @param vehiculo the vehiculo to set
+	 * @param vehiculo
+	 *            the vehiculo to set
 	 */
 	public void setVehiculo(Vehiculo vehiculo) {
 		this.vehiculo = vehiculo;
 	}
-
 
 	/**
 	 * @return the vehiculoEJB
@@ -813,15 +850,13 @@ public class EntradaVehiculoPatioMB {
 		return vehiculoEJB;
 	}
 
-
 	/**
-	 * @param vehiculoEJB the vehiculoEJB to set
+	 * @param vehiculoEJB
+	 *            the vehiculoEJB to set
 	 */
 	public void setVehiculoEJB(VehiculoEJB vehiculoEJB) {
 		this.vehiculoEJB = vehiculoEJB;
 	}
-
-
 
 	/**
 	 * @return the placa
@@ -830,15 +865,13 @@ public class EntradaVehiculoPatioMB {
 		return placa;
 	}
 
-
-
 	/**
-	 * @param placa the placa to set
+	 * @param placa
+	 *            the placa to set
 	 */
 	public void setPlaca(String placa) {
 		this.placa = placa;
 	}
-
 
 	/**
 	 * @return the modeloVehiculo
@@ -847,15 +880,13 @@ public class EntradaVehiculoPatioMB {
 		return modeloVehiculo;
 	}
 
-
-
 	/**
-	 * @param modeloVehiculo the modeloVehiculo to set
+	 * @param modeloVehiculo
+	 *            the modeloVehiculo to set
 	 */
 	public void setModeloVehiculo(ModeloVehiculo modeloVehiculo) {
 		this.modeloVehiculo = modeloVehiculo;
 	}
-
 
 	/**
 	 * @return the usuario
@@ -864,16 +895,13 @@ public class EntradaVehiculoPatioMB {
 		return usuario;
 	}
 
-
-
 	/**
-	 * @param usuario the usuario to set
+	 * @param usuario
+	 *            the usuario to set
 	 */
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-
-
 
 	/**
 	 * @return the modeloVehiculoEJB
@@ -882,15 +910,13 @@ public class EntradaVehiculoPatioMB {
 		return modeloVehiculoEJB;
 	}
 
-
-
 	/**
-	 * @param modeloVehiculoEJB the modeloVehiculoEJB to set
+	 * @param modeloVehiculoEJB
+	 *            the modeloVehiculoEJB to set
 	 */
 	public void setModeloVehiculoEJB(ModeloVehiculoEJB modeloVehiculoEJB) {
 		this.modeloVehiculoEJB = modeloVehiculoEJB;
 	}
-
 
 	/**
 	 * @return the marcaVehiculo
@@ -899,10 +925,9 @@ public class EntradaVehiculoPatioMB {
 		return marcaVehiculo;
 	}
 
-
-
 	/**
-	 * @param marcaVehiculo the marcaVehiculo to set
+	 * @param marcaVehiculo
+	 *            the marcaVehiculo to set
 	 */
 	public void setMarcaVehiculo(MarcaVehiculo marcaVehiculo) {
 		this.marcaVehiculo = marcaVehiculo;
@@ -915,16 +940,13 @@ public class EntradaVehiculoPatioMB {
 		return marcaVehiculoEJB;
 	}
 
-
-
 	/**
-	 * @param marcaVehiculoEJB the marcaVehiculoEJB to set
+	 * @param marcaVehiculoEJB
+	 *            the marcaVehiculoEJB to set
 	 */
 	public void setMarcaVehiculoEJB(MarcaVehiculoEJB marcaVehiculoEJB) {
 		this.marcaVehiculoEJB = marcaVehiculoEJB;
 	}
-
-
 
 	/**
 	 * @return the usuarioEJB
@@ -933,16 +955,13 @@ public class EntradaVehiculoPatioMB {
 		return usuarioEJB;
 	}
 
-
-
 	/**
-	 * @param usuarioEJB the usuarioEJB to set
+	 * @param usuarioEJB
+	 *            the usuarioEJB to set
 	 */
 	public void setUsuarioEJB(UsuarioEJB usuarioEJB) {
 		this.usuarioEJB = usuarioEJB;
 	}
-
-
 
 	/**
 	 * @return the lisVehiculos
@@ -951,16 +970,13 @@ public class EntradaVehiculoPatioMB {
 		return lisVehiculos;
 	}
 
-
-
 	/**
-	 * @param lisVehiculos the lisVehiculos to set
+	 * @param lisVehiculos
+	 *            the lisVehiculos to set
 	 */
 	public void setLisVehiculos(List<Vehiculo> lisVehiculos) {
 		this.lisVehiculos = lisVehiculos;
 	}
-
-
 
 	/**
 	 * @return the marcasVehiculos
@@ -969,15 +985,13 @@ public class EntradaVehiculoPatioMB {
 		return marcasVehiculos;
 	}
 
-
-
 	/**
-	 * @param marcasVehiculos the marcasVehiculos to set
+	 * @param marcasVehiculos
+	 *            the marcasVehiculos to set
 	 */
 	public void setMarcasVehiculos(Map<String, String> marcasVehiculos) {
 		this.marcasVehiculos = marcasVehiculos;
 	}
-
 
 	/**
 	 * @return the entradaVehiculoPatio
@@ -986,14 +1000,13 @@ public class EntradaVehiculoPatioMB {
 		return entradaVehiculoPatio;
 	}
 
-
 	/**
-	 * @param entradaVehiculoPatio the entradaVehiculoPatio to set
+	 * @param entradaVehiculoPatio
+	 *            the entradaVehiculoPatio to set
 	 */
 	public void setEntradaVehiculoPatio(EntradaVehiculoPatio entradaVehiculoPatio) {
 		this.entradaVehiculoPatio = entradaVehiculoPatio;
 	}
-
 
 	/**
 	 * @return the entradaVehiculoPatioEJB
@@ -1002,15 +1015,13 @@ public class EntradaVehiculoPatioMB {
 		return entradaVehiculoPatioEJB;
 	}
 
-
 	/**
-	 * @param entradaVehiculoPatioEJB the entradaVehiculoPatioEJB to set
+	 * @param entradaVehiculoPatioEJB
+	 *            the entradaVehiculoPatioEJB to set
 	 */
-	public void setEntradaVehiculoPatioEJB(
-			EntradaVehiculoPatioEJB entradaVehiculoPatioEJB) {
+	public void setEntradaVehiculoPatioEJB(EntradaVehiculoPatioEJB entradaVehiculoPatioEJB) {
 		this.entradaVehiculoPatioEJB = entradaVehiculoPatioEJB;
 	}
-
 
 	/**
 	 * @return the utilidadesEJB
@@ -1019,14 +1030,13 @@ public class EntradaVehiculoPatioMB {
 		return utilidadesEJB;
 	}
 
-
 	/**
-	 * @param utilidadesEJB the utilidadesEJB to set
+	 * @param utilidadesEJB
+	 *            the utilidadesEJB to set
 	 */
 	public void setUtilidadesEJB(UtilidadesEJB utilidadesEJB) {
 		this.utilidadesEJB = utilidadesEJB;
 	}
-
 
 	/**
 	 * @return the id_patio
@@ -1035,14 +1045,13 @@ public class EntradaVehiculoPatioMB {
 		return idPatio;
 	}
 
-
 	/**
-	 * @param id_patio the id_patio to set
+	 * @param id_patio
+	 *            the id_patio to set
 	 */
 	public void setIdPatio(String idPatio) {
 		this.idPatio = idPatio;
 	}
-
 
 	/**
 	 * @return the patios
@@ -1051,14 +1060,13 @@ public class EntradaVehiculoPatioMB {
 		return patios;
 	}
 
-
 	/**
-	 * @param patios the patios to set
+	 * @param patios
+	 *            the patios to set
 	 */
 	public void setPatios(Map<String, String> patios) {
 		this.patios = patios;
 	}
-
 
 	/**
 	 * @return the idUsuario
@@ -1067,14 +1075,13 @@ public class EntradaVehiculoPatioMB {
 		return idUsuario;
 	}
 
-
 	/**
-	 * @param idUsuario the idUsuario to set
+	 * @param idUsuario
+	 *            the idUsuario to set
 	 */
 	public void setIdUsuario(String idUsuario) {
 		this.idUsuario = idUsuario;
 	}
-
 
 	/**
 	 * @return the numeroMotorVehiculo
@@ -1083,14 +1090,13 @@ public class EntradaVehiculoPatioMB {
 		return numeroMotorVehiculo;
 	}
 
-
 	/**
-	 * @param numeroMotorVehiculo the numeroMotorVehiculo to set
+	 * @param numeroMotorVehiculo
+	 *            the numeroMotorVehiculo to set
 	 */
 	public void setNumeroMotorVehiculo(String numeroMotorVehiculo) {
 		this.numeroMotorVehiculo = numeroMotorVehiculo;
 	}
-
 
 	/**
 	 * @return the numeroChasisVehiculo
@@ -1099,14 +1105,13 @@ public class EntradaVehiculoPatioMB {
 		return numeroChasisVehiculo;
 	}
 
-
 	/**
-	 * @param numeroChasisVehiculo the numeroChasisVehiculo to set
+	 * @param numeroChasisVehiculo
+	 *            the numeroChasisVehiculo to set
 	 */
 	public void setNumeroChasisVehiculo(String numeroChasisVehiculo) {
 		this.numeroChasisVehiculo = numeroChasisVehiculo;
 	}
-
 
 	/**
 	 * @return the numeroSerieVehiculo
@@ -1115,14 +1120,13 @@ public class EntradaVehiculoPatioMB {
 		return numeroSerieVehiculo;
 	}
 
-
 	/**
-	 * @param numeroSerieVehiculo the numeroSerieVehiculo to set
+	 * @param numeroSerieVehiculo
+	 *            the numeroSerieVehiculo to set
 	 */
 	public void setNumeroSerieVehiculo(String numeroSerieVehiculo) {
 		this.numeroSerieVehiculo = numeroSerieVehiculo;
 	}
-
 
 	/**
 	 * @return the mostraFormularioEdicion
@@ -1131,14 +1135,13 @@ public class EntradaVehiculoPatioMB {
 		return mostraFormularioEdicion;
 	}
 
-
 	/**
-	 * @param mostraFormularioEdicion the mostraFormularioEdicion to set
+	 * @param mostraFormularioEdicion
+	 *            the mostraFormularioEdicion to set
 	 */
 	public void setMostraFormularioEdicion(boolean mostraFormularioEdicion) {
 		this.mostraFormularioEdicion = mostraFormularioEdicion;
 	}
-
 
 	/**
 	 * @return the marca_vehiculo
@@ -1147,16 +1150,13 @@ public class EntradaVehiculoPatioMB {
 		return marca_vehiculo;
 	}
 
-
 	/**
-	 * @param marca_vehiculo the marca_vehiculo to set
+	 * @param marca_vehiculo
+	 *            the marca_vehiculo to set
 	 */
 	public void setMarca_vehiculo(String marca_vehiculo) {
 		this.marca_vehiculo = marca_vehiculo;
 	}
-
-
-
 
 	/**
 	 * @return the estadosVehiculos
@@ -1166,7 +1166,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param estadosVehiculos the estadosVehiculos to set
+	 * @param estadosVehiculos
+	 *            the estadosVehiculos to set
 	 */
 	public void setEstadosVehiculos(Map<String, String> estadosVehiculos) {
 		this.estadosVehiculos = estadosVehiculos;
@@ -1180,7 +1181,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param marcaAuto the marcaAuto to set
+	 * @param marcaAuto
+	 *            the marcaAuto to set
 	 */
 	public void setMarcaAuto(String marcaAuto) {
 		this.marcaAuto = marcaAuto;
@@ -1194,7 +1196,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param modeloAuto the modeloAuto to set
+	 * @param modeloAuto
+	 *            the modeloAuto to set
 	 */
 	public void setModeloAuto(String modeloAuto) {
 		this.modeloAuto = modeloAuto;
@@ -1208,7 +1211,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param modeloVehiculos the modeloVehiculos to set
+	 * @param modeloVehiculos
+	 *            the modeloVehiculos to set
 	 */
 	public void setModeloVehiculos(Map<String, String> modeloVehiculos) {
 		this.modeloVehiculos = modeloVehiculos;
@@ -1222,7 +1226,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param estadoAuto the estadoAuto to set
+	 * @param estadoAuto
+	 *            the estadoAuto to set
 	 */
 	public void setEstadoAuto(String estadoAuto) {
 		this.estadoAuto = estadoAuto;
@@ -1236,7 +1241,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param components the components to set
+	 * @param components
+	 *            the components to set
 	 */
 	public void setComponents(UIComponent components) {
 		this.components = components;
@@ -1250,7 +1256,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param usuarioPatio the usuarioPatio to set
+	 * @param usuarioPatio
+	 *            the usuarioPatio to set
 	 */
 	public void setUsuarioPatio(UsuarioPatio usuarioPatio) {
 		this.usuarioPatio = usuarioPatio;
@@ -1264,7 +1271,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param claseVehiculos the claseVehiculos to set
+	 * @param claseVehiculos
+	 *            the claseVehiculos to set
 	 */
 	public void setClaseVehiculo(String claseVehiculo) {
 		this.claseVehiculo = claseVehiculo;
@@ -1278,7 +1286,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param clasesVehiculos the clasesVehiculos to set
+	 * @param clasesVehiculos
+	 *            the clasesVehiculos to set
 	 */
 	public void setClasesVehiculos(Map<String, String> clasesVehiculos) {
 		this.clasesVehiculos = clasesVehiculos;
@@ -1292,7 +1301,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param colorVehiculo the colorVehiculo to set
+	 * @param colorVehiculo
+	 *            the colorVehiculo to set
 	 */
 	public void setColorVehiculo(String colorVehiculo) {
 		this.colorVehiculo = colorVehiculo;
@@ -1306,7 +1316,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param colorVehiculos the colorVehiculos to set
+	 * @param colorVehiculos
+	 *            the colorVehiculos to set
 	 */
 	public void setColorVehiculos(Map<String, String> colorVehiculos) {
 		this.colorVehiculos = colorVehiculos;
@@ -1320,7 +1331,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param listColorVehiculos the listColorVehiculos to set
+	 * @param listColorVehiculos
+	 *            the listColorVehiculos to set
 	 */
 	public void setListColorVehiculos(List<ColorVehiculo> listColorVehiculos) {
 		this.listColorVehiculos = listColorVehiculos;
@@ -1406,7 +1418,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param renderizaNameComercial the renderizaNameComercial to set
+	 * @param renderizaNameComercial
+	 *            the renderizaNameComercial to set
 	 */
 	public void setRenderizaNameComercial(boolean renderizaNameComercial) {
 		this.renderizaNameComercial = renderizaNameComercial;
@@ -1420,7 +1433,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param renderizaNameNormal the renderizaNameNormal to set
+	 * @param renderizaNameNormal
+	 *            the renderizaNameNormal to set
 	 */
 	public void setRenderizaNameNormal(boolean renderizaNameNormal) {
 		this.renderizaNameNormal = renderizaNameNormal;
@@ -1434,7 +1448,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param tipoIdentificacion the tipoIdentificacion to set
+	 * @param tipoIdentificacion
+	 *            the tipoIdentificacion to set
 	 */
 	public void setTipoIdentificacion(TipoIdentificacion tipoIdentificacion) {
 		this.tipoIdentificacion = tipoIdentificacion;
@@ -1448,7 +1463,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param idPais the idPais to set
+	 * @param idPais
+	 *            the idPais to set
 	 */
 	public void setIdPais(String idPais) {
 		this.idPais = idPais;
@@ -1462,7 +1478,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param paises the paises to set
+	 * @param paises
+	 *            the paises to set
 	 */
 	public void setPaises(Map<String, String> paises) {
 		this.paises = paises;
@@ -1476,7 +1493,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param idDepartamento the idDepartamento to set
+	 * @param idDepartamento
+	 *            the idDepartamento to set
 	 */
 	public void setIdDepartamento(String idDepartamento) {
 		this.idDepartamento = idDepartamento;
@@ -1490,7 +1508,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param departamentos the departamentos to set
+	 * @param departamentos
+	 *            the departamentos to set
 	 */
 	public void setDepartamentos(Map<String, String> departamentos) {
 		this.departamentos = departamentos;
@@ -1504,7 +1523,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param idCiudad the idCiudad to set
+	 * @param idCiudad
+	 *            the idCiudad to set
 	 */
 	public void setIdCiudad(String idCiudad) {
 		this.idCiudad = idCiudad;
@@ -1518,7 +1538,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param ciudades the ciudades to set
+	 * @param ciudades
+	 *            the ciudades to set
 	 */
 	public void setCiudades(Map<String, String> ciudades) {
 		this.ciudades = ciudades;
@@ -1532,7 +1553,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param pais the pais to set
+	 * @param pais
+	 *            the pais to set
 	 */
 	public void setPais(Pais pais) {
 		this.pais = pais;
@@ -1546,7 +1568,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param persona the persona to set
+	 * @param persona
+	 *            the persona to set
 	 */
 	public void setPersona(Persona persona) {
 		this.persona = persona;
@@ -1560,7 +1583,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param numeroIdentificacionPersona the numeroIdentificacionPersona to set
+	 * @param numeroIdentificacionPersona
+	 *            the numeroIdentificacionPersona to set
 	 */
 	public void setNumeroIdentificacionPersona(String numeroIdentificacionPersona) {
 		this.numeroIdentificacionPersona = numeroIdentificacionPersona;
@@ -1574,7 +1598,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param primerNombrePersona the primerNombrePersona to set
+	 * @param primerNombrePersona
+	 *            the primerNombrePersona to set
 	 */
 	public void setPrimerNombrePersona(String primerNombrePersona) {
 		this.primerNombrePersona = primerNombrePersona;
@@ -1588,7 +1613,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param segundoNombrePersona the segundoNombrePersona to set
+	 * @param segundoNombrePersona
+	 *            the segundoNombrePersona to set
 	 */
 	public void setSegundoNombrePersona(String segundoNombrePersona) {
 		this.segundoNombrePersona = segundoNombrePersona;
@@ -1602,7 +1628,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param primerApellidoPersona the primerApellidoPersona to set
+	 * @param primerApellidoPersona
+	 *            the primerApellidoPersona to set
 	 */
 	public void setPrimerApellidoPersona(String primerApellidoPersona) {
 		this.primerApellidoPersona = primerApellidoPersona;
@@ -1616,7 +1643,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param segundoApellidoPersona the segundoApellidoPersona to set
+	 * @param segundoApellidoPersona
+	 *            the segundoApellidoPersona to set
 	 */
 	public void setSegundoApellidoPersona(String segundoApellidoPersona) {
 		this.segundoApellidoPersona = segundoApellidoPersona;
@@ -1630,7 +1658,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param ciudad the ciudad to set
+	 * @param ciudad
+	 *            the ciudad to set
 	 */
 	public void setCiudad(Ciudad ciudad) {
 		this.ciudad = ciudad;
@@ -1644,7 +1673,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param nombreComercialPersona the nombreComercialPersona to set
+	 * @param nombreComercialPersona
+	 *            the nombreComercialPersona to set
 	 */
 	public void setNombreComercialPersona(String nombreComercialPersona) {
 		this.nombreComercialPersona = nombreComercialPersona;
@@ -1658,7 +1688,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param listTelefonoPersona the listTelefonoPersona to set
+	 * @param listTelefonoPersona
+	 *            the listTelefonoPersona to set
 	 */
 	public void setListTelefonoPersona(List<String> listTelefonoPersona) {
 		this.listTelefonoPersona = listTelefonoPersona;
@@ -1672,7 +1703,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param telefonoPersona the telefonoPersona to set
+	 * @param telefonoPersona
+	 *            the telefonoPersona to set
 	 */
 	public void setTelefonoPersona(String telefonoPersona) {
 		this.telefonoPersona = telefonoPersona;
@@ -1686,7 +1718,8 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param mostrarTelefonos the mostrarTelefonos to set
+	 * @param mostrarTelefonos
+	 *            the mostrarTelefonos to set
 	 */
 	public void setMostrarTelefonos(boolean mostrarTelefonos) {
 		this.mostrarTelefonos = mostrarTelefonos;
@@ -1700,11 +1733,19 @@ public class EntradaVehiculoPatioMB {
 	}
 
 	/**
-	 * @param telPersona the telPersona to set
+	 * @param telPersona
+	 *            the telPersona to set
 	 */
 	public void setTelPersona(TelefonoPersona telPersona) {
 		this.telPersona = telPersona;
 	}
 
+	public CatalogosImpl getCatalogosImpl() {
+		return catalogosImpl;
+	}
+
+	public void setCatalogosImpl(CatalogosImpl catalogosImpl) {
+		this.catalogosImpl = catalogosImpl;
+	}
 
 }

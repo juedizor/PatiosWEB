@@ -12,8 +12,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.servlet.http.HttpServletRequest;
 
-import co.com.patios.appmain.InitParams;
 import co.com.patios.entity.Usuario;
+import co.com.patios.mb.util.MensajesBundle;
 import co.com.patios.mb.util.Utils;
 import co.com.patios.negocio.iface.IngresoIface;
 
@@ -28,21 +28,40 @@ import co.com.patios.negocio.iface.IngresoIface;
 @SessionScoped
 public class IngresoMB {
 
+	/*
+	 * Entity bean correspondiente al usuario
+	 */
 	private Usuario usuario;
+
 	private String loginUsuario;
 	private String password;
 
-	// variable para manejar los componentes de la vista que maneja el managed
-	// bean
+	/*
+	 * variable para manejar los componentes de la vista que maneja el
+	 * managedbean
+	 */
 	private UIComponent components;
-	// variable que crea la session de usuario, este lo crea con los datos de el
-	// bean usuario
+
+	/*
+	 * variable que crea la session de usuario, este lo crea con los datos de el
+	 * bean usuario
+	 */
 	private HttpServletRequest httpServletRequest;
 
-	public IngresoMB() {
+	/*
+	 * constructor del MB
+	 */
+	public IngresoMB() throws Exception {
+		/*
+		 * se inicializa el entity bean
+		 */
 		usuario = new Usuario();
+		MensajesBundle.getInstance().getEtiquetas(MensajesBundle.msg);
 	}
 
+	/*
+	 * EJB logica de negocio para el inicio y validacion del usuario
+	 */
 	@EJB
 	IngresoIface ingresoIface;
 
@@ -50,46 +69,76 @@ public class IngresoMB {
 	 * verifica el inicio de sesion de un usuario en el sistema
 	 */
 	public void verificarInicio() {
-		usuario.setLoginUsuario(loginUsuario);
-		usuario.setClaveUsuario(password);
-		// captura el contexto del bean que se ejecuta, en este caso el bean
-		// IngresoMB.
+		/*
+		 * captura el contexto del bean que se ejecuta, en este caso el bean
+		 * IngresoMB.
+		 */
 		FacesContext context = FacesContext.getCurrentInstance();
-		// inicializa el contexto de los mensajes
+
+		/*
+		 * inicializa el contexto de los mensajes
+		 */
 		FacesMessage message = new FacesMessage();
-		// input es una variable de tipo UIInput, la cual se utiliza con el fin
-		// de buscar un componente especifico dentro de la
-		// pagina jsf o xhtml
+
+		/*
+		 * input es una variable de tipo UIInput, la cual se utiliza con el fin
+		 * de buscar un componente especifico dentro de la pagina jsf o xhtml
+		 */
 		UIInput input = (UIInput) getComponents().findComponent("mensajes");
-		// idMessage, variable de tipo String en donde con la variable input se
-		// captura el id del componente que se buscó
+
+		/*
+		 * idMessage, variable de tipo String en donde con la variable input se
+		 * captura el id del componente que se buscó
+		 */
 		String idMessage = input.getClientId();
 
-		// valida que el usuario exista en el sistema, a traves del nombre de
-		// usuario y password
-		boolean existe = false;
+		/*
+		 * valida que el usuario exista en el sistema, a traves del nombre de
+		 * usuario y password
+		 */
 		try {
-			existe = ingresoIface.ValidarAutenticacion(this.usuario.getLoginUsuario(), this.usuario.getClaveUsuario());
+			usuario = ingresoIface.ValidarAutenticacion(loginUsuario, password);
 		} catch (Exception e) {
 			Utils.enviarMensajeVista(context, message, FacesMessage.SEVERITY_ERROR, idMessage,
-					InitParams.MENSAJES_BUNDLE.CABECERA_ERROR, InitParams.MENSAJES_BUNDLE.ERROR_SISTEMA);
+					MensajesBundle.getInstance().getMap().get("cabecera_error"),
+					MensajesBundle.getInstance().getMap().get("error_sistema"));
 		}
 
-		// valida que el usuario exista en el sistema
-		if (existe) {
+		if (usuario != null) {
 			try {
+				/*
+				 * usa el contexto actual y direcciona a la pagina (ruta
+				 * correspondiente)
+				 */
 				context.getExternalContext().redirect("principal.xhtml");
 			} catch (IOException e) {
+				/*
+				 * en caso de ocurrir error envia el mensaje a la vista actual
+				 */
 				Utils.enviarMensajeVista(context, message, FacesMessage.SEVERITY_ERROR, idMessage,
-						InitParams.MENSAJES_BUNDLE.CABECERA_ERROR, InitParams.MENSAJES_BUNDLE.ERROR_SISTEMA);
+						MensajesBundle.getInstance().getMap().get("cabecera_error"),
+						MensajesBundle.getInstance().getMap().get("error_sistema"));
 			}
+
+			/*
+			 * usa la variable para mantener la sesion con los datos del entity
+			 * usuario
+			 */
 			httpServletRequest = (HttpServletRequest) context.getExternalContext().getRequest();
+			usuario.setClaveUsuario("");
 			httpServletRequest.getSession().setAttribute("usuario", usuario);
 		} else {
+			/*
+			 * si el usuario no existe limpia los campoos de la vista
+			 */
 			this.setLoginUsuario("");
 			this.setPassword("");
+			/*
+			 * envia mensaje a la vista actual
+			 */
 			Utils.enviarMensajeVista(context, message, FacesMessage.SEVERITY_ERROR, idMessage,
-					InitParams.MENSAJES_BUNDLE.CABECERA_ERROR, InitParams.MENSAJES_BUNDLE.CREDENCIALES_ERRONEAS);
+					MensajesBundle.getInstance().getMap().get("cabecera_error"),
+					MensajesBundle.getInstance().getMap().get("credenciales_erroneas"));
 		}
 	}
 

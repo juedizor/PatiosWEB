@@ -34,17 +34,12 @@
 		<p:layout style="height:100% !important;">
 
 			<p:layoutUnit position="north" style="width:100% !important;">
-				<ui:include src="" />
+				
 			</p:layoutUnit>
 
-			<p:layoutUnit position="west" size="300" style="width:100%"
-				minSize="300" styleClass="westMenu" collapsed="false" >
-				<ui:include src="../cerrarSesion.xhtml"></ui:include>
-				<p:separator />
-				<ui:include src="../menu.xhtml"></ui:include>
-			</p:layoutUnit>
 
 			<p:layoutUnit position="center" style="width:100% !important;">
+				<ui:include src="../menu.xhtml"></ui:include>
 				<ui:insert name="contenido" />
 			</p:layoutUnit>
 

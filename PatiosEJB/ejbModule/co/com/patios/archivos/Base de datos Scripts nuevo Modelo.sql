@@ -214,6 +214,49 @@ CREATE TABLE usuario (
 )
 ;
 
+CREATE TABLE tipo_menu(
+	id_tipo_menu INTEGER NOT NULL, 
+	tipo VARCHAR NOT NULL
+);
+
+ALTER TABLE tipo_menu ADD CONSTRAINT PK_tipo_menu
+	PRIMARY KEY (id_tipo_menu)
+;
+
+CREATE TABLE menu (
+	id_menu INTEGER NOT NULL, 
+	nombre_menu VARCHAR NOT NULL, 
+	id_tipo_menu INTEGER NOT NULL, 
+
+);
+
+ALTER TABLE menu ADD CONSTRAINT PK_menu
+	PRIMARY KEY (id_menu)
+;
+
+ALTER TABLE menu ADD CONSTRAINT FK_menu_tipo_menu
+	FOREIGN KEY (id_tipo_menu) REFERENCES tipo_menu (id_tipo_menu)
+;
+
+CREATE TABLE menu_item (
+	id_menu_item INTEGER NOT NULL, 
+	id_menu_principal INTEGER NO NULL, 
+	id_menu_secundario INTEGER NOT NULL 
+	
+);
+
+ALTER TABLE menu_item ADD CONSTRAINT PK_menu_item
+	PRIMARY KEY (id_menu_item)
+;
+
+ALTER TABLE menu_item ADD CONSTRAINT FK_menu_item_menu_01
+	FOREIGN KEY (id_menu_principal) REFERENCES menu (id_menu)
+;
+
+ALTER TABLE menu_item ADD CONSTRAINT FK_menu_item_menu_02
+	FOREIGN KEY (id_menu_secundario) REFERENCES menu (id_menu)
+;
+
 CREATE TABLE tipo_identificacion ( 
 	id_tipo_identificacion serial NOT NULL,
 	tipo_identificacion integer NOT NULL,

@@ -28,6 +28,9 @@
 	<class>co.com.patios.entity.ValorPatio</class>
 	<class>co.com.patios.entity.Vehiculo</class>
 	<class>co.com.patios.entity.VolantePatio</class>
+	<class>co.com.patios.entity.Menu</class>
+	<class>co.com.patios.entity.MenuItem</class>
+	<class>co.com.patios.entity.TipoMenu</class>
 		<properties>
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.default_schema" value="public" />

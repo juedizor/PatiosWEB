@@ -14,13 +14,9 @@ public class IngresoImpl implements IngresoIface {
 	UsuarioIfaceDAO usuaarioIfaceDAO;
 
 	@Override
-	public boolean ValidarAutenticacion(String loginUsuario, String claveAcceso) throws Exception {
+	public Usuario ValidarAutenticacion(String loginUsuario, String claveAcceso) throws Exception {
 		Usuario user = usuaarioIfaceDAO.buscarUsuario(loginUsuario, claveAcceso);
-		if (user == null) {
-			return false;
-		}
-
-		return true;
+		return user;
 	}
 
 }
