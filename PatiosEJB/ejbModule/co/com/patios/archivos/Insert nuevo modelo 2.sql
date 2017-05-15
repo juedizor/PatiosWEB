@@ -1,4 +1,4 @@
-﻿INSERT INTO pais(codigo_pais, descripcion_pais)
+INSERT INTO pais(codigo_pais, descripcion_pais)
     VALUES (90, 'Colombia');
 
 INSERT INTO departamento(id_pais, codigo_departamento, 
@@ -52,5 +52,50 @@ INSERT INTO usuario(id_persona, login_usuario, clave_usuario, estado_usuario)
 
 
 
+INSERT INTO tipo_menu
+values (1, 'P');
+INSERT INTO tipo_menu
+values (2, 'S');
+INSERT INTO tipo_menu
+values (3, 'I');
 
-  
+
+INSERT INTO menu 
+values (1, 'GESTIONAR PATIOS', 1,  '');
+
+INSERT INTO menu 
+values (2, 'Patios', 2, '');
+
+INSERT INTO menu 
+values (3, 'Entrada a Patios', 3, '/jsf/patios/entradaPatios.xhtml');
+
+INSERT INTO menu 
+values (4, 'Registrar Patios', 3, '/jsf/patios/registrarPatio.xhtml');
+
+INSERT INTO menu 
+values (5, 'Asignar usuario a Patios', 3, '/jsf/patios/listadoPatios.xhtml');
+
+INSERT INTO menu 
+values (6, 'Usuarios', 2, '');
+
+INSERT INTO menu 
+values (7, 'Listado de Usuarios', 3, '');
+
+
+INSERT INTO menu_item 
+values (1, 1, 2);
+
+INSERT INTO menu_item 
+values (2, 2, 3);
+
+INSERT INTO menu_item 
+values (3, 2, 4);
+
+INSERT INTO menu_item 
+values (4, 2, 5);
+
+INSERT INTO menu_item 
+values (5, 1, 6);
+
+INSERT INTO menu_item 
+values (6, 6, 7);

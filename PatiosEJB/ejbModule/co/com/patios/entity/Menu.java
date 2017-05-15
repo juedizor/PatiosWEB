@@ -22,6 +22,8 @@ public class Menu implements Serializable {
 	@Column(name="nombre_menu")
 	private String nombreMenu;
 
+	private String url;
+
 	//bi-directional many-to-one association to TipoMenu
 	@ManyToOne
 	@JoinColumn(name="id_tipo_menu")
@@ -52,6 +54,14 @@ public class Menu implements Serializable {
 
 	public void setNombreMenu(String nombreMenu) {
 		this.nombreMenu = nombreMenu;
+	}
+
+	public String getUrl() {
+		return this.url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public TipoMenu getTipoMenu() {

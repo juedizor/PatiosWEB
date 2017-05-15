@@ -22,6 +22,9 @@ drop table  if exists valor_patio cascade;
 drop table if exists volante_patio cascade;
 drop table if exists consecutivo_volante cascade;
 drop table if exists detalle_volante_patio cascade;
+drop table if exists tipo_menu cascade;
+drop table if exists menu_item cascade;
+drop table if exists menu cascade;
 
 
 
@@ -227,6 +230,7 @@ CREATE TABLE menu (
 	id_menu INTEGER NOT NULL, 
 	nombre_menu VARCHAR NOT NULL, 
 	id_tipo_menu INTEGER NOT NULL, 
+	url VARCHAR
 
 );
 
@@ -240,7 +244,7 @@ ALTER TABLE menu ADD CONSTRAINT FK_menu_tipo_menu
 
 CREATE TABLE menu_item (
 	id_menu_item INTEGER NOT NULL, 
-	id_menu_principal INTEGER NO NULL, 
+	id_menu_principal INTEGER NOT NULL, 
 	id_menu_secundario INTEGER NOT NULL 
 	
 );
