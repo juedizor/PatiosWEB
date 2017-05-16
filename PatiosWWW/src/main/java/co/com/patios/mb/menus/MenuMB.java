@@ -71,8 +71,7 @@ public class MenuMB {
 
 		} catch (Exception e) {
 			Utils.enviarMensajeVista(context, message, FacesMessage.SEVERITY_ERROR, null,
-					MensajesBundle.getInstance().getMap().get("cabecera_error"),
-					MensajesBundle.getInstance().getMap().get("credenciales_erroneas"));
+					MensajesBundle.getInstance().getMap().get("cabecera_error"), e.getMessage());
 		}
 	}
 
