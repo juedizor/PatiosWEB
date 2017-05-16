@@ -172,7 +172,7 @@ CREATE TABLE direccion_persona (
 ;
 
 CREATE TABLE departamento ( 
-	id_departamento serial NOT NULL,
+	id_departamento integer NOT NULL,
 	id_pais integer NOT NULL,
 	codigo_departamento integer NOT NULL,
 	nombre_departamento varchar(255) NOT NULL
@@ -180,7 +180,7 @@ CREATE TABLE departamento (
 ;
 
 CREATE TABLE ciudad ( 
-	id_ciudad serial NOT NULL,
+	id_ciudad integer NOT NULL,
 	id_departamento integer NOT NULL,
 	codigo_div_politica bigint NOT NULL,
 	nombre_ciudad varchar(255) NOT NULL
@@ -188,7 +188,7 @@ CREATE TABLE ciudad (
 ;
 
 CREATE TABLE pais ( 
-	id_pais serial NOT NULL,
+	id_pais integer NOT NULL,
 	codigo_pais integer NOT NULL,
 	descripcion_pais varchar(255) NOT NULL
 )
@@ -196,14 +196,14 @@ CREATE TABLE pais (
 
 CREATE TABLE persona ( 
 	id_persona serial NOT NULL,
-	id_tipo_identificacion integer NOT NULL,
-	id_ciudad integer NOT NULL,
+	id_tipo_identificacion integer NOT NULL,	
 	numero_identificacion decimal(16) NOT NULL,
 	primer_nombre_persona varchar(255) NOT NULL,
 	segundo_nombre_persona varchar(255),
 	primer_apellido_persona varchar(255) NOT NULL,
 	segundo_apellido_persona varchar(255),
 	nombre_comercial_persona varchar(255),
+	id_ciudad integer NOT NULL,
 	fecha_proceso date NOT NULL
 )
 ;
@@ -262,8 +262,8 @@ ALTER TABLE menu_item ADD CONSTRAINT FK_menu_item_menu_02
 ;
 
 CREATE TABLE tipo_identificacion ( 
-	id_tipo_identificacion serial NOT NULL,
-	tipo_identificacion integer NOT NULL,
+	id_tipo_identificacion integer NOT NULL,
+	codigo_tipo_identificacion varchar not null,
 	descripcion_tipo_identificacion varchar(255) NOT NULL
 )
 ;

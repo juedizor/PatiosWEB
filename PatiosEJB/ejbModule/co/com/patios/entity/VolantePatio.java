@@ -28,6 +28,10 @@ public class VolantePatio implements Serializable {
 	@Column(name="numero_volante")
 	private Integer numeroVolante;
 
+	//bi-directional many-to-one association to DetalleVolantePatio
+	@OneToMany(mappedBy="volantePatio")
+	private List<DetalleVolantePatio> detalleVolantePatios;
+
 	//bi-directional many-to-one association to EntradaVehiculoPatio
 	@ManyToOne
 	@JoinColumn(name="id_entrada_vehiculo_patio")
@@ -37,10 +41,6 @@ public class VolantePatio implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="id_usuario")
 	private Usuario usuario;
-
-	//bi-directional many-to-one association to DetalleVolantePatio
-	@OneToMany(mappedBy="volantePatio")
-	private List<DetalleVolantePatio> detalleVolantePatios;
 
 	public VolantePatio() {
 	}
@@ -69,22 +69,6 @@ public class VolantePatio implements Serializable {
 		this.numeroVolante = numeroVolante;
 	}
 
-	public EntradaVehiculoPatio getEntradaVehiculoPatio() {
-		return this.entradaVehiculoPatio;
-	}
-
-	public void setEntradaVehiculoPatio(EntradaVehiculoPatio entradaVehiculoPatio) {
-		this.entradaVehiculoPatio = entradaVehiculoPatio;
-	}
-
-	public Usuario getUsuario() {
-		return this.usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
 	public List<DetalleVolantePatio> getDetalleVolantePatios() {
 		return this.detalleVolantePatios;
 	}
@@ -105,6 +89,22 @@ public class VolantePatio implements Serializable {
 		detalleVolantePatio.setVolantePatio(null);
 
 		return detalleVolantePatio;
+	}
+
+	public EntradaVehiculoPatio getEntradaVehiculoPatio() {
+		return this.entradaVehiculoPatio;
+	}
+
+	public void setEntradaVehiculoPatio(EntradaVehiculoPatio entradaVehiculoPatio) {
+		this.entradaVehiculoPatio = entradaVehiculoPatio;
+	}
+
+	public Usuario getUsuario() {
+		return this.usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 }

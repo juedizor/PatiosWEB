@@ -20,11 +20,11 @@ public class TipoIdentificacion implements Serializable {
 	@Column(name="id_tipo_identificacion")
 	private Integer idTipoIdentificacion;
 
+	@Column(name="codigo_tipo_identificacion")
+	private String codigoTipoIdentificacion;
+
 	@Column(name="descripcion_tipo_identificacion")
 	private String descripcionTipoIdentificacion;
-
-	@Column(name="tipo_identificacion")
-	private Integer tipoIdentificacion;
 
 	//bi-directional many-to-one association to Persona
 	@OneToMany(mappedBy="tipoIdentificacion")
@@ -41,20 +41,20 @@ public class TipoIdentificacion implements Serializable {
 		this.idTipoIdentificacion = idTipoIdentificacion;
 	}
 
+	public String getCodigoTipoIdentificacion() {
+		return this.codigoTipoIdentificacion;
+	}
+
+	public void setCodigoTipoIdentificacion(String codigoTipoIdentificacion) {
+		this.codigoTipoIdentificacion = codigoTipoIdentificacion;
+	}
+
 	public String getDescripcionTipoIdentificacion() {
 		return this.descripcionTipoIdentificacion;
 	}
 
 	public void setDescripcionTipoIdentificacion(String descripcionTipoIdentificacion) {
 		this.descripcionTipoIdentificacion = descripcionTipoIdentificacion;
-	}
-
-	public Integer getTipoIdentificacion() {
-		return this.tipoIdentificacion;
-	}
-
-	public void setTipoIdentificacion(Integer tipoIdentificacion) {
-		this.tipoIdentificacion = tipoIdentificacion;
 	}
 
 	public List<Persona> getPersonas() {

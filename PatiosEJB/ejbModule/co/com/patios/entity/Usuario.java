@@ -32,6 +32,10 @@ public class Usuario implements Serializable {
 	@OneToMany(mappedBy="usuario")
 	private List<ConsecutivoVolante> consecutivoVolantes;
 
+	//bi-directional many-to-one association to DetalleVolantePatio
+	@OneToMany(mappedBy="usuario")
+	private List<DetalleVolantePatio> detalleVolantePatios;
+
 	//bi-directional many-to-one association to DireccionPersona
 	@OneToMany(mappedBy="usuario")
 	private List<DireccionPersona> direccionPersonas;
@@ -72,10 +76,6 @@ public class Usuario implements Serializable {
 	//bi-directional many-to-one association to VolantePatio
 	@OneToMany(mappedBy="usuario")
 	private List<VolantePatio> volantePatios;
-
-	//bi-directional many-to-one association to DetalleVolantePatio
-	@OneToMany(mappedBy="usuario")
-	private List<DetalleVolantePatio> detalleVolantePatios;
 
 	public Usuario() {
 	}
@@ -132,6 +132,28 @@ public class Usuario implements Serializable {
 		consecutivoVolante.setUsuario(null);
 
 		return consecutivoVolante;
+	}
+
+	public List<DetalleVolantePatio> getDetalleVolantePatios() {
+		return this.detalleVolantePatios;
+	}
+
+	public void setDetalleVolantePatios(List<DetalleVolantePatio> detalleVolantePatios) {
+		this.detalleVolantePatios = detalleVolantePatios;
+	}
+
+	public DetalleVolantePatio addDetalleVolantePatio(DetalleVolantePatio detalleVolantePatio) {
+		getDetalleVolantePatios().add(detalleVolantePatio);
+		detalleVolantePatio.setUsuario(this);
+
+		return detalleVolantePatio;
+	}
+
+	public DetalleVolantePatio removeDetalleVolantePatio(DetalleVolantePatio detalleVolantePatio) {
+		getDetalleVolantePatios().remove(detalleVolantePatio);
+		detalleVolantePatio.setUsuario(null);
+
+		return detalleVolantePatio;
 	}
 
 	public List<DireccionPersona> getDireccionPersonas() {
@@ -338,28 +360,6 @@ public class Usuario implements Serializable {
 		volantePatio.setUsuario(null);
 
 		return volantePatio;
-	}
-
-	public List<DetalleVolantePatio> getDetalleVolantePatios() {
-		return this.detalleVolantePatios;
-	}
-
-	public void setDetalleVolantePatios(List<DetalleVolantePatio> detalleVolantePatios) {
-		this.detalleVolantePatios = detalleVolantePatios;
-	}
-
-	public DetalleVolantePatio addDetalleVolantePatio(DetalleVolantePatio detalleVolantePatio) {
-		getDetalleVolantePatios().add(detalleVolantePatio);
-		detalleVolantePatio.setUsuario(this);
-
-		return detalleVolantePatio;
-	}
-
-	public DetalleVolantePatio removeDetalleVolantePatio(DetalleVolantePatio detalleVolantePatio) {
-		getDetalleVolantePatios().remove(detalleVolantePatio);
-		detalleVolantePatio.setUsuario(null);
-
-		return detalleVolantePatio;
 	}
 
 }

@@ -569,7 +569,7 @@ public class EntradaVehiculoPatioMB {
 				tipoIdentificacion = tipoIdentificacionEJB
 						.consultarTipoIdentificacionPorId(Integer.parseInt(idTipoIdentificacion));
 				if (tipoIdentificacion != null) {
-					if (tipoIdentificacion.getTipoIdentificacion() == 2) {
+					if (tipoIdentificacion.getIdTipoIdentificacion() == 2) {
 						persona.setPrimerNombrePersona("");
 						persona.setSegundoNombrePersona("");
 						persona.setPrimerApellidoPersona("");
@@ -745,7 +745,7 @@ public class EntradaVehiculoPatioMB {
 			tipoIdentificacion = tipoIdentificacionEJB
 					.consultarTipoIdentificacionPorId(Integer.parseInt(idTipoIdentificacion));
 			if (tipoIdentificacion != null) {
-				if (tipoIdentificacion.getTipoIdentificacion() == 2) { // valida
+				if (tipoIdentificacion.getIdTipoIdentificacion()== 2) { // valida
 																		// con
 																		// dos
 																		// que

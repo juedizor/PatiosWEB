@@ -1,39 +1,39 @@
-INSERT INTO pais(codigo_pais, descripcion_pais)
-    VALUES (90, 'Colombia');
+INSERT INTO pais(id_pais, codigo_pais, descripcion_pais)
+    VALUES (1, 90, 'Colombia');
 
-INSERT INTO departamento(id_pais, codigo_departamento, 
+INSERT INTO departamento(id_departamento, id_pais, codigo_departamento, 
             nombre_departamento)
-    VALUES (1,5,'ANTIOQUIA');
+    VALUES (1, 1,5,'ANTIOQUIA');
 
-INSERT INTO ciudad(id_departamento, codigo_div_politica, nombre_ciudad)
-    VALUES (1, 5001000, 'MEDELLIN');
+INSERT INTO ciudad(id_ciudad, id_departamento, codigo_div_politica, nombre_ciudad)
+    VALUES (1, 1, 5001000, 'MEDELLIN');
 
 
 -- TIPOS DE DOCUMENTOS DE IDENTIDAD
 
-INSERT INTO tipo_identificacion(tipo_identificacion, descripcion_tipo_identificacion)
-    VALUES (1, 'CEDULA DE CIUDADANIA');
+INSERT INTO tipo_identificacion(id_tipo_identificacion, codigo_tipo_identificacion,  descripcion_tipo_identificacion)
+    VALUES (1, 'CC', 'CEDULA DE CIUDADANIA');
 
-INSERT INTO tipo_identificacion(tipo_identificacion, descripcion_tipo_identificacion)
-    VALUES (2, 'NIT');
+INSERT INTO tipo_identificacion(id_tipo_identificacion,codigo_tipo_identificacion, descripcion_tipo_identificacion)
+    VALUES (2, 'NIT' ,'NIT');
 
-INSERT INTO tipo_identificacion(tipo_identificacion, descripcion_tipo_identificacion)
-    VALUES (3, 'NN');
+INSERT INTO tipo_identificacion(id_tipo_identificacion,codigo_tipo_identificacion, descripcion_tipo_identificacion)
+    VALUES (3, 'NN', 'NN');
 
-INSERT INTO tipo_identificacion(tipo_identificacion, descripcion_tipo_identificacion)
-    VALUES (4, 'PASAPORTE');
+INSERT INTO tipo_identificacion(id_tipo_identificacion,codigo_tipo_identificacion, descripcion_tipo_identificacion)
+    VALUES (4, 'PAS', 'PASAPORTE');
 
-INSERT INTO tipo_identificacion(tipo_identificacion, descripcion_tipo_identificacion)
-    VALUES (5, 'CEDULA DE EXTRANJERIA');
+INSERT INTO tipo_identificacion(id_tipo_identificacion,codigo_tipo_identificacion, descripcion_tipo_identificacion)
+    VALUES (5, 'CE', 'CEDULA DE EXTRANJERIA');
 
-INSERT INTO tipo_identificacion(tipo_identificacion, descripcion_tipo_identificacion)
-    VALUES (6, 'TARJETA DE IDENTIDAD');
+INSERT INTO tipo_identificacion(id_tipo_identificacion,codigo_tipo_identificacion, descripcion_tipo_identificacion)
+    VALUES (6, 'TI', 'TARJETA DE IDENTIDAD');
 
-INSERT INTO tipo_identificacion(tipo_identificacion, descripcion_tipo_identificacion)
-    VALUES (7, 'REGISTRO CIVIL');
+INSERT INTO tipo_identificacion(id_tipo_identificacion,codigo_tipo_identificacion, descripcion_tipo_identificacion)
+    VALUES (7, 'RC', 'REGISTRO CIVIL');
 
-INSERT INTO tipo_identificacion(tipo_identificacion, descripcion_tipo_identificacion)
-    VALUES (8, 'CARNET DIPLOMATICO');
+INSERT INTO tipo_identificacion(id_tipo_identificacion,codigo_tipo_identificacion, descripcion_tipo_identificacion)
+    VALUES (8, 'CD', 'CARNET DIPLOMATICO');
 
 
 
