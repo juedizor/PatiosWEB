@@ -78,9 +78,12 @@ public class MenuMB {
 	public void llenarSubMenuItems(Menu menu, DefaultSubMenu subMenu) throws Exception {
 		listMenuItem = gestionarMenuIface.obtenerMenusItemPorIdMenu(menu.getIdMenu());
 		if (listMenuItem != null && !listMenuItem.isEmpty()) {
+			
+			
 			for (MenuItem menuItem : listMenuItem) {
 				if (menuItem.getMenu2().getTipoMenu().getIdTipoMenu().equals(ITEM)) {
 					DefaultMenuItem item = new DefaultMenuItem(menuItem.getMenu2().getNombreMenu());
+					item.setCommand(menuItem.getMenu2().getUrl().trim());
 					subMenu.addElement(item);
 				}
 

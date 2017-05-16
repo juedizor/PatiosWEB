@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="volanteLiquidacionPatios" language="groovy" pageWidth="648" pageHeight="360" orientation="Landscape" columnWidth="608" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.2396694214876123"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="numeroVolante" class="java.lang.String"/>
+	<parameter name="fechaVolante" class="java.lang.String"/>
+	<parameter name="placaVehiculo" class="java.lang.String"/>
+	<parameter name="marcaVehiculo" class="java.lang.String"/>
+	<parameter name="modeloVehiculo" class="java.lang.String"/>
+	<parameter name="codigoPatio" class="java.lang.String"/>
+	<parameter name="nombrePatio" class="java.lang.String"/>
+	<parameter name="fechaEntrada" class="java.lang.String"/>
+	<parameter name="deudaTotal" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="yearEntrada" class="java.lang.Integer"/>
+	<field name="numeroDias" class="java.lang.Integer"/>
+	<field name="yearValor" class="java.lang.String"/>
+	<field name="valorYear" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="147" splitType="Stretch">
+			<staticText>
+				<reportElement x="181" y="0" width="191" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[VOLANTE DE LIQUIDACIÓN DE PATIOS]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="107" width="555" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="1" y="107" width="554" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RESUMEN DE LIQUIDACIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="20" width="90" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Numero Volante:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="102" y="20" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{numeroVolante}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="35" width="55" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="101" y="35" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{fechaVolante}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="50" width="55" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Placa:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="101" y="50" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{placaVehiculo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="65" width="55" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Marca:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="101" y="65" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{marcaVehiculo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="80" width="55" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Modelo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="101" y="80" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{modeloVehiculo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="236" y="20" width="100" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Codigo de Patio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="236" y="35" width="100" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre Patio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="236" y="50" width="100" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Entrada:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="236" y="65" width="100" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Deuda Total:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="336" y="20" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{codigoPatio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="336" y="35" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{nombrePatio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="336" y="50" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{fechaEntrada}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="336" y="65" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{deudaTotal}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="127" width="101" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="1" y="127" width="100" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Año]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="101" y="127" width="100" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="101" y="127" width="100" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dias]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="201" y="127" width="182" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="201" y="127" width="182" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor por Año]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="383" y="127" width="172" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="383" y="127" width="172" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor a Pagar]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="101" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="101" y="0" width="100" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="201" y="0" width="182" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="383" y="0" width="172" height="20"/>
+			</rectangle>
+			<textField>
+				<reportElement x="1" y="0" width="100" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{yearEntrada}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="101" y="1" width="100" height="19"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{numeroDias}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="201" y="0" width="182" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{valorYear}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="383" y="0" width="172" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{yearValor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
