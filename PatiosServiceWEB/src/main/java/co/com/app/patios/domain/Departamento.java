@@ -32,7 +32,7 @@ public class Departamento implements Serializable {
 	//bi-directional many-to-one association to Pai
 	@ManyToOne
 	@JoinColumn(name="id_pais")
-	private Pai pai;
+	private Pais pais;
 
 	public Departamento() {
 	}
@@ -83,12 +83,12 @@ public class Departamento implements Serializable {
 		return ciudad;
 	}
 
-	public Pai getPai() {
-		return this.pai;
+	public Pais getPais() {
+		return this.pais;
 	}
 
-	public void setPai(Pai pai) {
-		this.pai = pai;
+	public void setPais(Pais pais) {
+		this.pais = pais;
 	}
 
 }

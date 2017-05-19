@@ -55,7 +55,7 @@ import co.com.patios.entity.UsuarioPatio;
 import co.com.patios.entity.Vehiculo;
 import co.com.patios.mb.catalogos.CatalogosImpl;
 import co.com.patios.mb.ingreso.SesionUsuario;
-import co.com.patios.mb.util.MensajesBundle;
+import co.com.patios.mb.util.ParamsBundle;
 import co.com.patios.mb.util.MessagesEstaticos;
 import co.com.patios.mb.util.Utilidades;
 import co.com.patios.mb.util.Utils;
@@ -547,13 +547,13 @@ public class EntradaVehiculoPatioMB {
 				msgExisteEntrada = entradaVehiculoPatioIface.validarEntradaVehiculo(placa);
 			}catch (Exception e){
 				Utils.enviarMensajeVista(context, message, FacesMessage.SEVERITY_ERROR, null,
-						MensajesBundle.getInstance().getMap().get("cabecera_error"),
-						MensajesBundle.getInstance().getMap().get("error_sistema"));
+						ParamsBundle.getInstance().getMapMensajes().get("cabecera_error"),
+						ParamsBundle.getInstance().getMapMensajes().get("error_sistema"));
 			}
 			
 			if(!msgExisteEntrada.isEmpty()){
 				Utils.enviarMensajeVista(context, message, FacesMessage.SEVERITY_WARN, null,
-						MensajesBundle.getInstance().getMap().get("cabecera_warn"),
+						ParamsBundle.getInstance().getMapMensajes().get("cabecera_warn"),
 						msgExisteEntrada);
 			}
 			

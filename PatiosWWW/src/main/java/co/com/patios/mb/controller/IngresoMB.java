@@ -2,7 +2,6 @@ package co.com.patios.mb.controller;
 
 import java.io.IOException;
 
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -12,10 +11,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.servlet.http.HttpServletRequest;
 
-import co.com.patios.entity.Usuario;
-import co.com.patios.mb.util.MensajesBundle;
+import co.com.patios.mb.util.ParamsBundle;
 import co.com.patios.mb.util.Utils;
-import co.com.patios.negocio.iface.IngresoIface;
+import co.com.patios.service.client.ingreso.IngresoServiceClient;
+import co.com.patios.service.dto.UsuarioDTO;
 
 /**
  * clase encargada de manejar el ingreso al sistema, es el managed bean que
@@ -31,7 +30,7 @@ public class IngresoMB {
 	/*
 	 * Entity bean correspondiente al usuario
 	 */
-	private Usuario usuario;
+	private UsuarioDTO usuario;
 
 	private String loginUsuario;
 	private String password;
@@ -55,15 +54,10 @@ public class IngresoMB {
 		/*
 		 * se inicializa el entity bean
 		 */
-		usuario = new Usuario();
-		MensajesBundle.getInstance().getEtiquetas(MensajesBundle.msg);
+		usuario = new UsuarioDTO();
+		ParamsBundle.getInstance().getEtiquetas(ParamsBundle.msg);
 	}
 
-	/*
-	 * EJB logica de negocio para el inicio y validacion del usuario
-	 */
-	@EJB
-	IngresoIface ingresoIface;
 
 	/**
 	 * verifica el inicio de sesion de un usuario en el sistema
@@ -97,11 +91,11 @@ public class IngresoMB {
 		 * usuario y password
 		 */
 		try {
-			usuario = ingresoIface.ValidarAutenticacion(loginUsuario, password);
+			usuario = IngresoServiceClient.getInstance().validarIngreso(loginUsuario, password);
 		} catch (Exception e) {
 			Utils.enviarMensajeVista(context, message, FacesMessage.SEVERITY_ERROR, idMessage,
-					MensajesBundle.getInstance().getMap().get("cabecera_error"),
-					MensajesBundle.getInstance().getMap().get("error_sistema"));
+					ParamsBundle.getInstance().getMapMensajes().get("cabecera_error"),
+					ParamsBundle.getInstance().getMapMensajes().get("error_sistema"));
 		}
 
 		if (usuario != null) {
@@ -116,8 +110,8 @@ public class IngresoMB {
 				 * en caso de ocurrir error envia el mensaje a la vista actual
 				 */
 				Utils.enviarMensajeVista(context, message, FacesMessage.SEVERITY_ERROR, idMessage,
-						MensajesBundle.getInstance().getMap().get("cabecera_error"),
-						MensajesBundle.getInstance().getMap().get("error_sistema"));
+						ParamsBundle.getInstance().getMapMensajes().get("cabecera_error"),
+						ParamsBundle.getInstance().getMapMensajes().get("error_sistema"));
 			}
 
 			/*
@@ -137,8 +131,8 @@ public class IngresoMB {
 			 * envia mensaje a la vista actual
 			 */
 			Utils.enviarMensajeVista(context, message, FacesMessage.SEVERITY_ERROR, idMessage,
-					MensajesBundle.getInstance().getMap().get("cabecera_error"),
-					MensajesBundle.getInstance().getMap().get("credenciales_erroneas"));
+					ParamsBundle.getInstance().getMapMensajes().get("cabecera_error"),
+					ParamsBundle.getInstance().getMapMensajes().get("credenciales_erroneas"));
 		}
 	}
 
@@ -156,7 +150,7 @@ public class IngresoMB {
 	/**
 	 * @return the usuario
 	 */
-	public Usuario getUsuario() {
+	public UsuarioDTO getUsuarioDTO() {
 		return usuario;
 	}
 
@@ -164,7 +158,7 @@ public class IngresoMB {
 	 * @param usuario
 	 *            the usuario to set
 	 */
-	public void setUsuario(Usuario usuario) {
+	public void setUsuarioDTO(UsuarioDTO usuario) {
 		this.usuario = usuario;
 	}
 

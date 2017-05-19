@@ -27,7 +27,7 @@ public class MarcaVehiculo implements Serializable {
 	private String descripcionMarcaVehiculo;
 
 	//bi-directional many-to-one association to ModeloVehiculo
-	@OneToMany(mappedBy="marcaVehiculo")
+	@OneToMany(mappedBy="marcaVehiculo", fetch = FetchType.EAGER)
 	private List<ModeloVehiculo> modeloVehiculos;
 
 	public MarcaVehiculo() {

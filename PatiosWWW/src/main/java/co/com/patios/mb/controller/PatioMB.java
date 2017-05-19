@@ -16,7 +16,7 @@ import co.com.patios.ejb.controller.UtilidadesEJB;
 import co.com.patios.entity.Patio;
 import co.com.patios.entity.Usuario;
 import co.com.patios.mb.ingreso.SesionUsuario;
-import co.com.patios.mb.util.MensajesBundle;
+import co.com.patios.mb.util.ParamsBundle;
 import co.com.patios.mb.util.MessagesEstaticos;
 import co.com.patios.mb.util.Utilidades;
 import co.com.patios.mb.util.Utils;
@@ -109,7 +109,7 @@ public class PatioMB {
 			patio = registrarPatiosIface.realizarRegistroPatio(patio);
 		} catch (Exception e) {
 			Utils.enviarMensajeVista(context, message, FacesMessage.SEVERITY_ERROR, null,
-					e.getMessage(), MensajesBundle.getInstance().getMap().get("cabecera_error"));
+					e.getMessage(), ParamsBundle.getInstance().getMapMensajes().get("cabecera_error"));
 			return;
 		}
 

@@ -1,6 +1,6 @@
 package co.com.app.rest.exception;
 
-public class GeneralErrorException extends Exception {
+public class GeneralErrorException extends CommonException {
 
 	/**
 	 * 

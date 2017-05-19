@@ -27,7 +27,7 @@ public class Pais implements Serializable {
 	private String descripcionPais;
 
 	//bi-directional many-to-one association to Departamento
-	@OneToMany(mappedBy="pais")
+	@OneToMany(mappedBy="pais", fetch = FetchType.EAGER)
 	private List<Departamento> departamentos;
 
 	public Pais() {

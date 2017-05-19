@@ -6,6 +6,8 @@ public class UsuarioDTO {
 	private String claveUsuario;
 	private String estadoUsuario;
 	private String loginUsuario;
+	
+	
 	/**
 	 * @return the idUsuario
 	 */
