@@ -26,10 +26,10 @@ public class Departamento implements Serializable {
 	private String nombreDepartamento;
 
 	//bi-directional many-to-one association to Ciudad
-	@OneToMany(mappedBy="departamento")
+	@OneToMany(mappedBy="departamento", fetch = FetchType.EAGER)
 	private List<Ciudad> ciudads;
 
-	//bi-directional many-to-one association to Pai
+	//bi-directional many-to-one association to Pais
 	@ManyToOne
 	@JoinColumn(name="id_pais")
 	private Pais pais;
@@ -87,8 +87,8 @@ public class Departamento implements Serializable {
 		return this.pais;
 	}
 
-	public void setPais(Pais pais) {
-		this.pais = pais;
+	public void setPais(Pais pai) {
+		this.pais = pai;
 	}
 
 }

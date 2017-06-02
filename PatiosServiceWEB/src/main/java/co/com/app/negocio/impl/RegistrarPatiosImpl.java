@@ -3,11 +3,13 @@ package co.com.app.negocio.impl;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import co.com.app.negocio.iface.RegistrarPatiosIface;
 import co.com.app.patios.domain.Patio;
 import co.com.app.patios.repository.PatioIfaceDAO;
 
+@Service
 public class RegistrarPatiosImpl implements RegistrarPatiosIface {
 
 	@Autowired

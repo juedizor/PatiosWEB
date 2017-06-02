@@ -3,7 +3,7 @@ package co.com.patios.mb.ingreso;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
-import co.com.patios.entity.Usuario;
+import co.com.patios.service.dto.UsuarioDTO;
 
 public class SesionUsuario {
 
@@ -30,9 +30,9 @@ public class SesionUsuario {
 	 *            nombre de la sesion creada y la cual se quiere recuperar
 	 * @return
 	 */
-	public Usuario getUsuarioSesion(FacesContext context, String valueUsuario) {
+	public UsuarioDTO getUsuarioSesion(FacesContext context, String valueUsuario) {
 		httpServletRequestLogin = (HttpServletRequest) context.getExternalContext().getRequest();
-		Usuario usuarioSession = (Usuario) httpServletRequestLogin.getSession().getAttribute(valueUsuario);
+		UsuarioDTO usuarioSession = (UsuarioDTO) httpServletRequestLogin.getSession().getAttribute(valueUsuario);
 		return usuarioSession;
 	}
 

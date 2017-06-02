@@ -43,7 +43,7 @@ CREATE TABLE entrada_vehiculo_patio (
 	id_patio integer NOT NULL,
 	id_vehiculo integer NOT NULL,
 	id_usuario integer NOT NULL,
-	fecha_entrada_vehiculo date NOT NULL,
+	fecha_entrada_vehiculo timestamp NOT NULL,
 	estado_entrada_vehiculo char(1) NOT NULL
 )
 ;
@@ -96,7 +96,7 @@ CREATE TABLE vehiculo (
 	numero_motor_vehiculo varchar(255),
 	numero_serie_vehiculo varchar(255),
 	numero_chasis_vehiculo varchar(255),
-	fecha_proceso date NOT NULL,
+	fecha_proceso timestamp NOT NULL,
 	id_usuario integer NOT NULL
 )
 ;
@@ -122,7 +122,7 @@ CREATE TABLE organismo_transito (
 	id_categoria_organismo_transito integer NOT NULL,
 	id_jurisdiccion_organismo_transito integer NOT NULL,
 	estado_organismo_transito char(1) NOT NULL,
-	fecha_proceso date NOT NULL,
+	fecha_proceso timestamp NOT NULL,
 	id_usuario integer NOT NULL
 )
 ;
@@ -133,7 +133,7 @@ CREATE TABLE usuario_patio (
 	id_patio integer NOT NULL,
 	fecha_inicio date NOT NULL,
 	fecha_final date,
-	fecha_proceso date NOT NULL,
+	fecha_proceso timestamp NOT NULL,
 	id_usuario_asigna integer NOT NULL
 )
 ;
@@ -146,7 +146,7 @@ CREATE TABLE patio (
 	direccion_patio varchar(255) NOT NULL,
 	telefono_patio varchar(255) NOT NULL,
 	capacidad_patio integer NOT NULL,
-	fecha_registro_patio date NOT NULL,
+	fecha_registro_patio timestamp NOT NULL,
 	id_usuario integer NOT NULL
 )
 ;
@@ -155,7 +155,7 @@ CREATE TABLE telefono_persona (
 	id_telefono_persona serial NOT NULL,
 	id_persona integer NOT NULL,
 	numero_telefono_persona varchar(255) NOT NULL,
-	fecha_proceso date NOT NULL,
+	fecha_proceso timestamp NOT NULL,
 	id_usuario integer NOT NULL
 )
 ;
@@ -166,7 +166,7 @@ CREATE TABLE direccion_persona (
 	descripcion_direccion varchar(255) NOT NULL,
 	fecha_inicio_direccion date NOT NULL,
 	fecha_final_direccion date,
-	fecha_proceso date NOT NULL,
+	fecha_proceso timestamp NOT NULL,
 	id_usuario integer NOT NULL
 )
 ;
@@ -204,7 +204,7 @@ CREATE TABLE persona (
 	segundo_apellido_persona varchar(255),
 	nombre_comercial_persona varchar(255),
 	id_ciudad integer NOT NULL,
-	fecha_proceso date NOT NULL
+	fecha_proceso timestamp NOT NULL
 )
 ;
 
@@ -261,6 +261,7 @@ ALTER TABLE menu_item ADD CONSTRAINT FK_menu_item_menu_02
 	FOREIGN KEY (id_menu_secundario) REFERENCES menu (id_menu)
 ;
 
+
 CREATE TABLE tipo_identificacion ( 
 	id_tipo_identificacion integer NOT NULL,
 	codigo_tipo_identificacion varchar not null,
@@ -271,7 +272,7 @@ CREATE TABLE tipo_identificacion (
 CREATE TABLE consecutivo_volante ( 
 	id_consecutivo_volante serial NOT NULL,
 	numero_volante integer NOT NULL,
-	fecha_consecutivo_volante date NOT NULL,
+	fecha_consecutivo_volante timestamp NOT NULL,
 	id_usuario integer
 )
 ;
@@ -279,7 +280,7 @@ CREATE TABLE consecutivo_volante (
 CREATE TABLE volante_patio ( 
 	id_volante_patio serial NOT NULL,
 	numero_volante integer NOT NULL,
-	fecha_volante date NOT NULL,
+	fecha_volante timestamp NOT NULL,
 	id_entrada_vehiculo_patio integer NOT NULL,
 	id_usuario integer
 )

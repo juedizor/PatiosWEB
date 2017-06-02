@@ -13,7 +13,7 @@
 	<ui:define name="contenido">
 
 		<!-- etiqueta form, la cual contiene todos el arbol de componentes que se usará para realizar el proceso de entrada a patios, estos son los enviados a un managed bean especifico para su debido tratamiento -->
-		<h:form id="formRegistroEntrada">
+		<h:form id="formRegistroEntrada" onkeypress="if (event.keyCode == 13) { return false; }">
 
 			<p:panel id="panelRegistro" styleClass="pnlForm"
 				header="#{labelGeneral.name_form_entrada_patios}">
@@ -125,9 +125,11 @@
 									<f:selectItems value="#{entradaVehiculoPatioMB.colorVehiculos}" />
 								</p:selectOneMenu>
 								<p:commandButton value="..."
-									update=":tablaColores:tableColores :msg"
-									action="#{entradaVehiculoPatioMB.obtenerColorVehiculos}"
-									oncomplete="PF('dialogoColores').show();" immediate="true" />
+									onclick="PF('statusDialog').show();"
+									oncomplete="PF('statusDialog').hide();"
+									actionListener="#{entradaVehiculoPatioMB.obtenerColorVehiculos}"
+									immediate="true" update=":tablaColores:tableColores">
+								</p:commandButton>
 							</h:panelGrid>
 							<p:message for="colorVehiculo" display="default" />
 						</h:panelGroup>
@@ -371,7 +373,8 @@
 									<p:ajax event="change"
 										listener="#{entradaVehiculoPatioMB.llenarDepartamentos}"
 										update="departamento"></p:ajax>
-									<f:selectItem itemLabel="#{labelGeneral.label_seleccione}" itemValue="" />
+									<f:selectItem itemLabel="#{labelGeneral.label_seleccione}"
+										itemValue="" />
 									<f:selectItems value="#{entradaVehiculoPatioMB.paises}"></f:selectItems>
 								</p:selectOneMenu>
 								<p:message for="pais" display="default" />
@@ -388,7 +391,8 @@
 									<p:ajax event="change"
 										listener="#{entradaVehiculoPatioMB.llenarCiudades}"
 										update="ciudad"></p:ajax>
-									<f:selectItem itemLabel="#{labelGeneral.label_seleccione}" itemValue="" />
+									<f:selectItem itemLabel="#{labelGeneral.label_seleccione}"
+										itemValue="" />
 									<f:selectItems value="#{entradaVehiculoPatioMB.departamentos}"></f:selectItems>
 								</p:selectOneMenu>
 								<p:message for="departamento" display="default" />
@@ -403,7 +407,8 @@
 									value="#{entradaVehiculoPatioMB.idCiudad}" required="true"
 									requiredMessage="Requerido">
 									<p:ajax event="change"></p:ajax>
-									<f:selectItem itemLabel="#{labelGeneral.label_seleccione}" itemValue="" />
+									<f:selectItem itemLabel="#{labelGeneral.label_seleccione}"
+										itemValue="" />
 									<f:selectItems value="#{entradaVehiculoPatioMB.ciudades}"></f:selectItems>
 								</p:selectOneMenu>
 								<p:message for="ciudad" display="default" />
@@ -490,7 +495,7 @@
 					widgetVar="coloresTable"
 					value="#{entradaVehiculoPatioMB.listColorVehiculos}"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-					paginator="true"
+					paginator="true" emptyMessage="#{labelGeneral.sin_registro}"
 					currentPageReportTemplate="{totalRecords}  Colores" rows="5"
 					rowKey="#{colores.idColorVehiculo}"
 					selection="#{entradaVehiculoPatioMB.coloresVehiculo}">

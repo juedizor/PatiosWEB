@@ -14,7 +14,7 @@ import co.com.app.negocio.dto.MarcaVehiculoDTO;
 import co.com.app.negocio.dto.OrganismoTransitoDTO;
 import co.com.app.negocio.dto.PaisDTO;
 import co.com.app.negocio.dto.TipoIdentificacionDTO;
-import co.com.app.negocio.iface.CatalogosIface;
+import co.com.app.negocio.general.iface.CatalogosIface;
 import co.com.app.rest.exception.CommonException;
 import co.com.app.rest.exception.GeneralErrorException;
 import co.com.app.rest.exception.NotFoundException;

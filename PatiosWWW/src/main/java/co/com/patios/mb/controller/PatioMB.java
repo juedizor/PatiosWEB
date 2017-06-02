@@ -21,6 +21,7 @@ import co.com.patios.mb.util.MessagesEstaticos;
 import co.com.patios.mb.util.Utilidades;
 import co.com.patios.mb.util.Utils;
 import co.com.patios.negocio.iface.RegistrarPatiosIface;
+import co.com.patios.service.dto.UsuarioDTO;
 
 @ManagedBean(name = "patioMB")
 @RequestScoped
@@ -89,7 +90,7 @@ public class PatioMB {
 		/*
 		 * se captura la session del usuario
 		 */
-		Usuario usuarioSession = SesionUsuario.getInstance().getUsuarioSesion(context, "usuario");
+		UsuarioDTO usuarioSession = SesionUsuario.getInstance().getUsuarioSesion(context, "usuario");
 		if (usuarioSession == null) {
 			try {
 				context.getExternalContext().redirect("../index.xhtml");
@@ -108,8 +109,8 @@ public class PatioMB {
 			setDatosPatios();
 			patio = registrarPatiosIface.realizarRegistroPatio(patio);
 		} catch (Exception e) {
-			Utils.enviarMensajeVista(context, message, FacesMessage.SEVERITY_ERROR, null,
-					e.getMessage(), ParamsBundle.getInstance().getMapMensajes().get("cabecera_error"));
+			Utils.enviarMensajeVista(context, message, FacesMessage.SEVERITY_ERROR, null, e.getMessage(),
+					ParamsBundle.getInstance().getMapMensajes().get("cabecera_error"));
 			return;
 		}
 

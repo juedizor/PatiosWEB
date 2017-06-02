@@ -2,7 +2,7 @@ package co.com.app.patios.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -20,9 +20,8 @@ public class Vehiculo implements Serializable {
 	@Column(name="id_vehiculo")
 	private Integer idVehiculo;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_proceso")
-	private Date fechaProceso;
+	private Timestamp fechaProceso;
 
 	@Column(name="numero_chasis_vehiculo")
 	private String numeroChasisVehiculo;
@@ -86,11 +85,11 @@ public class Vehiculo implements Serializable {
 		this.idVehiculo = idVehiculo;
 	}
 
-	public Date getFechaProceso() {
+	public Timestamp getFechaProceso() {
 		return this.fechaProceso;
 	}
 
-	public void setFechaProceso(Date fechaProceso) {
+	public void setFechaProceso(Timestamp fechaProceso) {
 		this.fechaProceso = fechaProceso;
 	}
 

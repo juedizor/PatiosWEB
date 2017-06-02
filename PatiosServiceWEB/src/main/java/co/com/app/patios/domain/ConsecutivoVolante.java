@@ -2,7 +2,7 @@ package co.com.app.patios.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 
 /**
@@ -20,9 +20,8 @@ public class ConsecutivoVolante implements Serializable {
 	@Column(name="id_consecutivo_volante")
 	private Integer idConsecutivoVolante;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_consecutivo_volante")
-	private Date fechaConsecutivoVolante;
+	private Timestamp fechaConsecutivoVolante;
 
 	@Column(name="numero_volante")
 	private Integer numeroVolante;
@@ -43,11 +42,11 @@ public class ConsecutivoVolante implements Serializable {
 		this.idConsecutivoVolante = idConsecutivoVolante;
 	}
 
-	public Date getFechaConsecutivoVolante() {
+	public Timestamp getFechaConsecutivoVolante() {
 		return this.fechaConsecutivoVolante;
 	}
 
-	public void setFechaConsecutivoVolante(Date fechaConsecutivoVolante) {
+	public void setFechaConsecutivoVolante(Timestamp fechaConsecutivoVolante) {
 		this.fechaConsecutivoVolante = fechaConsecutivoVolante;
 	}
 

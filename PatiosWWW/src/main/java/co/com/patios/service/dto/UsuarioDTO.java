@@ -1,62 +1,49 @@
 package co.com.patios.service.dto;
 
-public class UsuarioDTO {
-	
+import java.io.Serializable;
+
+
+public class UsuarioDTO implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private Integer idUsuario;
 	private String claveUsuario;
 	private String estadoUsuario;
 	private String loginUsuario;
-	
-	
-	/**
-	 * @return the idUsuario
-	 */
-	public Integer getIdUsuario() {
-		return idUsuario;
+
+	public UsuarioDTO() {
 	}
-	/**
-	 * @param idUsuario the idUsuario to set
-	 */
+
+	public Integer getIdUsuario() {
+		return this.idUsuario;
+	}
+
 	public void setIdUsuario(Integer idUsuario) {
 		this.idUsuario = idUsuario;
 	}
-	/**
-	 * @return the claveUsuario
-	 */
+
 	public String getClaveUsuario() {
-		return claveUsuario;
+		return this.claveUsuario;
 	}
-	/**
-	 * @param claveUsuario the claveUsuario to set
-	 */
+
 	public void setClaveUsuario(String claveUsuario) {
 		this.claveUsuario = claveUsuario;
 	}
-	/**
-	 * @return the estadoUsuario
-	 */
+
 	public String getEstadoUsuario() {
-		return estadoUsuario;
+		return this.estadoUsuario;
 	}
-	/**
-	 * @param estadoUsuario the estadoUsuario to set
-	 */
+
 	public void setEstadoUsuario(String estadoUsuario) {
 		this.estadoUsuario = estadoUsuario;
 	}
-	/**
-	 * @return the loginUsuario
-	 */
+
 	public String getLoginUsuario() {
-		return loginUsuario;
+		return this.loginUsuario;
 	}
-	/**
-	 * @param loginUsuario the loginUsuario to set
-	 */
+
 	public void setLoginUsuario(String loginUsuario) {
 		this.loginUsuario = loginUsuario;
 	}
-	
-	
+
 
 }

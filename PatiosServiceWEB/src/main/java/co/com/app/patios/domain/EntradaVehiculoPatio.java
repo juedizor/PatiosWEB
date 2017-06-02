@@ -2,7 +2,7 @@ package co.com.app.patios.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -24,9 +24,8 @@ public class EntradaVehiculoPatio implements Serializable {
 	@Column(name="estado_entrada_vehiculo")
 	private String estadoEntradaVehiculo;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_entrada_vehiculo")
-	private Date fechaEntradaVehiculo;
+	private Timestamp fechaEntradaVehiculo;
 
 	//bi-directional many-to-one association to Patio
 	@ManyToOne
@@ -66,11 +65,11 @@ public class EntradaVehiculoPatio implements Serializable {
 		this.estadoEntradaVehiculo = estadoEntradaVehiculo;
 	}
 
-	public Date getFechaEntradaVehiculo() {
+	public Timestamp getFechaEntradaVehiculo() {
 		return this.fechaEntradaVehiculo;
 	}
 
-	public void setFechaEntradaVehiculo(Date fechaEntradaVehiculo) {
+	public void setFechaEntradaVehiculo(Timestamp fechaEntradaVehiculo) {
 		this.fechaEntradaVehiculo = fechaEntradaVehiculo;
 	}
 

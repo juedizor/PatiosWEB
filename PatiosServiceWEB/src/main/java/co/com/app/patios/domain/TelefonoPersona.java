@@ -2,7 +2,7 @@ package co.com.app.patios.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 
 /**
@@ -20,9 +20,8 @@ public class TelefonoPersona implements Serializable {
 	@Column(name="id_telefono_persona")
 	private Integer idTelefonoPersona;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_proceso")
-	private Date fechaProceso;
+	private Timestamp fechaProceso;
 
 	@Column(name="numero_telefono_persona")
 	private String numeroTelefonoPersona;
@@ -48,11 +47,11 @@ public class TelefonoPersona implements Serializable {
 		this.idTelefonoPersona = idTelefonoPersona;
 	}
 
-	public Date getFechaProceso() {
+	public Timestamp getFechaProceso() {
 		return this.fechaProceso;
 	}
 
-	public void setFechaProceso(Date fechaProceso) {
+	public void setFechaProceso(Timestamp fechaProceso) {
 		this.fechaProceso = fechaProceso;
 	}
 

@@ -2,7 +2,7 @@ package co.com.app.patios.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -21,9 +21,8 @@ public class VolantePatio implements Serializable {
 	@Column(name="id_volante_patio")
 	private Integer idVolantePatio;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_volante")
-	private Date fechaVolante;
+	private Timestamp fechaVolante;
 
 	@Column(name="numero_volante")
 	private Integer numeroVolante;
@@ -53,11 +52,11 @@ public class VolantePatio implements Serializable {
 		this.idVolantePatio = idVolantePatio;
 	}
 
-	public Date getFechaVolante() {
+	public Timestamp getFechaVolante() {
 		return this.fechaVolante;
 	}
 
-	public void setFechaVolante(Date fechaVolante) {
+	public void setFechaVolante(Timestamp fechaVolante) {
 		this.fechaVolante = fechaVolante;
 	}
 

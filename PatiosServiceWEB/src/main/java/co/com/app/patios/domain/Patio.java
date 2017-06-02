@@ -2,7 +2,7 @@ package co.com.app.patios.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -29,9 +29,8 @@ public class Patio implements Serializable {
 	@Column(name="direccion_patio")
 	private String direccionPatio;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_registro_patio")
-	private Date fechaRegistroPatio;
+	private Timestamp fechaRegistroPatio;
 
 	@Column(name="nombre_patio")
 	private String nombrePatio;
@@ -91,11 +90,11 @@ public class Patio implements Serializable {
 		this.direccionPatio = direccionPatio;
 	}
 
-	public Date getFechaRegistroPatio() {
+	public Timestamp getFechaRegistroPatio() {
 		return this.fechaRegistroPatio;
 	}
 
-	public void setFechaRegistroPatio(Date fechaRegistroPatio) {
+	public void setFechaRegistroPatio(Timestamp fechaRegistroPatio) {
 		this.fechaRegistroPatio = fechaRegistroPatio;
 	}
 

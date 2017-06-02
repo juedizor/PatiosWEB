@@ -1,88 +1,102 @@
 package co.com.app.negocio.dto;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.sql.Timestamp;
 
-public class OrganismoTransitoDTO {
-	
+public class OrganismoTransitoDTO implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private Integer idOrganismoTransito;
 	private Long codigoDivisionPolitica;
 	private String estadoOrganismoTransito;
-	private Date fechaProceso;
+	private Timestamp fechaProceso;
 	private String nombreAbreviado;
 	private String nombreOrganismoTransito;
-	/**
-	 * @return the idOrganismoTransito
-	 */
-	public Integer getIdOrganismoTransito() {
-		return idOrganismoTransito;
+	private CategoriaOrganismoTransitoDTO categoriaOrganismoTransito;
+	private CiudadDTO ciudad;
+	private JurisdiccionOrganismoTransitoDTO jurisdiccionOrganismoTransito;
+	private UsuarioDTO usuario;
+
+	public OrganismoTransitoDTO() {
 	}
-	/**
-	 * @param idOrganismoTransito the idOrganismoTransito to set
-	 */
+
+	public Integer getIdOrganismoTransito() {
+		return this.idOrganismoTransito;
+	}
+
 	public void setIdOrganismoTransito(Integer idOrganismoTransito) {
 		this.idOrganismoTransito = idOrganismoTransito;
 	}
-	/**
-	 * @return the codigoDivisionPolitica
-	 */
+
 	public Long getCodigoDivisionPolitica() {
-		return codigoDivisionPolitica;
+		return this.codigoDivisionPolitica;
 	}
-	/**
-	 * @param codigoDivisionPolitica the codigoDivisionPolitica to set
-	 */
+
 	public void setCodigoDivisionPolitica(Long codigoDivisionPolitica) {
 		this.codigoDivisionPolitica = codigoDivisionPolitica;
 	}
-	/**
-	 * @return the estadoOrganismoTransito
-	 */
+
 	public String getEstadoOrganismoTransito() {
-		return estadoOrganismoTransito;
+		return this.estadoOrganismoTransito;
 	}
-	/**
-	 * @param estadoOrganismoTransito the estadoOrganismoTransito to set
-	 */
+
 	public void setEstadoOrganismoTransito(String estadoOrganismoTransito) {
 		this.estadoOrganismoTransito = estadoOrganismoTransito;
 	}
-	/**
-	 * @return the fechaProceso
-	 */
-	public Date getFechaProceso() {
-		return fechaProceso;
+
+	public Timestamp getFechaProceso() {
+		return this.fechaProceso;
 	}
-	/**
-	 * @param fechaProceso the fechaProceso to set
-	 */
-	public void setFechaProceso(Date fechaProceso) {
+
+	public void setFechaProceso(Timestamp fechaProceso) {
 		this.fechaProceso = fechaProceso;
 	}
-	/**
-	 * @return the nombreAbreviado
-	 */
+
 	public String getNombreAbreviado() {
-		return nombreAbreviado;
+		return this.nombreAbreviado;
 	}
-	/**
-	 * @param nombreAbreviado the nombreAbreviado to set
-	 */
+
 	public void setNombreAbreviado(String nombreAbreviado) {
 		this.nombreAbreviado = nombreAbreviado;
 	}
-	/**
-	 * @return the nombreOrganismoTransito
-	 */
+
 	public String getNombreOrganismoTransito() {
-		return nombreOrganismoTransito;
+		return this.nombreOrganismoTransito;
 	}
-	/**
-	 * @param nombreOrganismoTransito the nombreOrganismoTransito to set
-	 */
+
 	public void setNombreOrganismoTransito(String nombreOrganismoTransito) {
 		this.nombreOrganismoTransito = nombreOrganismoTransito;
 	}
-	
-	
+
+	public CategoriaOrganismoTransitoDTO getCategoriaOrganismoTransito() {
+		return this.categoriaOrganismoTransito;
+	}
+
+	public void setCategoriaOrganismoTransito(CategoriaOrganismoTransitoDTO categoriaOrganismoTransito) {
+		this.categoriaOrganismoTransito = categoriaOrganismoTransito;
+	}
+
+	public CiudadDTO getCiudad() {
+		return this.ciudad;
+	}
+
+	public void setCiudad(CiudadDTO ciudad) {
+		this.ciudad = ciudad;
+	}
+
+	public JurisdiccionOrganismoTransitoDTO getJurisdiccionOrganismoTransito() {
+		return this.jurisdiccionOrganismoTransito;
+	}
+
+	public void setJurisdiccionOrganismoTransito(JurisdiccionOrganismoTransitoDTO jurisdiccionOrganismoTransito) {
+		this.jurisdiccionOrganismoTransito = jurisdiccionOrganismoTransito;
+	}
+
+	public UsuarioDTO getUsuario() {
+		return this.usuario;
+	}
+
+	public void setUsuario(UsuarioDTO usuario) {
+		this.usuario = usuario;
+	}
 
 }

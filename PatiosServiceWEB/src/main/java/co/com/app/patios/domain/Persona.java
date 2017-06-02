@@ -3,7 +3,7 @@ package co.com.app.patios.domain;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -21,9 +21,8 @@ public class Persona implements Serializable {
 	@Column(name="id_persona")
 	private Integer idPersona;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_proceso")
-	private Date fechaProceso;
+	private Timestamp fechaProceso;
 
 	@Column(name="nombre_comercial_persona")
 	private String nombreComercialPersona;
@@ -80,11 +79,11 @@ public class Persona implements Serializable {
 		this.idPersona = idPersona;
 	}
 
-	public Date getFechaProceso() {
+	public Timestamp getFechaProceso() {
 		return this.fechaProceso;
 	}
 
-	public void setFechaProceso(Date fechaProceso) {
+	public void setFechaProceso(Timestamp fechaProceso) {
 		this.fechaProceso = fechaProceso;
 	}
 

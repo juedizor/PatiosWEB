@@ -1,64 +1,48 @@
 package co.com.app.negocio.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MarcaVehiculoDTO {
-	
+public class MarcaVehiculoDTO implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private Integer idMarcaVehiculo;
 	private Long codigoMarcaVehiculo;
 	private String descripcionMarcaVehiculo;
 	private List<ModeloVehiculoDTO> modeloVehiculos;
-	
-	
-	/**
-	 * @return the idMarcaVehiculo
-	 */
-	public Integer getIdMarcaVehiculo() {
-		return idMarcaVehiculo;
+
+	public MarcaVehiculoDTO() {
 	}
-	/**
-	 * @param idMarcaVehiculo the idMarcaVehiculo to set
-	 */
+
+	public Integer getIdMarcaVehiculo() {
+		return this.idMarcaVehiculo;
+	}
+
 	public void setIdMarcaVehiculo(Integer idMarcaVehiculo) {
 		this.idMarcaVehiculo = idMarcaVehiculo;
 	}
-	/**
-	 * @return the codigoMarcaVehiculo
-	 */
+
 	public Long getCodigoMarcaVehiculo() {
-		return codigoMarcaVehiculo;
+		return this.codigoMarcaVehiculo;
 	}
-	/**
-	 * @param codigoMarcaVehiculo the codigoMarcaVehiculo to set
-	 */
+
 	public void setCodigoMarcaVehiculo(Long codigoMarcaVehiculo) {
 		this.codigoMarcaVehiculo = codigoMarcaVehiculo;
 	}
-	/**
-	 * @return the descripcionMarcaVehiculo
-	 */
+
 	public String getDescripcionMarcaVehiculo() {
-		return descripcionMarcaVehiculo;
+		return this.descripcionMarcaVehiculo;
 	}
-	/**
-	 * @param descripcionMarcaVehiculo the descripcionMarcaVehiculo to set
-	 */
+
 	public void setDescripcionMarcaVehiculo(String descripcionMarcaVehiculo) {
 		this.descripcionMarcaVehiculo = descripcionMarcaVehiculo;
 	}
-	/**
-	 * @return the modeloVehiculos
-	 */
+
 	public List<ModeloVehiculoDTO> getModeloVehiculos() {
-		return modeloVehiculos;
+		return this.modeloVehiculos;
 	}
-	/**
-	 * @param modeloVehiculos the modeloVehiculos to set
-	 */
+
 	public void setModeloVehiculos(List<ModeloVehiculoDTO> modeloVehiculos) {
 		this.modeloVehiculos = modeloVehiculos;
 	}
-	
-	
 
 }

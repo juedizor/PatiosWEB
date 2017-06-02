@@ -15,7 +15,8 @@ public interface MenuMapper {
 
 	MenuMapper INSTANCE = Mappers.getMapper(MenuMapper.class);
 
-	@Mappings({ @Mapping(source = "tipoMenu.idTipoMenu", target = "idTipoMenu") })
+	@Mappings({ @Mapping(target = "menuItems1", ignore = true), @Mapping(target = "menuItems2", ignore = true),
+			@Mapping(target = "tipoMenu", ignore = true) })
 	MenuDTO menuToMenuDTO(Menu menu);
 
 	List<MenuDTO> menusToMenusDTO(List<Menu> list);

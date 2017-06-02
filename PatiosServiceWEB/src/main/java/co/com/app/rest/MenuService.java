@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.com.app.negocio.dto.MenuDTO;
 import co.com.app.negocio.dto.MenuItemDTO;
-import co.com.app.negocio.iface.GestionarMenuIface;
+import co.com.app.negocio.general.iface.GestionarMenuIface;
 import co.com.app.rest.exception.CommonException;
 import co.com.app.rest.exception.GeneralErrorException;
 import co.com.app.rest.exception.NotFoundException;

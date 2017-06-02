@@ -1,50 +1,39 @@
 package co.com.app.negocio.dto;
 
-public class ClaseVehiculoDTO {
-	
+import java.io.Serializable;
+
+public class ClaseVehiculoDTO implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private Integer idClaseVehiculo;
 	private Integer codigoClaseVehiculo;
 	private String descripcionClaseVehiculo;
-	
-	
-	/**
-	 * @return the idClaseVehiculo
-	 */
-	public Integer getIdClaseVehiculo() {
-		return idClaseVehiculo;
+
+	public ClaseVehiculoDTO() {
 	}
-	/**
-	 * @param idClaseVehiculo the idClaseVehiculo to set
-	 */
+
+	public Integer getIdClaseVehiculo() {
+		return this.idClaseVehiculo;
+	}
+
 	public void setIdClaseVehiculo(Integer idClaseVehiculo) {
 		this.idClaseVehiculo = idClaseVehiculo;
 	}
-	/**
-	 * @return the codigoClaseVehiculo
-	 */
+
 	public Integer getCodigoClaseVehiculo() {
-		return codigoClaseVehiculo;
+		return this.codigoClaseVehiculo;
 	}
-	/**
-	 * @param codigoClaseVehiculo the codigoClaseVehiculo to set
-	 */
+
 	public void setCodigoClaseVehiculo(Integer codigoClaseVehiculo) {
 		this.codigoClaseVehiculo = codigoClaseVehiculo;
 	}
-	/**
-	 * @return the descripcionClaseVehiculo
-	 */
+
 	public String getDescripcionClaseVehiculo() {
-		return descripcionClaseVehiculo;
+		return this.descripcionClaseVehiculo;
 	}
-	/**
-	 * @param descripcionClaseVehiculo the descripcionClaseVehiculo to set
-	 */
+
 	public void setDescripcionClaseVehiculo(String descripcionClaseVehiculo) {
 		this.descripcionClaseVehiculo = descripcionClaseVehiculo;
 	}
-	
-	
-	
 
 }

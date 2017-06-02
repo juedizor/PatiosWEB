@@ -1,62 +1,48 @@
 package co.com.patios.service.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PaisDTO {
-	
+public class PaisDTO implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private Integer idPais;
 	private Integer codigoPais;
 	private String descripcionPais;
-	private List<DepartamentosDTO> departamentos;
-	/**
-	 * @return the idPais
-	 */
-	public Integer getIdPais() {
-		return idPais;
+	private List<DepartamentoDTO> departamentos;
+
+	public PaisDTO() {
 	}
-	/**
-	 * @param idPais the idPais to set
-	 */
+
+	public Integer getIdPais() {
+		return this.idPais;
+	}
+
 	public void setIdPais(Integer idPais) {
 		this.idPais = idPais;
 	}
-	/**
-	 * @return the codigoPais
-	 */
+
 	public Integer getCodigoPais() {
-		return codigoPais;
+		return this.codigoPais;
 	}
-	/**
-	 * @param codigoPais the codigoPais to set
-	 */
+
 	public void setCodigoPais(Integer codigoPais) {
 		this.codigoPais = codigoPais;
 	}
-	/**
-	 * @return the descripcionPais
-	 */
+
 	public String getDescripcionPais() {
-		return descripcionPais;
+		return this.descripcionPais;
 	}
-	/**
-	 * @param descripcionPais the descripcionPais to set
-	 */
+
 	public void setDescripcionPais(String descripcionPais) {
 		this.descripcionPais = descripcionPais;
 	}
-	/**
-	 * @return the departamentos
-	 */
-	public List<DepartamentosDTO> getDepartamentos() {
-		return departamentos;
+
+	public List<DepartamentoDTO> getDepartamentos() {
+		return this.departamentos;
 	}
-	/**
-	 * @param departamentos the departamentos to set
-	 */
-	public void setDepartamentos(List<DepartamentosDTO> departamentos) {
+
+	public void setDepartamentos(List<DepartamentoDTO> departamentos) {
 		this.departamentos = departamentos;
 	}
-	
-	
 
 }

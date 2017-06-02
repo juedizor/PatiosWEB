@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.com.app.negocio.dto.UsuarioDTO;
-import co.com.app.negocio.iface.IngresoIface;
+import co.com.app.negocio.general.iface.IngresoIface;
 import co.com.app.rest.exception.CommonException;
 import co.com.app.rest.exception.GeneralErrorException;
 import co.com.app.rest.exception.NotFoundException;

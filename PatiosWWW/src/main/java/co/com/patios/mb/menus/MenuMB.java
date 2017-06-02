@@ -23,7 +23,6 @@ import co.com.patios.service.dto.MenuItemDTO;
 @SessionScoped
 public class MenuMB {
 
-
 	List<MenuDTO> listMenu;
 	List<MenuItemDTO> listMenuItem;
 	private MenuModel model;
@@ -32,16 +31,16 @@ public class MenuMB {
 	private static final int SUBMENU = 2;
 	private static final int ITEM = 3;
 
-	public MenuMB()  {
+	public MenuMB() {
 		// TODO Auto-generated constructor stub
-		
+
 	}
 
 	@PostConstruct
 	public void init() {
 		model = new DefaultMenuModel();
 		construirMenus();
-		
+
 	}
 
 	public void construirMenus() {
@@ -57,7 +56,7 @@ public class MenuMB {
 		 */
 		FacesMessage message = new FacesMessage();
 		try {
-			listMenu = MenuClientService.getInstance().consultarMenus(MENU_PRINCIPAL);;
+			listMenu = MenuClientService.getInstance().consultarMenus(MENU_PRINCIPAL);
 			if (listMenu != null && !listMenu.isEmpty()) {
 				for (MenuDTO menu : listMenu) {
 					DefaultSubMenu subMenu = new DefaultSubMenu(menu.getNombreMenu());
@@ -76,19 +75,18 @@ public class MenuMB {
 	public void llenarSubMenuItems(MenuDTO menu, DefaultSubMenu subMenu) throws Exception {
 		listMenuItem = MenuClientService.getInstance().consultarMenuItems(menu.getIdMenu());
 		if (listMenuItem != null && !listMenuItem.isEmpty()) {
-			
-			
+
 			for (MenuItemDTO menuItem : listMenuItem) {
-				if (menuItem.getIdMenuSecundario().getIdTipoMenu().equals(ITEM)) {
-					DefaultMenuItem item = new DefaultMenuItem(menuItem.getIdMenuSecundario().getNombreMenu());
-					item.setCommand(menuItem.getIdMenuSecundario().getUrl().trim());
+				if (menuItem.getMenu2().getTipoMenu().getIdTipoMenu().equals(ITEM)) {
+					DefaultMenuItem item = new DefaultMenuItem(menuItem.getMenu2().getNombreMenu());
+					item.setCommand(menuItem.getMenu2().getUrl().trim());
 					subMenu.addElement(item);
 				}
 
-				if (menuItem.getIdMenuSecundario().getIdTipoMenu().equals(SUBMENU)) {
-					DefaultSubMenu sub = new DefaultSubMenu(menuItem.getIdMenuSecundario().getNombreMenu());
+				if (menuItem.getMenu2().getTipoMenu().getIdTipoMenu().equals(SUBMENU)) {
+					DefaultSubMenu sub = new DefaultSubMenu(menuItem.getMenu2().getNombreMenu());
 					subMenu.addElement(sub);
-					llenarSubMenuItems(menuItem.getIdMenuSecundario(), sub);
+					llenarSubMenuItems(menuItem.getMenu2(), sub);
 				}
 			}
 		}

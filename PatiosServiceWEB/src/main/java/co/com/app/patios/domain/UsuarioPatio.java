@@ -3,6 +3,7 @@ package co.com.app.patios.domain;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.sql.Timestamp;
 
 
 /**
@@ -28,9 +29,8 @@ public class UsuarioPatio implements Serializable {
 	@Column(name="fecha_inicio")
 	private Date fechaInicio;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_proceso")
-	private Date fechaProceso;
+	private Timestamp fechaProceso;
 
 	//bi-directional many-to-one association to Patio
 	@ManyToOne
@@ -74,11 +74,11 @@ public class UsuarioPatio implements Serializable {
 		this.fechaInicio = fechaInicio;
 	}
 
-	public Date getFechaProceso() {
+	public Timestamp getFechaProceso() {
 		return this.fechaProceso;
 	}
 
-	public void setFechaProceso(Date fechaProceso) {
+	public void setFechaProceso(Timestamp fechaProceso) {
 		this.fechaProceso = fechaProceso;
 	}
 

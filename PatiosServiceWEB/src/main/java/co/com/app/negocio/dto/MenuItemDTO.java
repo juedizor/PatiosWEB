@@ -1,46 +1,39 @@
 package co.com.app.negocio.dto;
 
-public class MenuItemDTO {
-	
+import java.io.Serializable;
+
+
+public class MenuItemDTO implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private Integer idMenuItem;
-	private MenuDTO idMenuPrincipal;
-	private MenuDTO idMenuSecundario;
-	/**
-	 * @return the idMenuItem
-	 */
-	public Integer getIdMenuItem() {
-		return idMenuItem;
+	private MenuDTO menu1;
+	private MenuDTO menu2;
+
+	public MenuItemDTO() {
 	}
-	/**
-	 * @param idMenuItem the idMenuItem to set
-	 */
+
+	public Integer getIdMenuItem() {
+		return this.idMenuItem;
+	}
+
 	public void setIdMenuItem(Integer idMenuItem) {
 		this.idMenuItem = idMenuItem;
 	}
-	/**
-	 * @return the idMenuPrincipal
-	 */
-	public MenuDTO getIdMenuPrincipal() {
-		return idMenuPrincipal;
+
+	public MenuDTO getMenu1() {
+		return this.menu1;
 	}
-	/**
-	 * @param idMenuPrincipal the idMenuPrincipal to set
-	 */
-	public void setIdMenuPrincipal(MenuDTO idMenuPrincipal) {
-		this.idMenuPrincipal = idMenuPrincipal;
+
+	public void setMenu1(MenuDTO menu1) {
+		this.menu1 = menu1;
 	}
-	/**
-	 * @return the idMenuSecundario
-	 */
-	public MenuDTO getIdMenuSecundario() {
-		return idMenuSecundario;
+
+	public MenuDTO getMenu2() {
+		return this.menu2;
 	}
-	/**
-	 * @param idMenuSecundario the idMenuSecundario to set
-	 */
-	public void setIdMenuSecundario(MenuDTO idMenuSecundario) {
-		this.idMenuSecundario = idMenuSecundario;
+
+	public void setMenu2(MenuDTO menu2) {
+		this.menu2 = menu2;
 	}
-	
-	
+
 }

@@ -1,47 +1,38 @@
 package co.com.patios.service.dto;
 
-public class EstadoVehiculoDTO {
-	
+import java.io.Serializable;
+
+public class EstadoVehiculoDTO implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private Integer idEstadoVehiculo;
 	private String codigoAlfaEstadoVehiculo;
 	private String descripcionEstadoVehiculo;
-	/**
-	 * @return the idEstadoVehiculo
-	 */
-	public Integer getIdEstadoVehiculo() {
-		return idEstadoVehiculo;
+
+	public EstadoVehiculoDTO() {
 	}
-	/**
-	 * @param idEstadoVehiculo the idEstadoVehiculo to set
-	 */
+
+	public Integer getIdEstadoVehiculo() {
+		return this.idEstadoVehiculo;
+	}
+
 	public void setIdEstadoVehiculo(Integer idEstadoVehiculo) {
 		this.idEstadoVehiculo = idEstadoVehiculo;
 	}
-	/**
-	 * @return the codigoAlfaEstadoVehiculo
-	 */
+
 	public String getCodigoAlfaEstadoVehiculo() {
-		return codigoAlfaEstadoVehiculo;
+		return this.codigoAlfaEstadoVehiculo;
 	}
-	/**
-	 * @param codigoAlfaEstadoVehiculo the codigoAlfaEstadoVehiculo to set
-	 */
+
 	public void setCodigoAlfaEstadoVehiculo(String codigoAlfaEstadoVehiculo) {
 		this.codigoAlfaEstadoVehiculo = codigoAlfaEstadoVehiculo;
 	}
-	/**
-	 * @return the descripcionEstadoVehiculo
-	 */
+
 	public String getDescripcionEstadoVehiculo() {
-		return descripcionEstadoVehiculo;
+		return this.descripcionEstadoVehiculo;
 	}
-	/**
-	 * @param descripcionEstadoVehiculo the descripcionEstadoVehiculo to set
-	 */
+
 	public void setDescripcionEstadoVehiculo(String descripcionEstadoVehiculo) {
 		this.descripcionEstadoVehiculo = descripcionEstadoVehiculo;
 	}
-	
-	
 
 }

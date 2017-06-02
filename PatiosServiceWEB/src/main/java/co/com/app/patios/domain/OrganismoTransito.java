@@ -2,7 +2,7 @@ package co.com.app.patios.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -27,9 +27,8 @@ public class OrganismoTransito implements Serializable {
 	@Column(name="estado_organismo_transito")
 	private String estadoOrganismoTransito;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_proceso")
-	private Date fechaProceso;
+	private Timestamp fechaProceso;
 
 	@Column(name="nombre_abreviado")
 	private String nombreAbreviado;
@@ -88,11 +87,11 @@ public class OrganismoTransito implements Serializable {
 		this.estadoOrganismoTransito = estadoOrganismoTransito;
 	}
 
-	public Date getFechaProceso() {
+	public Timestamp getFechaProceso() {
 		return this.fechaProceso;
 	}
 
-	public void setFechaProceso(Date fechaProceso) {
+	public void setFechaProceso(Timestamp fechaProceso) {
 		this.fechaProceso = fechaProceso;
 	}
 
